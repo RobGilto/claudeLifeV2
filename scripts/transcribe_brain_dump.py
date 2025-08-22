@@ -100,11 +100,34 @@ transcribed: {timestamp}
 
 def trigger_brain_dump_analysis(brain_dump_path):
     """Trigger brain dump analysis on the created file"""
+    import subprocess
+    
     print(f"Triggering brain dump analysis for: {brain_dump_path}")
-    # This would integrate with the existing brain-dump-analysis command
-    # For now, just indicate where analysis would happen
-    print("Brain dump analysis would be triggered here...")
-    print("Use: /brain-dump-analysis to analyze all brain dumps")
+    
+    try:
+        # Execute Claude Code brain dump analysis command
+        result = subprocess.run([
+            "claude-code", 
+            "/brain-dump-analysis"
+        ], capture_output=True, text=True, cwd="/home/robert/AIPortfolio/dev/claudeLifeV2")
+        
+        if result.returncode == 0:
+            print("✅ Brain dump analysis completed successfully!")
+            if result.stdout:
+                print("Analysis output:")
+                print(result.stdout)
+        else:
+            print("⚠️  Brain dump analysis encountered issues:")
+            if result.stderr:
+                print(result.stderr)
+            print("You can manually run: /brain-dump-analysis")
+            
+    except FileNotFoundError:
+        print("⚠️  Claude Code not found in PATH")
+        print("Manually run: /brain-dump-analysis")
+    except Exception as e:
+        print(f"⚠️  Error triggering analysis: {e}")
+        print("Manually run: /brain-dump-analysis")
 
 
 def main():
