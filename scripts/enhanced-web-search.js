@@ -9,21 +9,33 @@ const axios = require('axios');
 const fs = require('fs').promises;
 const path = require('path');
 
-// API Configuration
+// API Configuration - NEVER commit hardcoded keys
 const APIS = {
   firecrawl: {
-    key: process.env.FIRECRAWL_API_KEY || 'fc-3798133b42d64e6f90cc05c27a1aa045',
+    key: process.env.FIRECRAWL_API_KEY,
     baseUrl: 'https://api.firecrawl.dev/v0'
   },
   scrapfly: {
-    key: process.env.SCRAPFLY_API_KEY || 'scp-live-32e2a4407994468d8f3ba7a153aa9512',
+    key: process.env.SCRAPFLY_API_KEY,
     baseUrl: 'https://api.scrapfly.io/scrape'
   },
   browserless: {
-    key: process.env.BROWSERLESS_API_KEY || '25rudRxqxv6ZChV4203eb8bc62cf34a54121a16af612a8f94',
+    key: process.env.BROWSERLESS_API_KEY,
     baseUrl: 'https://chrome.browserless.io'
   }
 };
+
+// Validate required environment variables
+function validateConfig() {
+  const missing = [];
+  if (!APIS.firecrawl.key) missing.push('FIRECRAWL_API_KEY');
+  if (!APIS.scrapfly.key) missing.push('SCRAPFLY_API_KEY');
+  if (!APIS.browserless.key) missing.push('BROWSERLESS_API_KEY');
+  
+  if (missing.length > 0) {
+    throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
+  }
+}
 
 // Enhanced Firecrawl scraping
 async function scrapeWithFirecrawl(url) {
