@@ -18,7 +18,9 @@ This is Robert's personal AI engineering journey and life transformation reposit
 /daily/          # Daily checkins and journals
 /weekly/         # Weekly reviews and summaries  
 /victories/      # Victory tracking and pattern analysis
-/analysis/       # Brain dump analyses and insights
+/journal/
+  /brain/        # Raw brain dumps (text and transcribed)
+  /brain/analysis/ # AI-generated brain dump analyses
 /research/       # Competitor newsletter research
 /scripts/        # Automation and processing scripts
 /templates/      # Reusable formats for consistent entries
@@ -33,7 +35,8 @@ This is Robert's personal AI engineering journey and life transformation reposit
 - Daily Checkin: `daily-YYYY-MM-DD.md`
 - Weekly Review: `weekly-YYYY-WW.md`  
 - Victory Log: `victories-YYYY-MM.md`
-- Brain Dump: `braindump-[topic]-YYYY-MM-DD.md`
+- Brain Dump: `braindump-YYYY-MM-DD-HHMM-[topic].md`
+- Brain Dump Analysis: `analysis-YYYY-MM-DD-HHMM-[topic].md`
 - Research: `research-[competitor]-YYYY-MM-DD.md`
 - Analysis: `analysis-[type]-YYYY-MM-DD.md`
 
@@ -42,10 +45,17 @@ All markdown files should include:
 ```yaml
 ---
 date: YYYY-MM-DD
+time: HH:MM                    # Required for brain dumps
 type: [daily|weekly|victories|braindump|research|analysis]
+source: [text|audio]           # Required for brain dumps
+topic: [auto-detected]         # Required for brain dumps
 tags: []
-status: [draft|review|final|ongoing]
+status: [raw|draft|review|final|ongoing]
 privacy: [public|private|sensitive]
+# Brain dump specific fields:
+audio_file: filename.wav       # Only if transcribed
+duration: 120                  # Seconds, only if transcribed
+related: source-file.md        # For analysis files
 ---
 ```
 
@@ -132,12 +142,44 @@ The `/newsletter-research` command will:
 - Match your writing voice based on existing content
 - Save research and drafts to organized folders
 
+### Brain Dump Protocol
+The `/brain-dump` command provides:
+- Streamlined creation of standardized brain dump files
+- Automatic topic detection from content
+- Consistent formatting for both text and transcribed content
+- Files saved to `journal/brain/` with timestamp-based naming
+- Automatic analysis generation in `journal/brain/analysis/`
+
+#### Brain Dump Format
+```yaml
+---
+date: YYYY-MM-DD
+time: HH:MM
+type: braindump
+source: text|audio
+topic: auto-detected-topic
+tags: []
+status: raw
+privacy: private
+audio_file: filename.wav    # Only for transcribed
+duration: 120              # Only for transcribed
+---
+
+# Brain Dump: Topic Title
+
+[Stream of consciousness content]
+
+---
+*Direct text entry - YYYY-MM-DD HH:MM:SS*
+```
+
 ### Brain Dump Analysis Protocol
 The `/brain-dump-analysis` command will:
 - Extract insights and patterns from stream-of-consciousness writing
 - Show connections between ideas and track thinking evolution
-- Generate visual mind maps and actionable takeaways
-- Celebrate growth and breakthrough moments
+- Generate structured analysis with actionable takeaways
+- Save analysis to `journal/brain/analysis/` with matching timestamp
+- Link back to original brain dump for reference
 
 ### Daily Brief Protocol
 The `/daily-brief` command provides:
