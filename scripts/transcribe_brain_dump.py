@@ -53,41 +53,41 @@ def transcribe_wav_to_brain_dump(wav_path):
     # Extract topic from transcription
     topic = extract_topic_from_text(result['text'])
     
-    # Create journal/brain directory if it doesn't exist
+    # Create journal/brain and analysis directories if they don't exist
     brain_dir = Path("journal/brain")
     brain_dir.mkdir(parents=True, exist_ok=True)
+    (brain_dir / "analysis").mkdir(exist_ok=True)
     
-    # Create output filename
+    # Create output filename with standardized timestamp format
     date_str = datetime.now().strftime("%Y-%m-%d")
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    output_path = brain_dir / f"braindump-{topic}-{date_str}.md"
+    time_str = datetime.now().strftime("%H:%M")
+    timestamp_for_filename = datetime.now().strftime("%Y-%m-%d-%H%M")
+    full_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    output_path = brain_dir / f"braindump-{timestamp_for_filename}-{topic}.md"
     
-    # Generate brain dump markdown content
+    # Generate brain dump markdown content with standardized format
     wav_file = Path(wav_path)
+    duration_seconds = int(result.get('duration', 0))
     
     markdown_content = f"""---
 date: {date_str}
+time: {time_str}
 type: braindump
-tags: [audio-transcription]
-status: draft
+source: audio
+topic: {topic}
+tags: []
+status: raw
 privacy: private
-source: {wav_file.name}
-transcribed: {timestamp}
+audio_file: {wav_file.name}
+duration: {duration_seconds}
 ---
 
 # Brain Dump: {topic.replace('-', ' ').title()}
 
-**Audio Source:** {wav_file.name}  
-**Transcribed:** {timestamp}  
-**Duration:** {result.get('duration', 'Unknown')} seconds
-
-## Stream of Consciousness
-
 {result['text'].strip()}
 
 ---
-
-*Transcribed from audio using OpenAI Whisper*
+*Transcribed from audio - {full_timestamp}*
 """
     
     # Write brain dump file
@@ -101,33 +101,62 @@ transcribed: {timestamp}
 def trigger_brain_dump_analysis(brain_dump_path):
     """Trigger brain dump analysis on the created file"""
     import subprocess
+    from pathlib import Path
     
     print(f"Triggering brain dump analysis for: {brain_dump_path}")
     
+    # Create analysis filename
+    filename = Path(brain_dump_path).name
+    topic_and_timestamp = filename.replace('braindump-', '').replace('.md', '')
+    analysis_path = Path("journal/brain/analysis") / f"analysis-{topic_and_timestamp}.md"
+    
     try:
-        # Execute Claude Code brain dump analysis command
-        result = subprocess.run([
-            "claude-code", 
-            "/brain-dump-analysis"
-        ], capture_output=True, text=True, cwd="/home/robert/AIPortfolio/dev/claudeLifeV2")
+        # Get current working directory for Claude Code
+        current_dir = os.getcwd()
         
-        if result.returncode == 0:
-            print("✅ Brain dump analysis completed successfully!")
-            if result.stdout:
-                print("Analysis output:")
-                print(result.stdout)
-        else:
-            print("⚠️  Brain dump analysis encountered issues:")
-            if result.stderr:
-                print(result.stderr)
-            print("You can manually run: /brain-dump-analysis")
-            
-    except FileNotFoundError:
-        print("⚠️  Claude Code not found in PATH")
-        print("Manually run: /brain-dump-analysis")
+        # Create analysis prompt for Claude Code
+        analysis_prompt = f"""Please analyze the brain dump file at {brain_dump_path} and create a comprehensive analysis following this format:
+
+---
+date: {datetime.now().strftime('%Y-%m-%d')}
+time: {datetime.now().strftime('%H:%M')}
+type: analysis
+source: brain-dump-analysis
+related: {filename}
+tags: []
+status: final
+privacy: private
+---
+
+# Brain Dump Analysis: [Topic from original]
+
+## Key Insights Extracted
+[Extract main themes and insights]
+
+## Patterns and Connections
+[Identify patterns, connections to previous brain dumps/learning]
+
+## Actionable Items
+[Concrete next steps and actions]
+
+## Strategic Implications
+[How this connects to career goals, learning path, etc.]
+
+## Questions for Further Exploration
+[Areas that need more thought or research]
+
+## Connections to Existing Projects
+[How this relates to RuneQuest, AI engineering goals, etc.]
+
+Save this analysis to: {analysis_path}"""
+        
+        print(f"📊 Analysis will be saved to: {analysis_path}")
+        print("⚠️  Please manually run brain dump analysis in Claude Code")
+        print(f"Analysis path: {analysis_path}")
+        
     except Exception as e:
-        print(f"⚠️  Error triggering analysis: {e}")
-        print("Manually run: /brain-dump-analysis")
+        print(f"⚠️  Error setting up analysis: {e}")
+        print("Manually run brain dump analysis in Claude Code")
 
 
 def main():
