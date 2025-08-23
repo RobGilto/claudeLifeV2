@@ -33,6 +33,48 @@ count_changes() {
     echo $((added_lines + deleted_lines))
 }
 
+# Function to generate detailed change summary
+generate_change_summary() {
+    local summary=""
+    local file_count=0
+    local modified_functions=""
+    
+    # Get list of changed files with stats
+    while IFS=$'\t' read -r added deleted file; do
+        if [[ "$added" != "-" || "$deleted" != "-" ]]; then
+            file_count=$((file_count + 1))
+            local change_type=""
+            
+            if git diff --cached --name-status | grep -q "^A.*$file"; then
+                change_type="(new file)"
+            elif git diff --cached --name-status | grep -q "^D.*$file"; then
+                change_type="(deleted)"
+            elif [[ "$added" != "-" && "$deleted" != "-" ]]; then
+                change_type="(+$added/-$deleted)"
+            fi
+            
+            summary+="\n• $(basename "$file") $change_type"
+        fi
+    done < <(git diff --cached --numstat)
+    
+    # Extract function/method changes (for common programming languages)
+    if command -v grep > /dev/null 2>&1; then
+        local func_changes
+        func_changes=$(git diff --cached | grep -E "^[+-].*\b(function|def |class |const |let |var |export |import)" | head -5 | sed 's/^[+-]//' | sed 's/^[[:space:]]*//' || true)
+        
+        if [[ -n "$func_changes" ]]; then
+            modified_functions="\n\nKey changes:"
+            while IFS= read -r line; do
+                if [[ -n "$line" ]]; then
+                    modified_functions+="\n• ${line:0:80}..."
+                fi
+            done <<< "$func_changes"
+        fi
+    fi
+    
+    echo -e "Files changed: $file_count$summary$modified_functions"
+}
+
 # Function to check for file additions/removals
 check_file_operations() {
     local has_operations=false
