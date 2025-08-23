@@ -25,7 +25,19 @@ A brain dump analysis system that extracts insights from stream-of-consciousness
    - For creators: add content ideas based on insights
    - Make everything visual with ASCII art and emojis
 
-5. Save comprehensive analysis to `/braindumps/analysis/insights-YYYY-MM-DD.md`
+5. **Background Victory Scanning**:
+   During analysis, passively scan for major breakthrough patterns:
+   - Technical insights: "I understand now...", "The key is...", "It works because..."
+   - Self-awareness breakthroughs: "I realize I...", "My pattern is...", "The Mimic says..."
+   - Strategic decisions: "I need to...", "The right approach is..."
+   - Problem-solving wins: "The solution is...", "I figured out..."
+   
+   Only flag MAJOR breakthroughs. If detected, add single line to output:
+   "💡 Major insight captured as victory"
+   
+   Otherwise, stay completely silent. No routine victory detection for brain dumps.
+
+6. Save comprehensive analysis to `/braindumps/analysis/insights-YYYY-MM-DD.md`
 
 The system should:
 - Find patterns the user can't see themselves

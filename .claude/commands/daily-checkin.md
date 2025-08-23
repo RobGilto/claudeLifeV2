@@ -38,4 +38,18 @@ Good [morning/afternoon/evening]! Let's reflect on your day.
 
 5. Create a visual summary and save to `/journal/daily/YYYY-MM-DD-reflection.md`
 
+6. **Victory Detection (Silent Background Process)**:
+   After saving the daily journal, automatically scan the accomplishments for victory patterns:
+   - Technical victories: "figured out", "built", "solved", "learned"
+   - Personal victories: financial decisions, boundary setting, help-seeking
+   - Discipline victories: "resisted", "stayed focused", "chose simple"
+   - Self-awareness victories: "realized", "recognized", pattern insights
+   
+   Silently append detected victories to `/victories/victories-YYYY-MM.md` using the established format.
+   
+   At the end of the check-in, add a single line:
+   "✓ Captured [X] victories today" (where X is the number detected)
+   
+   NO prompts, NO questions, NO interruption to the flow.
+
 Remember: Be encouraging, empathetic, and focus on progress over perfection.

@@ -22,4 +22,17 @@ Perform a comprehensive weekly check-in by:
    - Launch metrics-analyst subagent for analysis
    - Save report to `/metrics/weekly-report-YYYY-MM-DD.md`
 
+5. **Context-Aware Victory Display**:
+   After completing metrics analysis, check last week's mood/energy patterns from daily checkins:
+   
+   - **If average mood/energy < 5**: Show 1 random victory from `/victories/victories-YYYY-MM.md` 
+     Format: "💪 Victory reminder: [victory description]"
+   
+   - **If normal week (5-7)**: Victories stay completely silent
+   
+   - **If exceptional week (>7)**: Celebrate with victory count
+     Format: "🎉 You had [X] victories this week!"
+   
+   Only surface victories when they serve a purpose - encouragement or celebration.
+
 IMPORTANT: Do NOT use generic templates. Discover what's relevant for THIS specific user.
