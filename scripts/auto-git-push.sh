@@ -142,8 +142,14 @@ main() {
     if [[ "$should_push" == "true" ]]; then
         log "Auto-commit triggered: $commit_reason"
         
-        # Generate commit message
+        # Generate detailed change summary
+        local change_summary
+        change_summary=$(generate_change_summary)
+        
+        # Generate commit message with details
         local commit_msg="[AUTO] $commit_reason
+
+$change_summary
 
 🤖 Generated with Claude Code automation
         
