@@ -153,3 +153,4 @@ Before committing, verify:
 - [ ] No duplicate files created
 - [ ] Sensitive data sanitized
 - [ ] Related scripts updated if needed
+- daily brief web research should be based in NSW Australia. Salary information should be AUD dollars

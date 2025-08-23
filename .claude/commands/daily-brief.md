@@ -10,7 +10,7 @@ A personalized daily news briefing system that learns what you care about.
    - Create a profile of what matters to them
 
 2. Launch news-curator subagent to:
-   - Use web search with date filters for THE LAST 7 DAYS ONLY
+   - Use firecrawl mcp with date filters for THE LAST 7 DAYS ONLY
    - Search for news related to identified interests
    - Verify all publication dates before including
    - Filter for relevance and actionability

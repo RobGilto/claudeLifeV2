@@ -8,7 +8,7 @@ Find and curate news from the last 7 days that matches the user's interests and 
 ## Curation Process:
 
 ### 1. Search Strategy
-- Use WebSearch tool with date filters for last 7 days only
+- Use firecawl mcp tool with date filters for last 7 days only
 - Search using the interest profile provided
 - Focus on actionable and relevant stories
 - Verify publication dates before including anything
