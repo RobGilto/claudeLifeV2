@@ -17,6 +17,7 @@ This is Robert's personal AI engineering journey and life transformation reposit
 ```
 /daily/          # Daily checkins and journals
 /weekly/         # Weekly reviews and summaries  
+/victories/      # Victory tracking and pattern analysis
 /analysis/       # Brain dump analyses and insights
 /research/       # Competitor newsletter research
 /scripts/        # Automation and processing scripts
@@ -31,6 +32,7 @@ This is Robert's personal AI engineering journey and life transformation reposit
 ### Naming Conventions
 - Daily Checkin: `daily-YYYY-MM-DD.md`
 - Weekly Review: `weekly-YYYY-WW.md`  
+- Victory Log: `victories-YYYY-MM.md`
 - Brain Dump: `braindump-[topic]-YYYY-MM-DD.md`
 - Research: `research-[competitor]-YYYY-MM-DD.md`
 - Analysis: `analysis-[type]-YYYY-MM-DD.md`
@@ -40,9 +42,9 @@ All markdown files should include:
 ```yaml
 ---
 date: YYYY-MM-DD
-type: [daily|weekly|braindump|research|analysis]
+type: [daily|weekly|victories|braindump|research|analysis]
 tags: []
-status: [draft|review|final]
+status: [draft|review|final|ongoing]
 privacy: [public|private|sensitive]
 ---
 ```
@@ -143,6 +145,47 @@ The `/daily-brief` command provides:
 - Only current news from the last 7 days
 - Context about why each story matters to you
 - Actionable insights and suggested next steps
+
+### Victory Tracking Protocol
+The victory system fights the "Mimic" (inner critic) through systematic win recognition and pattern analysis.
+
+#### `/add-victory` Command
+- Quick victory entry with guided prompts
+- Categories: technical, personal, discipline, learning, self-awareness
+- Anti-Mimic rules: no victory too small, progress over perfection
+- Outputs to `victories/victories-YYYY-MM.md`
+
+#### `/victory-suggest` Command  
+- AI-powered victory detection from journal entries and git commits
+- Scans for dismissed accomplishments and hidden wins
+- Catches technical breakthroughs, strategic decisions, and discipline victories
+- One-click integration with add-victory
+
+#### `/victory-review` Command
+- Weekly celebration of 3-5 random recent victories
+- Pattern recognition and replication strategies
+- Mood boosting during low periods
+- Updates `victory-patterns.md` with insights
+
+#### Integration Points
+- **Daily Checkin**: Auto-suggests victories from accomplishments mentioned
+- **Weekly Checkin**: Starts with victory review for positive framing
+- **Brain Dumps**: Background analysis for victory patterns
+- **Git Commits**: Technical victory detection and suggestions
+
+#### Victory File Structure
+```
+victories/
+├── victories-YYYY-MM.md     # Monthly victory log
+├── victory-patterns.md      # Pattern analysis and Mimic counter-evidence  
+└── victory-reviews.md       # Weekly celebration records
+```
+
+#### Anti-Mimic Features
+- Evidence-based counter-narratives to inner criticism
+- Pattern recognition of success factors and conditions
+- Systematic celebration to build confidence momentum
+- Focus on replication strategies rather than perfection
 
 ## Quality Checks
 
