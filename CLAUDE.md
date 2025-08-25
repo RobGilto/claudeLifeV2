@@ -124,13 +124,30 @@ The `/weekly-checkin` command will:
 
 The system intelligently adapts to track what matters for this specific project.
 
-### Daily Check-In Protocol
-The `/daily-checkin` command provides:
-- Personal reflection prompts for well-being tracking
-- Mood and energy pattern analysis
-- Accomplishment tracking and momentum scoring
-- Visual trends and insights over time
-- Gentle, encouraging feedback for continuous growth
+### Daily Check-In Protocols (Split Sessions)
+The daily check-in system splits into two focused sessions for better ADD-friendly workflow:
+
+#### `/noon-checkin` Command
+Mid-day energy and planning checkpoint:
+- Morning energy assessment and sleep quality check
+- Afternoon priority setting (top 3 focus areas)
+- Early wins celebration and momentum tracking
+- Focus/energy challenge identification
+- Quick encouragement without full analysis
+
+#### `/evening-checkin` Command  
+End-of-day reflection and tomorrow planning:
+- Overall day feeling and accomplishment review
+- Challenge and blocker identification
+- Gratitude and reflection prompts
+- Tomorrow's priority setting
+- Combined analysis of both sessions (if noon data exists)
+
+#### File Management
+- Both commands append to same `daily-YYYY-MM-DD.md` file
+- Metadata tracks which sessions completed: `sessions: [noon, evening]`
+- Analysis only runs after evening checkin with combined data
+- Victory detection runs after both sessions for comprehensive tracking
 
 Daily entries are saved in journal/daily/ for long-term pattern recognition.
 
