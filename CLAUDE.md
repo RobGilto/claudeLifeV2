@@ -256,3 +256,12 @@ Before committing, verify:
 - [ ] Sensitive data sanitized
 - [ ] Related scripts updated if needed
 - daily brief web research should be based in NSW Australia. Salary information should be AUD dollars
+
+## Financial Planning Memories
+
+### Financial Refinancing and Loan Restructuring
+- Comprehensive financial review conducted in October 2023
+- Primary focus: Refinancing ANZ loans before interest-only period ends on 6 October
+- Current home valuation estimated at $2-2.1 million with 80% LVR
+- Total current loan balance: $1,092,235.71
+- Exploring options to optimize loan structure and prepare for future investment purchase

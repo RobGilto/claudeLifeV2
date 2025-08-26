@@ -23,6 +23,7 @@ Good afternoon! Let's check your mid-day momentum:
 4. **Any morning wins already?** (however small)
 5. **Current focus/energy challenges?**
 6. **What's working well so far today?**
+7. Anything else to talk about?
 
 4. Save/append to `/journal/daily/YYYY-MM-DD.md` with structure:
    ```yaml
