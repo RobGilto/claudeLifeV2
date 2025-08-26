@@ -265,3 +265,4 @@ Before committing, verify:
 - Current home valuation estimated at $2-2.1 million with 80% LVR
 - Total current loan balance: $1,092,235.71
 - Exploring options to optimize loan structure and prepare for future investment purchase
+- when creating script i prefer it in .js
