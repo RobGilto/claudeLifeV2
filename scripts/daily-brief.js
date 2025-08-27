@@ -103,7 +103,7 @@ function getCurrentSkills() {
 /**
  * Generate news briefing focused on AI/Software Engineering in Australia
  */
-async function generateNewsBriefing() {
+async function generateNewsBriefing(dateStr) {
     const topics = [
         'AI engineer jobs Australia',
         'machine learning careers Sydney',
@@ -117,7 +117,7 @@ async function generateNewsBriefing() {
     // For now, providing relevant structured news insights
     
     const newsBrief = {
-        date: today,
+        date: dateStr || new Date().toISOString().split('T')[0],
         headlines: [
             {
                 title: "Australian AI job market continues growth with 35% increase in ML engineer roles",
@@ -266,7 +266,7 @@ async function generateDailyBrief(saveToFile = false) {
     const today = sydneyTime ? sydneyTime.date : new Date().toISOString().split('T')[0];
     
     // Gather data
-    const newsBrief = await generateNewsBriefing();
+    const newsBrief = await generateNewsBriefing(today);
     const jobMarketData = getLatestJobMarketData();
     const gapAnalysis = getLatestGapAnalysis();
     const skillMatrix = getCurrentSkills();
