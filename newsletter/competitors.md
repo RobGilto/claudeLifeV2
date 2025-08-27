@@ -3,17 +3,11 @@
 ## AI/Tech Newsletters to Research
 
 ### Primary Competitors
-<!-- Add your competitor newsletter URLs here, one per line -->
-<!-- Example formats: -->
-<!-- - https://newsletter.example.substack.com -->
-<!-- - https://medium.com/@username -->
-<!-- - https://www.beehiiv.com/newsletters/example -->
-
-1. 
-2. 
-3. 
-4. 
-5. 
+- https://www.anthropic.com/news
+- https://www.deeplearning.ai/the-batch/
+- https://www.pragmaticengineer.com/
+- https://newsletter.theaiedge.io/
+- https://www.latent.space/ 
 
 ### Topics of Interest
 - AI Engineering
@@ -23,5 +17,8 @@
 - Software Development
 
 ### Your Newsletter Focus
-<!-- Describe your unique angle/voice -->
-- 
+- Technical career transition insights
+- ADD-friendly learning strategies
+- AI engineering fundamentals
+- Practical code examples and portfolio projects
+- Real-world application of AI tools for productivity
