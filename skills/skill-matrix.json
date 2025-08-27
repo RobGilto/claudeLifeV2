@@ -1,0 +1,215 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2025-01-27",
+    "nextReview": "2025-02-03",
+    "system": "BRP-inspired d100",
+    "targetDate": "2026-07-01"
+  },
+  "categories": {
+    "ai_engineering": {
+      "weight": 0.4,
+      "description": "Core AI/ML engineering competencies",
+      "skills": {
+        "llm_fundamentals": {
+          "current": 20,
+          "target": 75,
+          "lastPracticed": "2025-01-27",
+          "evidence": ["Daily Claude usage", "Prompt engineering practice"],
+          "weeklyPracticeHours": 10
+        },
+        "prompt_engineering": {
+          "current": 35,
+          "target": 80,
+          "lastPracticed": "2025-01-27",
+          "evidence": ["Complex slash commands", "System prompts"],
+          "weeklyPracticeHours": 15
+        },
+        "rag_implementation": {
+          "current": 15,
+          "target": 70,
+          "lastPracticed": "2025-01-20",
+          "evidence": ["Research on vector DBs"],
+          "weeklyPracticeHours": 2
+        },
+        "embeddings_vectors": {
+          "current": 10,
+          "target": 65,
+          "lastPracticed": "2025-01-15",
+          "evidence": ["Basic understanding"],
+          "weeklyPracticeHours": 1
+        },
+        "fine_tuning": {
+          "current": 5,
+          "target": 50,
+          "lastPracticed": null,
+          "evidence": [],
+          "weeklyPracticeHours": 0
+        },
+        "model_selection": {
+          "current": 25,
+          "target": 70,
+          "lastPracticed": "2025-01-25",
+          "evidence": ["Choosing between Claude/GPT/Local models"],
+          "weeklyPracticeHours": 3
+        }
+      }
+    },
+    "software_engineering": {
+      "weight": 0.3,
+      "description": "General programming and engineering skills",
+      "skills": {
+        "python": {
+          "current": 30,
+          "target": 70,
+          "lastPracticed": "2025-01-26",
+          "evidence": ["Reading AI-generated Python", "Small scripts"],
+          "weeklyPracticeHours": 5
+        },
+        "javascript": {
+          "current": 35,
+          "target": 65,
+          "lastPracticed": "2025-01-27",
+          "evidence": ["Node scripts", "Slash commands"],
+          "weeklyPracticeHours": 8
+        },
+        "typescript": {
+          "current": 20,
+          "target": 60,
+          "lastPracticed": "2025-01-20",
+          "evidence": ["MCP server work"],
+          "weeklyPracticeHours": 2
+        },
+        "git_github": {
+          "current": 45,
+          "target": 75,
+          "lastPracticed": "2025-01-27",
+          "evidence": ["Daily commits", "Branch management"],
+          "weeklyPracticeHours": 10
+        },
+        "testing": {
+          "current": 15,
+          "target": 60,
+          "lastPracticed": "2025-01-10",
+          "evidence": ["Basic test understanding"],
+          "weeklyPracticeHours": 1
+        },
+        "system_design": {
+          "current": 20,
+          "target": 65,
+          "lastPracticed": "2025-01-25",
+          "evidence": ["Architecture discussions"],
+          "weeklyPracticeHours": 2
+        },
+        "debugging": {
+          "current": 40,
+          "target": 70,
+          "lastPracticed": "2025-01-27",
+          "evidence": ["Daily troubleshooting", "Error analysis"],
+          "weeklyPracticeHours": 8
+        }
+      }
+    },
+    "data_engineering": {
+      "weight": 0.15,
+      "description": "Data processing and pipeline skills",
+      "skills": {
+        "sql": {
+          "current": 45,
+          "target": 70,
+          "lastPracticed": "2025-01-26",
+          "evidence": ["Domo work", "Complex queries"],
+          "weeklyPracticeHours": 10
+        },
+        "etl_pipelines": {
+          "current": 55,
+          "target": 70,
+          "lastPracticed": "2025-01-26",
+          "evidence": ["Domo dataflows", "API integrations"],
+          "weeklyPracticeHours": 15
+        },
+        "data_modeling": {
+          "current": 35,
+          "target": 60,
+          "lastPracticed": "2025-01-24",
+          "evidence": ["Schema design"],
+          "weeklyPracticeHours": 3
+        },
+        "api_integration": {
+          "current": 60,
+          "target": 75,
+          "lastPracticed": "2025-01-27",
+          "evidence": ["REST APIs", "Webhooks", "OAuth"],
+          "weeklyPracticeHours": 12
+        }
+      }
+    },
+    "platform_expertise": {
+      "weight": 0.1,
+      "description": "Specific platform and tool expertise",
+      "skills": {
+        "domo": {
+          "current": 85,
+          "target": 90,
+          "lastPracticed": "2025-01-26",
+          "evidence": ["2 years experience", "Complex solutions"],
+          "weeklyPracticeHours": 40
+        },
+        "aws_basics": {
+          "current": 15,
+          "target": 55,
+          "lastPracticed": "2025-01-15",
+          "evidence": ["S3 usage", "Lambda awareness"],
+          "weeklyPracticeHours": 1
+        },
+        "docker": {
+          "current": 10,
+          "target": 50,
+          "lastPracticed": "2025-01-10",
+          "evidence": ["Basic container usage"],
+          "weeklyPracticeHours": 0
+        },
+        "linux_cli": {
+          "current": 40,
+          "target": 65,
+          "lastPracticed": "2025-01-27",
+          "evidence": ["Daily usage", "Bash scripting"],
+          "weeklyPracticeHours": 15
+        }
+      }
+    },
+    "soft_skills": {
+      "weight": 0.05,
+      "description": "Communication and self-management",
+      "skills": {
+        "technical_writing": {
+          "current": 55,
+          "target": 75,
+          "lastPracticed": "2025-01-27",
+          "evidence": ["Documentation", "Daily logs"],
+          "weeklyPracticeHours": 10
+        },
+        "add_management": {
+          "current": 40,
+          "target": 70,
+          "lastPracticed": "2025-01-27",
+          "evidence": ["Time-boxing", "Task tracking"],
+          "weeklyPracticeHours": 20
+        },
+        "learning_efficiency": {
+          "current": 35,
+          "target": 70,
+          "lastPracticed": "2025-01-27",
+          "evidence": ["Structured learning", "RuneQuest scaffolding"],
+          "weeklyPracticeHours": 15
+        }
+      }
+    }
+  },
+  "experience_log": [],
+  "achievements": {
+    "certifications": [],
+    "projects": [],
+    "milestones": []
+  }
+}
