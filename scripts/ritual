@@ -1,3 +1,0 @@
-#!/bin/bash
-# Quick access wrapper for ritual commands
-node "$(dirname "$0")/todo-manager.js" ritual "$@"
