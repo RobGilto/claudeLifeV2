@@ -305,3 +305,27 @@ Before committing, verify:
 - Total current loan balance: $1,092,235.71
 - Exploring options to optimize loan structure and prepare for future investment purchase
 - when creating script i prefer it in .js
+- I have joing boot.dev for a year now
+- I will always favour AI Implementation & Integration: High-demand roles requiring practical skills in implementing existing AI technologies to solve business problems over AI research
+- Many organizations will waive degree requirements for candidates with proven implementation skills
+- Portfolio projects demonstrating real-world implementation often outweigh academic credentials
+- Strategic certifications can help you bypass degree requirements, especially for implementation roles
+- Microsoft Certified: Azure AI Engineer Associate will cost $ 165 USD but worth it for recognition in the market
+- Microsoft Azure Data Scientist Associate another important certification to aquire $165 USD
+- AI Data Processing path to consider for certification: "Microsoft Azure Data Engineer Associate" and "Databricks Generative AI Engineer"
+- Strategic Certification Combinations
+
+Full-Stack AI Engineer
+
+Combines: Path 1 (Integration) + Path 3 (Deployment) 
+
+Certifications:
+Azure AI Engineer Associate
+Certified Kubernetes Application Developer (CKAD)
+
+Value proposition: This combination validates your ability to both integrate AI services and deploy them on scalable infrastructure, positioning you as a full-stack AI implementation specialist.
+
+Target roles:
+AI Application Engineer
+Full-Stack AI Developer
+AI Solutions Engineer
