@@ -18,6 +18,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { runJobMarketAnalysis } from './job-market-analyzer.js';
+import { getSydneyTime } from './sydney-time.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,7 +28,11 @@ const SKILL_MATRIX_FILE = path.join(__dirname, '..', 'skills', 'skill-matrix.jso
 const RESEARCH_DIR = path.join(__dirname, '..', 'research', 'job-market');
 const JOURNAL_DIR = path.join(__dirname, '..', 'journal', 'daily');
 const LOG_DIR = path.join(__dirname, '..', 'logs');
-const LOG_FILE = path.join(LOG_DIR, `daily-brief-${new Date().toISOString().split('T')[0]}.log`);
+// Get Sydney time for consistent date handling
+const sydneyTimeData = getSydneyTime ? getSydneyTime() : null;
+const currentSydneyDate = sydneyTimeData ? sydneyTimeData.date : new Date().toISOString().split('T')[0];
+
+const LOG_FILE = path.join(LOG_DIR, `daily-brief-${currentSydneyDate}.log`);
 
 // Ensure directories exist
 [JOURNAL_DIR, LOG_DIR].forEach(dir => {
@@ -112,7 +117,7 @@ async function generateNewsBriefing() {
     // For now, providing relevant structured news insights
     
     const newsBrief = {
-        date: new Date().toISOString().split('T')[0],
+        date: today,
         headlines: [
             {
                 title: "Australian AI job market continues growth with 35% increase in ML engineer roles",
@@ -256,7 +261,9 @@ function generateRecommendations(jobMarketData, skillProgress, gapAnalysis) {
 async function generateDailyBrief(saveToFile = false) {
     log('Generating daily brief...');
     
-    const today = new Date().toISOString().split('T')[0];
+    // Use Sydney time for consistent dates
+    const sydneyTime = getSydneyTime ? getSydneyTime() : null;
+    const today = sydneyTime ? sydneyTime.date : new Date().toISOString().split('T')[0];
     
     // Gather data
     const newsBrief = await generateNewsBriefing();
@@ -361,7 +368,8 @@ async function generateDailyBrief(saveToFile = false) {
     brief += `**This week's focus:** Turn market intelligence into skill development momentum\n\n`;
     
     brief += `---\n`;
-    brief += `*Daily brief generated on ${new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })}*\n`;
+    const generatedTime = sydneyTime ? `${sydneyTime.full} (${sydneyTime.day})` : new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' });
+    brief += `*Daily brief generated on ${generatedTime}*\n`;
     
     // Save to file if requested
     if (saveToFile) {
@@ -373,7 +381,8 @@ date: ${today}
 type: daily-brief
 status: final
 privacy: private
-generated: ${new Date().toISOString()}
+generated: ${sydneyTime ? sydneyTime.timestamp : new Date().toISOString()}
+timezone: Australia/Sydney
 ---
 
 ${brief}`;

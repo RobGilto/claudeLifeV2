@@ -41,12 +41,15 @@ function getSydneyTime() {
   // Get timezone offset
   const sydneyTime = now.toLocaleString('en-AU', { timeZone: 'Australia/Sydney' });
   
-  console.log('Sydney, Australia Time');
-  console.log('======================');
-  console.log(`Date: ${dateStr} (${dayStr})`);
-  console.log(`Time: ${timeStr}`);
-  console.log(`Full: ${sydneyTime}`);
-  console.log(`Timezone: Australia/Sydney (AEDT/AEST)`);
+  // Only log if called directly
+  if (import.meta.url === `file://${process.argv[1]}`) {
+    console.log('Sydney, Australia Time');
+    console.log('======================');
+    console.log(`Date: ${dateStr} (${dayStr})`);
+    console.log(`Time: ${timeStr}`);
+    console.log(`Full: ${sydneyTime}`);
+    console.log(`Timezone: Australia/Sydney (AEDT/AEST)`);
+  }
   
   return {
     date: dateStr,
@@ -57,5 +60,10 @@ function getSydneyTime() {
   };
 }
 
-// Run the function
-getSydneyTime();
+// Export for use in other scripts
+export { getSydneyTime };
+
+// Run the function if called directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+    getSydneyTime();
+}
