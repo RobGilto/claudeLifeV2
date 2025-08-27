@@ -1,0 +1,20 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "description": "Learn about Claude API",
+      "category": "learning",
+      "priority": "high",
+      "tags": [
+        "AI",
+        "research"
+      ],
+      "status": "pending",
+      "created": "2025-08-27T10:39:14.088Z",
+      "updated": "2025-08-27T10:39:14.088Z",
+      "completed": null,
+      "notes": []
+    }
+  ],
+  "nextId": 2
+}

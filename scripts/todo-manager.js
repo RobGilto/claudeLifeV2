@@ -1,8 +1,12 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
-const readline = require('readline');
+import fs from 'fs';
+import path from 'path';
+import readline from 'readline';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Configuration
 const TODO_DIR = path.join(__dirname, '..', 'todos');
@@ -506,7 +510,7 @@ Examples:
 }
 
 // Export for use as module
-module.exports = {
+export {
     addTodo,
     updateTodo,
     completeTodo,
@@ -521,6 +525,4 @@ module.exports = {
 };
 
 // Run if called directly
-if (require.main === module) {
-    main();
-}
+main();

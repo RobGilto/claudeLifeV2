@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // API for Claude to interact with TODO system
-const todoManager = require('./todo-manager.js');
+import * as todoManager from './todo-manager.js';
 
 function getTodos(format = 'json') {
     const todos = todoManager.loadTodos();
@@ -129,4 +129,4 @@ switch(command) {
         console.log('API Commands: get-todos [json|markdown], get-rituals [json|markdown], summary, add, complete, ritual-check');
 }
 
-module.exports = { getTodos, getRituals, getSummary };
+export { getTodos, getRituals, getSummary };
