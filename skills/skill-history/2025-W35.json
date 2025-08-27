@@ -1,8 +1,8 @@
 {
   "metadata": {
     "version": "1.0.0",
-    "lastUpdated": "2025-08-27",
-    "nextReview": "2025-09-01",
+    "lastUpdated": "2025-01-27",
+    "nextReview": "2025-02-03",
     "system": "BRP-inspired d100",
     "targetDate": "2026-07-01"
   },
@@ -12,9 +12,9 @@
       "description": "Core AI/ML engineering competencies",
       "skills": {
         "llm_fundamentals": {
-          "current": 21,
+          "current": 20,
           "target": 75,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-27",
           "evidence": [
             "Daily Claude usage",
             "Prompt engineering practice"
@@ -22,9 +22,9 @@
           "weeklyPracticeHours": 10
         },
         "prompt_engineering": {
-          "current": 37,
+          "current": 35,
           "target": 80,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-27",
           "evidence": [
             "Complex slash commands",
             "System prompts"
@@ -32,18 +32,18 @@
           "weeklyPracticeHours": 15
         },
         "rag_implementation": {
-          "current": 16,
+          "current": 15,
           "target": 70,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-20",
           "evidence": [
             "Research on vector DBs"
           ],
           "weeklyPracticeHours": 2
         },
         "embeddings_vectors": {
-          "current": 11,
+          "current": 10,
           "target": 65,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-15",
           "evidence": [
             "Basic understanding"
           ],
@@ -59,7 +59,7 @@
         "model_selection": {
           "current": 25,
           "target": 70,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-25",
           "evidence": [
             "Choosing between Claude/GPT/Local models"
           ],
@@ -72,9 +72,9 @@
       "description": "General programming and engineering skills",
       "skills": {
         "python": {
-          "current": 32,
+          "current": 30,
           "target": 70,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-26",
           "evidence": [
             "Reading AI-generated Python",
             "Small scripts"
@@ -82,9 +82,9 @@
           "weeklyPracticeHours": 5
         },
         "javascript": {
-          "current": 36,
+          "current": 35,
           "target": 65,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-27",
           "evidence": [
             "Node scripts",
             "Slash commands"
@@ -92,9 +92,9 @@
           "weeklyPracticeHours": 8
         },
         "typescript": {
-          "current": 22,
+          "current": 20,
           "target": 60,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-20",
           "evidence": [
             "MCP server work"
           ],
@@ -103,7 +103,7 @@
         "git_github": {
           "current": 45,
           "target": 75,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-27",
           "evidence": [
             "Daily commits",
             "Branch management"
@@ -111,27 +111,27 @@
           "weeklyPracticeHours": 10
         },
         "testing": {
-          "current": 16,
+          "current": 15,
           "target": 60,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-10",
           "evidence": [
             "Basic test understanding"
           ],
           "weeklyPracticeHours": 1
         },
         "system_design": {
-          "current": 21,
+          "current": 20,
           "target": 65,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-25",
           "evidence": [
             "Architecture discussions"
           ],
           "weeklyPracticeHours": 2
         },
         "debugging": {
-          "current": 41,
+          "current": 40,
           "target": 70,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-27",
           "evidence": [
             "Daily troubleshooting",
             "Error analysis"
@@ -145,9 +145,9 @@
       "description": "Data processing and pipeline skills",
       "skills": {
         "sql": {
-          "current": 47,
+          "current": 45,
           "target": 70,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-26",
           "evidence": [
             "Domo work",
             "Complex queries"
@@ -157,7 +157,7 @@
         "etl_pipelines": {
           "current": 55,
           "target": 70,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-26",
           "evidence": [
             "Domo dataflows",
             "API integrations"
@@ -165,9 +165,9 @@
           "weeklyPracticeHours": 15
         },
         "data_modeling": {
-          "current": 36,
+          "current": 35,
           "target": 60,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-24",
           "evidence": [
             "Schema design"
           ],
@@ -176,7 +176,7 @@
         "api_integration": {
           "current": 60,
           "target": 75,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-27",
           "evidence": [
             "REST APIs",
             "Webhooks",
@@ -193,7 +193,7 @@
         "domo": {
           "current": 85,
           "target": 90,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-26",
           "evidence": [
             "2 years experience",
             "Complex solutions"
@@ -201,9 +201,9 @@
           "weeklyPracticeHours": 40
         },
         "aws_basics": {
-          "current": 16,
+          "current": 15,
           "target": 55,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-15",
           "evidence": [
             "S3 usage",
             "Lambda awareness"
@@ -211,7 +211,7 @@
           "weeklyPracticeHours": 1
         },
         "docker": {
-          "current": 9,
+          "current": 10,
           "target": 50,
           "lastPracticed": "2025-01-10",
           "evidence": [
@@ -220,9 +220,9 @@
           "weeklyPracticeHours": 0
         },
         "linux_cli": {
-          "current": 41,
+          "current": 40,
           "target": 65,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-27",
           "evidence": [
             "Daily usage",
             "Bash scripting"
@@ -238,7 +238,7 @@
         "technical_writing": {
           "current": 55,
           "target": 75,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-27",
           "evidence": [
             "Documentation",
             "Daily logs"
@@ -248,7 +248,7 @@
         "add_management": {
           "current": 40,
           "target": 70,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-27",
           "evidence": [
             "Time-boxing",
             "Task tracking"
@@ -256,9 +256,9 @@
           "weeklyPracticeHours": 20
         },
         "learning_efficiency": {
-          "current": 38,
+          "current": 35,
           "target": 70,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-01-27",
           "evidence": [
             "Structured learning",
             "RuneQuest scaffolding"
@@ -268,146 +268,7 @@
       }
     }
   },
-  "experience_log": [
-    {
-      "date": "2025-08-27T01:17:55.320Z",
-      "week": "2025-W35",
-      "checks": [
-        {
-          "skill": "ai_engineering.llm_fundamentals",
-          "previous": 20,
-          "current": 21,
-          "roll": 47,
-          "improvement": 1,
-          "practiceHours": 10
-        },
-        {
-          "skill": "ai_engineering.prompt_engineering",
-          "previous": 35,
-          "current": 37,
-          "roll": 99,
-          "improvement": 2,
-          "practiceHours": 15
-        },
-        {
-          "skill": "ai_engineering.rag_implementation",
-          "previous": 15,
-          "current": 16,
-          "roll": 72,
-          "improvement": 1,
-          "practiceHours": 2
-        },
-        {
-          "skill": "ai_engineering.embeddings_vectors",
-          "previous": 10,
-          "current": 11,
-          "roll": 25,
-          "improvement": 1,
-          "practiceHours": 1
-        },
-        {
-          "skill": "software_engineering.python",
-          "previous": 30,
-          "current": 32,
-          "roll": 81,
-          "improvement": 2,
-          "practiceHours": 10
-        },
-        {
-          "skill": "software_engineering.javascript",
-          "previous": 35,
-          "current": 36,
-          "roll": 73,
-          "improvement": 1,
-          "practiceHours": 24
-        },
-        {
-          "skill": "software_engineering.typescript",
-          "previous": 20,
-          "current": 22,
-          "roll": 52,
-          "improvement": 2,
-          "practiceHours": 24
-        },
-        {
-          "skill": "software_engineering.testing",
-          "previous": 15,
-          "current": 16,
-          "roll": 65,
-          "improvement": 1,
-          "practiceHours": 1
-        },
-        {
-          "skill": "software_engineering.system_design",
-          "previous": 20,
-          "current": 21,
-          "roll": 69,
-          "improvement": 1,
-          "practiceHours": 2
-        },
-        {
-          "skill": "software_engineering.debugging",
-          "previous": 40,
-          "current": 41,
-          "roll": 59,
-          "improvement": 1,
-          "practiceHours": 8
-        },
-        {
-          "skill": "data_engineering.sql",
-          "previous": 45,
-          "current": 47,
-          "roll": 69,
-          "improvement": 2,
-          "practiceHours": 10
-        },
-        {
-          "skill": "data_engineering.etl_pipelines",
-          "previous": 55,
-          "current": 55,
-          "roll": 70,
-          "improvement": 0,
-          "practiceHours": 15
-        },
-        {
-          "skill": "data_engineering.data_modeling",
-          "previous": 35,
-          "current": 36,
-          "roll": 92,
-          "improvement": 1,
-          "practiceHours": 3
-        },
-        {
-          "skill": "platform_expertise.aws_basics",
-          "previous": 15,
-          "current": 16,
-          "roll": 21,
-          "improvement": 1,
-          "practiceHours": 1
-        },
-        {
-          "skill": "platform_expertise.linux_cli",
-          "previous": 40,
-          "current": 41,
-          "roll": 66,
-          "improvement": 1,
-          "practiceHours": 15
-        },
-        {
-          "skill": "soft_skills.learning_efficiency",
-          "previous": 35,
-          "current": 38,
-          "roll": 69,
-          "improvement": 3,
-          "practiceHours": 15
-        }
-      ],
-      "evidence": {
-        "gitCommits": 65,
-        "victories": 0
-      }
-    }
-  ],
+  "experience_log": [],
   "achievements": {
     "certifications": [],
     "projects": [],
