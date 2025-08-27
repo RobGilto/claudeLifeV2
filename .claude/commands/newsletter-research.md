@@ -6,7 +6,13 @@ A newsletter research system that analyzes competitor newsletters and writes dra
 
 1. First, scan the user's files to find newsletter URLs or ask them to provide competitor newsletter links
 
-2. Fetch recent posts from those newsletters using WebFetch
+2. Fetch recent posts from those newsletters:
+   - **Primary method**: Use Firecrawl MCP (mcp_firecrawl) if available
+     - Better at extracting clean content from complex layouts
+     - Handles JavaScript-rendered content
+     - Can crawl multiple pages per site
+   - **Fallback method**: Use WebFetch if Firecrawl is not available
+   - Check for MCP availability: Look for tools starting with "mcp_"
 
 3. Launch content-researcher subagent to analyze trends:
    - Identify trending topics across newsletters
@@ -23,5 +29,10 @@ A newsletter research system that analyzes competitor newsletters and writes dra
 
 5. Save research report to `/newsletter/research-YYYY-MM-DD.md`
 6. Save newsletter draft to `/newsletter/drafts/draft-YYYY-MM-DD.md`
+
+## Tool Priority:
+1. Try Firecrawl MCP first (mcp_firecrawl_scrapeUrl or similar)
+2. Fall back to WebFetch if Firecrawl is unavailable
+3. Log which tool was used in the research report
 
 Focus on value-first content that sounds authentic, not AI-generated.
