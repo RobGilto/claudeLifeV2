@@ -1,0 +1,573 @@
+{
+  "totalCounts": {
+    "ai_engineering": {
+      "llm": 358,
+      "large language model": 0,
+      "gpt": 53,
+      "claude": 358,
+      "openai": 305,
+      "anthropic": 0,
+      "prompt engineering": 305,
+      "rag": 305,
+      "retrieval augmented generation": 0,
+      "embeddings": 53,
+      "vector database": 305,
+      "fine-tuning": 0,
+      "model training": 0,
+      "hugging face": 0,
+      "transformers": 0,
+      "bert": 0,
+      "generative ai": 0
+    },
+    "software_engineering": {
+      "python": 415,
+      "javascript": 53,
+      "typescript": 0,
+      "react": 53,
+      "node.js": 0,
+      "nodejs": 0,
+      "git": 0,
+      "github": 0,
+      "testing": 0,
+      "unit testing": 0,
+      "integration testing": 0,
+      "system design": 0,
+      "microservices": 305,
+      "api design": 0,
+      "rest api": 0,
+      "debugging": 0,
+      "troubleshooting": 0,
+      "code review": 0
+    },
+    "data_engineering": {
+      "sql": 110,
+      "postgresql": 53,
+      "mysql": 0,
+      "mongodb": 0,
+      "etl": 0,
+      "data pipeline": 0,
+      "data modeling": 0,
+      "data warehouse": 0,
+      "apache spark": 57,
+      "kafka": 0,
+      "airflow": 0,
+      "dbt": 0,
+      "snowflake": 0,
+      "bigquery": 0,
+      "redshift": 0
+    },
+    "platform_expertise": {
+      "aws": 362,
+      "amazon web services": 0,
+      "azure": 0,
+      "google cloud": 0,
+      "gcp": 57,
+      "docker": 362,
+      "kubernetes": 57,
+      "terraform": 0,
+      "jenkins": 0,
+      "ci/cd": 57,
+      "linux": 0,
+      "bash": 0,
+      "shell scripting": 0,
+      "devops": 0
+    },
+    "frameworks_tools": {
+      "pytorch": 305,
+      "tensorflow": 305,
+      "scikit-learn": 57,
+      "pandas": 57,
+      "numpy": 0,
+      "fastapi": 0,
+      "flask": 0,
+      "django": 0,
+      "express": 0,
+      "spring boot": 0,
+      "redis": 53,
+      "elasticsearch": 0,
+      "grafana": 0,
+      "prometheus": 0
+    }
+  },
+  "byExperienceLevel": {
+    "ai_engineering": {
+      "llm": {
+        "junior": 81,
+        "mid": 93,
+        "senior": 87,
+        "expert": 97
+      },
+      "large language model": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "gpt": {
+        "junior": 13,
+        "mid": 14,
+        "senior": 15,
+        "expert": 11
+      },
+      "claude": {
+        "junior": 81,
+        "mid": 93,
+        "senior": 87,
+        "expert": 97
+      },
+      "openai": {
+        "junior": 68,
+        "mid": 79,
+        "senior": 72,
+        "expert": 86
+      },
+      "anthropic": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "prompt engineering": {
+        "junior": 68,
+        "mid": 79,
+        "senior": 72,
+        "expert": 86
+      },
+      "rag": {
+        "junior": 68,
+        "mid": 79,
+        "senior": 72,
+        "expert": 86
+      },
+      "retrieval augmented generation": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "embeddings": {
+        "junior": 13,
+        "mid": 14,
+        "senior": 15,
+        "expert": 11
+      },
+      "vector database": {
+        "junior": 68,
+        "mid": 79,
+        "senior": 72,
+        "expert": 86
+      },
+      "fine-tuning": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "model training": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "hugging face": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "transformers": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "bert": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "generative ai": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      }
+    },
+    "software_engineering": {
+      "python": {
+        "junior": 97,
+        "mid": 111,
+        "senior": 102,
+        "expert": 105
+      },
+      "javascript": {
+        "junior": 13,
+        "mid": 14,
+        "senior": 15,
+        "expert": 11
+      },
+      "typescript": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "react": {
+        "junior": 13,
+        "mid": 14,
+        "senior": 15,
+        "expert": 11
+      },
+      "node.js": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "nodejs": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "git": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "github": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "testing": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "unit testing": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "integration testing": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "system design": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "microservices": {
+        "junior": 68,
+        "mid": 79,
+        "senior": 72,
+        "expert": 86
+      },
+      "api design": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "rest api": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "debugging": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "troubleshooting": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "code review": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      }
+    },
+    "data_engineering": {
+      "sql": {
+        "junior": 29,
+        "mid": 32,
+        "senior": 30,
+        "expert": 19
+      },
+      "postgresql": {
+        "junior": 13,
+        "mid": 14,
+        "senior": 15,
+        "expert": 11
+      },
+      "mysql": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "mongodb": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "etl": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "data pipeline": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "data modeling": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "data warehouse": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "apache spark": {
+        "junior": 16,
+        "mid": 18,
+        "senior": 15,
+        "expert": 8
+      },
+      "kafka": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "airflow": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "dbt": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "snowflake": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "bigquery": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "redshift": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      }
+    },
+    "platform_expertise": {
+      "aws": {
+        "junior": 84,
+        "mid": 97,
+        "senior": 87,
+        "expert": 94
+      },
+      "amazon web services": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "azure": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "google cloud": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "gcp": {
+        "junior": 16,
+        "mid": 18,
+        "senior": 15,
+        "expert": 8
+      },
+      "docker": {
+        "junior": 84,
+        "mid": 97,
+        "senior": 87,
+        "expert": 94
+      },
+      "kubernetes": {
+        "junior": 16,
+        "mid": 18,
+        "senior": 15,
+        "expert": 8
+      },
+      "terraform": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "jenkins": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "ci/cd": {
+        "junior": 16,
+        "mid": 18,
+        "senior": 15,
+        "expert": 8
+      },
+      "linux": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "bash": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "shell scripting": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "devops": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      }
+    },
+    "frameworks_tools": {
+      "pytorch": {
+        "junior": 68,
+        "mid": 79,
+        "senior": 72,
+        "expert": 86
+      },
+      "tensorflow": {
+        "junior": 68,
+        "mid": 79,
+        "senior": 72,
+        "expert": 86
+      },
+      "scikit-learn": {
+        "junior": 16,
+        "mid": 18,
+        "senior": 15,
+        "expert": 8
+      },
+      "pandas": {
+        "junior": 16,
+        "mid": 18,
+        "senior": 15,
+        "expert": 8
+      },
+      "numpy": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "fastapi": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "flask": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "django": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "express": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "spring boot": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "redis": {
+        "junior": 13,
+        "mid": 14,
+        "senior": 15,
+        "expert": 11
+      },
+      "elasticsearch": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "grafana": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      },
+      "prometheus": {
+        "junior": 0,
+        "mid": 0,
+        "senior": 0,
+        "expert": 0
+      }
+    }
+  },
+  "totalJobs": 415
+}

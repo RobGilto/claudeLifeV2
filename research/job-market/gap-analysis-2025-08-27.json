@@ -1,0 +1,180 @@
+{
+  "highDemandGaps": [
+    {
+      "skill": "python",
+      "category": "software_engineering",
+      "marketDemand": 100,
+      "currentLevel": 32,
+      "gap": 28,
+      "priority": "HIGH"
+    },
+    {
+      "skill": "aws",
+      "category": "platform_expertise",
+      "marketDemand": 87.2289156626506,
+      "currentLevel": 16,
+      "gap": 44,
+      "priority": "HIGH"
+    },
+    {
+      "skill": "docker",
+      "category": "platform_expertise",
+      "marketDemand": 87.2289156626506,
+      "currentLevel": 9,
+      "gap": 51,
+      "priority": "HIGH"
+    },
+    {
+      "skill": "llm",
+      "category": "ai_engineering",
+      "marketDemand": 86.26506024096385,
+      "currentLevel": 21,
+      "gap": 39,
+      "priority": "HIGH"
+    },
+    {
+      "skill": "claude",
+      "category": "ai_engineering",
+      "marketDemand": 86.26506024096385,
+      "currentLevel": 0,
+      "gap": 60,
+      "priority": "HIGH"
+    },
+    {
+      "skill": "openai",
+      "category": "ai_engineering",
+      "marketDemand": 73.49397590361446,
+      "currentLevel": 0,
+      "gap": 60,
+      "priority": "HIGH"
+    },
+    {
+      "skill": "prompt engineering",
+      "category": "ai_engineering",
+      "marketDemand": 73.49397590361446,
+      "currentLevel": 37,
+      "gap": 23,
+      "priority": "HIGH"
+    },
+    {
+      "skill": "rag",
+      "category": "ai_engineering",
+      "marketDemand": 73.49397590361446,
+      "currentLevel": 16,
+      "gap": 44,
+      "priority": "HIGH"
+    },
+    {
+      "skill": "vector database",
+      "category": "ai_engineering",
+      "marketDemand": 73.49397590361446,
+      "currentLevel": 11,
+      "gap": 49,
+      "priority": "HIGH"
+    },
+    {
+      "skill": "microservices",
+      "category": "software_engineering",
+      "marketDemand": 73.49397590361446,
+      "currentLevel": 0,
+      "gap": 60,
+      "priority": "HIGH"
+    },
+    {
+      "skill": "pytorch",
+      "category": "frameworks_tools",
+      "marketDemand": 73.49397590361446,
+      "currentLevel": 0,
+      "gap": 60,
+      "priority": "HIGH"
+    },
+    {
+      "skill": "tensorflow",
+      "category": "frameworks_tools",
+      "marketDemand": 73.49397590361446,
+      "currentLevel": 0,
+      "gap": 60,
+      "priority": "HIGH"
+    }
+  ],
+  "strengthAreas": [],
+  "emergingSkills": [
+    {
+      "skill": "gpt",
+      "category": "ai_engineering",
+      "marketDemand": 12.771084337349398,
+      "currentLevel": 0,
+      "potential": "EMERGING"
+    },
+    {
+      "skill": "embeddings",
+      "category": "ai_engineering",
+      "marketDemand": 12.771084337349398,
+      "currentLevel": 11,
+      "potential": "EMERGING"
+    },
+    {
+      "skill": "react",
+      "category": "software_engineering",
+      "marketDemand": 12.771084337349398,
+      "currentLevel": 0,
+      "potential": "EMERGING"
+    },
+    {
+      "skill": "apache spark",
+      "category": "data_engineering",
+      "marketDemand": 13.734939759036143,
+      "currentLevel": 0,
+      "potential": "EMERGING"
+    },
+    {
+      "skill": "gcp",
+      "category": "platform_expertise",
+      "marketDemand": 13.734939759036143,
+      "currentLevel": 0,
+      "potential": "EMERGING"
+    },
+    {
+      "skill": "kubernetes",
+      "category": "platform_expertise",
+      "marketDemand": 13.734939759036143,
+      "currentLevel": 0,
+      "potential": "EMERGING"
+    },
+    {
+      "skill": "ci/cd",
+      "category": "platform_expertise",
+      "marketDemand": 13.734939759036143,
+      "currentLevel": 0,
+      "potential": "EMERGING"
+    },
+    {
+      "skill": "scikit-learn",
+      "category": "frameworks_tools",
+      "marketDemand": 13.734939759036143,
+      "currentLevel": 0,
+      "potential": "EMERGING"
+    },
+    {
+      "skill": "pandas",
+      "category": "frameworks_tools",
+      "marketDemand": 13.734939759036143,
+      "currentLevel": 0,
+      "potential": "EMERGING"
+    },
+    {
+      "skill": "redis",
+      "category": "frameworks_tools",
+      "marketDemand": 12.771084337349398,
+      "currentLevel": 0,
+      "potential": "EMERGING"
+    }
+  ],
+  "recommendations": [
+    "Focus on python - appears in 100.0% of jobs, current level: 32%",
+    "Focus on aws - appears in 87.2% of jobs, current level: 16%",
+    "Focus on docker - appears in 87.2% of jobs, current level: 9%",
+    "Focus on llm - appears in 86.3% of jobs, current level: 21%",
+    "Focus on claude - appears in 86.3% of jobs, current level: 0%"
+  ]
+}
