@@ -710,6 +710,9 @@ async function main() {
             case 'plan-day':
                 await planner.planDay(args[1]);
                 break;
+            case 'clear-day':
+                await planner.clearDay(args[1]);
+                break;
             case 'plan-week':
                 await planner.planWeek(args[1]);
                 break;
@@ -734,6 +737,7 @@ Usage:
 
 Planning Commands:
   plan-day [date]         - Create daily time blocks (5 blocks, ADD-optimized)
+  clear-day [date]        - Clear/remove daily plan and start fresh
   plan-week [week]        - Create weekly priorities and goals
   plan-month [month]      - Create monthly objectives and milestones
   plan-quarter [quarter]  - Create quarterly strategic initiatives
@@ -742,6 +746,7 @@ Planning Commands:
 
 Examples:
   node scripts/fractal-planner-llm.cjs plan-day 2025-08-28
+  node scripts/fractal-planner-llm.cjs clear-day 2025-08-28
   node scripts/fractal-planner-llm.cjs plan-week 2025-W35
   node scripts/fractal-planner-llm.cjs plan-month 2025-08
   node scripts/fractal-planner-llm.cjs plan-quarter 2025-Q3
