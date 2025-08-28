@@ -30,7 +30,7 @@ console.log(`⏰ Sydney Time: ${new Date().toLocaleString('en-US', { timeZone: '
 
 try {
     // Execute the enhanced fractal planner
-    const plannerPath = path.join(__dirname, 'fractal-planner-v2.js');
+    const plannerPath = path.join(__dirname, 'fractal-planner-v2.cjs');
     const result = execSync(`node "${plannerPath}" plan-day ${dateParam}`, { 
         stdio: 'inherit', 
         cwd: path.join(__dirname, '..') 
