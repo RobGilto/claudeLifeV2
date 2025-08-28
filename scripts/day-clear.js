@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * Clear Day Plan - Slash Command
+ * Day Clear - Slash Command
  * Purpose: Remove daily plan and associated files for fresh start
- * Usage: node scripts/clear-day-plan.js [date]
+ * Usage: node scripts/day-clear.js [date]
  * Dependencies: fractal-planner-llm.cjs
  * 
  * This script wraps the clear-day functionality from the fractal planner
