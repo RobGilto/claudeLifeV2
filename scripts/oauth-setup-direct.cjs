@@ -12,6 +12,7 @@ const path = require('path');
 const https = require('https');
 const { spawn } = require('child_process');
 const crypto = require('crypto');
+require('dotenv').config();
 
 console.log('🔐 Google Calendar OAuth2 Direct Setup\n');
 
@@ -29,13 +30,33 @@ class OAuth2Setup {
     }
 
     loadCredentials() {
+        // Try loading from .env first
+        const clientId = process.env.GOOGLE_CLIENT_ID;
+        const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+
+        if (clientId && clientSecret) {
+            this.credentials = {
+                installed: {
+                    client_id: clientId,
+                    client_secret: clientSecret,
+                    auth_uri: "https://accounts.google.com/o/oauth2/auth",
+                    token_uri: "https://oauth2.googleapis.com/token",
+                    redirect_uris: ["http://localhost:8080/oauth/callback"]
+                }
+            };
+            console.log('✅ Loaded OAuth2 credentials from .env');
+            return true;
+        }
+
+        // Fallback to file-based credentials
         if (!fs.existsSync(CREDENTIALS_FILE)) {
-            console.log('❌ No client_secret_google_calendar.json found!');
+            console.log('❌ No credentials found in .env or client_secret_google_calendar.json!');
             console.log('');
-            console.log('📋 The credentials file should already exist as:');
-            console.log('   client_secret_google_calendar.json');
+            console.log('📋 Add to .env file:');
+            console.log('   GOOGLE_CLIENT_ID=your-client-id.googleusercontent.com');
+            console.log('   GOOGLE_CLIENT_SECRET=your-client-secret');
             console.log('');
-            console.log('💡 If missing, download from Google Cloud Console:');
+            console.log('💡 Or download from Google Cloud Console:');
             console.log('1. Go to: https://console.cloud.google.com/');
             console.log('2. Project: level-epoch-469021-e3');
             console.log('3. APIs & Services → Credentials');
@@ -46,7 +67,7 @@ class OAuth2Setup {
 
         try {
             this.credentials = JSON.parse(fs.readFileSync(CREDENTIALS_FILE, 'utf8'));
-            console.log('✅ Loaded OAuth2 credentials');
+            console.log('✅ Loaded OAuth2 credentials from file');
             return true;
         } catch (error) {
             console.log('❌ Error reading credentials:', error.message);
