@@ -642,6 +642,9 @@ class FractalPlanner {
         const mcpCommands = this.generateMcpCalendarCommands(blocks, date);
         this.saveMcpCommands(date, mcpCommands);
         
+        // Also generate using the dedicated MCP helper
+        console.log(`  💡 You can also use: node scripts/calendar-mcp-helper.cjs ${date}`);
+        
         // Always prepare calendar events via MCP
         await this.createGoogleCalendarEvents(blocks, date);
         
