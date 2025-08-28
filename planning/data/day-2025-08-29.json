@@ -2,7 +2,7 @@
   "period": "day",
   "identifier": "2025-08-29",
   "created": "2025-08-28T04:59:23.000Z",
-  "modified": "2025-08-28T04:59:23.000Z",
+  "modified": "2025-08-28T07:00:10.000Z",
   "status": "active",
   "parentPlans": [],
   "childPlans": [],
@@ -74,13 +74,48 @@
       "type": "learning",
       "completed": false,
       "notes": ""
+    },
+    {
+      "id": "block-5",
+      "start": "18:00",
+      "duration": 90,
+      "title": "Evening project work or intensive study",
+      "activity": "Evening project work or intensive study",
+      "alignment": "Accelerated skill development",
+      "type": "deep-work",
+      "completed": false,
+      "notes": ""
+    },
+    {
+      "id": "block-6",
+      "start": "20:00",
+      "duration": 90,
+      "title": "Advanced learning or portfolio development",
+      "activity": "Advanced learning or portfolio development",
+      "alignment": "Professional development and practice",
+      "type": "learning",
+      "completed": false,
+      "notes": ""
+    },
+    {
+      "id": "block-7",
+      "start": "21:30",
+      "duration": 90,
+      "title": "Final work session or skill consolidation",
+      "activity": "Final work session or skill consolidation",
+      "alignment": "Day completion and progress review",
+      "type": "review",
+      "completed": false,
+      "notes": ""
     }
   ],
   "milestones": [],
   "metrics": {
-    "plannedHours": 5,
-    "deepWorkHours": 3,
-    "learningHours": 1
+    "plannedHours": 9.5,
+    "deepWorkHours": 4.5,
+    "learningHours": 2.5,
+    "adminHours": 1,
+    "reviewHours": 1.5
   },
   "context": {
     "theme": "Technical Excellence & Structured Learning",
