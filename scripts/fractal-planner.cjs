@@ -24,6 +24,16 @@ const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
 
+// Sydney timezone utilities
+function getSydneyDate(date = new Date()) {
+    return new Date(date.toLocaleString('en-US', { timeZone: 'Australia/Sydney' }));
+}
+
+function formatSydneyDateString(date = new Date()) {
+    const sydneyDate = new Date(date.toLocaleString('en-US', { timeZone: 'Australia/Sydney' }));
+    return sydneyDate.toISOString().split('T')[0];
+}
+
 // Configuration
 const PLANNING_DIR = path.join(__dirname, '..', 'planning');
 const LOGS_DIR = path.join(__dirname, '..', 'logs');
@@ -36,10 +46,11 @@ const DATA_DIR = path.join(PLANNING_DIR, 'data');
     }
 });
 
-// Date utilities with multi-indexing
+// Date utilities with multi-indexing (Sydney timezone aware)
 class DateIndex {
     constructor(date = new Date()) {
-        this.date = new Date(date);
+        // Convert to Sydney timezone for all date calculations
+        this.date = getSydneyDate(date);
         this.year = this.date.getFullYear();
         this.month = this.date.getMonth() + 1;
         this.day = this.date.getDate();
@@ -73,7 +84,7 @@ class DateIndex {
     }
 
     toString() {
-        return this.date.toISOString().split('T')[0];
+        return formatSydneyDateString(this.date);
     }
 
     getIdentifiers() {
@@ -127,8 +138,8 @@ class Plan {
     constructor(period, identifier, data = {}) {
         this.period = period; // 'day', 'week', 'month', 'quarter', 'year'
         this.identifier = identifier; // '2024-01-15', '2024-W03', '2024-01', '2024-Q1', '2024'
-        this.created = new Date().toISOString();
-        this.modified = new Date().toISOString();
+        this.created = getSydneyDate().toISOString();
+        this.modified = getSydneyDate().toISOString();
         this.status = 'draft'; // 'draft', 'active', 'completed', 'archived'
         
         // Hierarchical relationships
@@ -150,7 +161,7 @@ class Plan {
         this.objectives.push({
             id: Date.now().toString(),
             text: objective,
-            created: new Date().toISOString(),
+            created: getSydneyDate().toISOString(),
             completed: false,
             priority: 'medium'
         });
@@ -171,7 +182,7 @@ class Plan {
     }
 
     touch() {
-        this.modified = new Date().toISOString();
+        this.modified = getSydneyDate().toISOString();
     }
 
     toJSON() {
@@ -200,7 +211,7 @@ class Performance {
     constructor(period, identifier) {
         this.period = period;
         this.identifier = identifier;
-        this.recorded = new Date().toISOString();
+        this.recorded = getSydneyDate().toISOString();
         this.completionRate = 0;
         this.objectiveStats = {};
         this.timeBlockStats = {};
@@ -305,8 +316,8 @@ class PlanStorage {
     }
 
     static log(message) {
-        const timestamp = new Date().toISOString();
-        const logFile = path.join(LOGS_DIR, `fractal-planner-${new Date().toISOString().split('T')[0]}.log`);
+        const timestamp = getSydneyDate().toISOString();
+        const logFile = path.join(LOGS_DIR, `fractal-planner-${formatSydneyDateString()}.log`);
         fs.appendFileSync(logFile, `${timestamp}: ${message}\n`);
     }
 }
