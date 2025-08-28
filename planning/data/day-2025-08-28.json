@@ -1,0 +1,86 @@
+{
+  "id": "day-2025-08-28",
+  "date": "2025-08-28",
+  "type": "day",
+  "status": "active",
+  "parentPlans": {
+    "week": "2025-W35",
+    "month": "2025-08",
+    "quarter": "2025-Q3"
+  },
+  "multiIndex": {
+    "dayOfYear": 240,
+    "dayOfMonth": 28,
+    "dayOfWeek": 4,
+    "weekOfYear": 35,
+    "monthOfYear": 8,
+    "quarter": "2025-Q3"
+  },
+  "timeBlocks": [
+    {
+      "id": "block-1",
+      "start": "14:00",
+      "duration": 90,
+      "title": "Deep Work Block 1",
+      "activity": "AI/ML skill development - Boot.dev or project work",
+      "alignment": "2026 AI engineer transformation goal",
+      "type": "deep-work",
+      "completed": false
+    },
+    {
+      "id": "block-2",
+      "start": "16:00",
+      "duration": 60,
+      "title": "Learning & Development",
+      "activity": "Research, documentation, or skill practice",
+      "alignment": "Continuous learning and skill gap closure",
+      "type": "learning",
+      "completed": false
+    },
+    {
+      "id": "block-3",
+      "start": "17:30",
+      "duration": 90,
+      "title": "Deep Work Block 2",
+      "activity": "Technical project work or advanced learning",
+      "alignment": "Portfolio building and technical mastery",
+      "type": "deep-work",
+      "completed": false
+    }
+  ],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": "Complete meaningful technical progress",
+      "priority": 1,
+      "parentAlignment": "2026 AI engineer transformation",
+      "completed": false
+    },
+    {
+      "id": "obj-2",
+      "title": "Document learnings and capture victories",
+      "priority": 2,
+      "parentAlignment": "Knowledge retention and confidence building",
+      "completed": false
+    },
+    {
+      "id": "obj-3",
+      "title": "Maintain momentum with ADD-friendly structure",
+      "priority": 3,
+      "parentAlignment": "Sustainable daily practice",
+      "completed": false
+    }
+  ],
+  "context": {
+    "theme": "Technical Excellence & Structured Learning",
+    "energy": "Morning focus on deep work, afternoon on application and review",
+    "constraints": "ADD-friendly max 90min blocks with clear transitions"
+  },
+  "metrics": {
+    "plannedHours": 5.5,
+    "deepWorkHours": 3,
+    "learningHours": 2
+  },
+  "created": "2025-08-28T03:50:06.000Z",
+  "modified": "2025-08-28T03:50:06.000Z"
+}

@@ -902,13 +902,35 @@ node scripts/fractal-planner-llm.cjs calendar-sync ${plan.date}
         }
         
         // Generate Claude Code MCP commands
-        console.log(`\n🤖 To sync to Google Calendar, run these commands in Claude Code:`);
-        console.log(`\n// Copy and paste each event creation command:`);
+        console.log(`\n🤖 Calendar Integration Options:`);
+        
+        console.log(`\n📅 Option 1: Automatic Sync (requires MCP setup)`);
+        console.log(`If Google Calendar MCP is configured, copy/paste in Claude Code:`);
         
         calendarEvents.forEach((event, i) => {
+            const params = {
+                calendarId: event.eventData.calendarId,
+                summary: event.eventData.summary,
+                description: event.eventData.description,
+                start: event.eventData.start,
+                end: event.eventData.end,
+                reminders: event.eventData.reminders,
+                colorId: event.eventData.colorId
+            };
+            
             console.log(`\n// ${i + 1}. ${event.blockTitle}`);
-            console.log(`mcp__google-calendar__create_event`);
-            console.log(JSON.stringify(event.eventData, null, 2));
+            console.log(`Use tool: mcp__google-calendar__create_event`);
+            console.log(`Parameters: ${JSON.stringify(params, null, 2)}`);
+        });
+        
+        console.log(`\n📋 Option 2: Manual Calendar Entry`);
+        console.log(`Copy these details into your calendar manually:`);
+        calendarEvents.forEach((event, i) => {
+            const start = event.eventData.start.dateTime.split('T')[1].substring(0,5);
+            const end = event.eventData.end.dateTime.split('T')[1].substring(0,5);
+            console.log(`\n${i + 1}. ${event.blockTitle}`);
+            console.log(`   Time: ${start} - ${end} (Australia/Sydney)`);
+            console.log(`   Description: ${event.eventData.description.split('\n')[0]}`);
         });
         
         // Save sync data for potential automation
