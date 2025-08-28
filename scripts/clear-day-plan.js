@@ -10,8 +10,12 @@
  * to provide a dedicated slash command interface.
  */
 
-const { exec } = require('child_process');
-const path = require('path');
+import { exec } from 'child_process';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Get date argument (default to today in Sydney timezone)
 function getSydneyDateString(date = new Date()) {
