@@ -40,12 +40,17 @@ function formatSydneyDateString(date = new Date()) {
 // Configuration
 const PLANNING_DIR = path.join(__dirname, '..', 'planning');
 const JOURNAL_DIR = path.join(__dirname, '..', 'journal', 'planning');
+const VICTORIES_DIR = path.join(__dirname, '..', 'victories');
 const LOGS_DIR = path.join(__dirname, '..', 'logs');
 const DATA_DIR = path.join(PLANNING_DIR, 'data');
 const DAILY_REVIEWS_DIR = path.join(JOURNAL_DIR, 'daily-reviews');
+const WEEKLY_REVIEWS_DIR = path.join(JOURNAL_DIR, 'weekly-reviews');
+const MONTHLY_REVIEWS_DIR = path.join(JOURNAL_DIR, 'monthly-reviews');
+const QUARTERLY_REVIEWS_DIR = path.join(JOURNAL_DIR, 'quarterly-reviews');
 
 // Ensure directories exist
-[PLANNING_DIR, JOURNAL_DIR, LOGS_DIR, DATA_DIR, DAILY_REVIEWS_DIR].forEach(dir => {
+[PLANNING_DIR, JOURNAL_DIR, VICTORIES_DIR, LOGS_DIR, DATA_DIR, 
+ DAILY_REVIEWS_DIR, WEEKLY_REVIEWS_DIR, MONTHLY_REVIEWS_DIR, QUARTERLY_REVIEWS_DIR].forEach(dir => {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
@@ -93,6 +98,58 @@ class DateIndex {
             monthOfYear: this.month,
             dayOfQuarter: dayOfQuarter
         };
+    }
+
+    getMultiIndexDisplay() {
+        const dayNames = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        const monthNames = ['', 'January', 'February', 'March', 'April', 'May', 'June', 
+                           'July', 'August', 'September', 'October', 'November', 'December'];
+        
+        const identifiers = this.getIdentifiers();
+        const dayName = dayNames[identifiers.dayOfWeek];
+        const monthName = monthNames[this.month];
+        const yearPercent = Math.round((identifiers.dayOfYear / 365) * 100);
+        const quarterPercent = Math.round((identifiers.dayOfQuarter / 92) * 100);
+        
+        return {
+            fullDate: `${dayName}, ${this.day} ${monthName} ${this.year}`,
+            multiIndex: `Day ${identifiers.dayOfYear}/365 (${yearPercent}%) | Week ${identifiers.dayOfWeek}/7 | Month ${identifiers.dayOfMonth}/31 | Quarter ${identifiers.dayOfQuarter}/92 (${quarterPercent}%)`,
+            context: `${identifiers.quarter} 2025 | Week ${identifiers.weekOfYear}`
+        };
+    }
+
+    // Static method to parse relative dates
+    static parseRelativeDate(dateStr) {
+        if (!dateStr) return new DateIndex();
+        
+        const now = getSydneyDate();
+        
+        switch (dateStr.toLowerCase()) {
+            case 'today':
+                return new DateIndex(now);
+            case 'yesterday':
+                const yesterday = new Date(now);
+                yesterday.setDate(yesterday.getDate() - 1);
+                return new DateIndex(yesterday);
+            case 'tomorrow':
+                const tomorrow = new Date(now);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                return new DateIndex(tomorrow);
+            case 'current':
+            case 'this':
+                return new DateIndex(now);
+            case 'last':
+            case 'previous':
+                // Context-dependent - will be handled by specific period parsers
+                return new DateIndex(now);
+            default:
+                // Try to parse as specific date
+                if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                    return new DateIndex(new Date(dateStr));
+                }
+                // Default to current
+                return new DateIndex(now);
+        }
     }
 }
 
