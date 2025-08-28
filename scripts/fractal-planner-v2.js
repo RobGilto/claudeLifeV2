@@ -681,20 +681,36 @@ Enhanced Fractal Planning System V2
 ===================================
 
 Commands:
-  plan-day [date]  - Create time-aware daily plan with calendar integration
-  status           - Show current planning status and active blocks
+  plan-day [date]    - Create time-aware daily plan with calendar integration
+  book-calendar [date] - Book existing plan time blocks to Google Calendar
+  status             - Show current planning status and active blocks
 
 Features:
   ✅ Time-aware planning (checks current time)
   ✅ Google Calendar availability checking
-  ✅ Automatic calendar event creation
+  ✅ Interactive calendar booking modes
+  ✅ Batch calendar event creation
+  ✅ Color-coded time blocks
+  ✅ MCP command generation
   ✅ Taskmaster integration for execution
   ✅ ADD-optimized time blocks
+
+Calendar Booking Modes:
+  1. Interactive - Ask for each block individually
+  2. Auto-book - Automatically book all blocks
+  3. Skip - Plan without calendar booking
 
 Examples:
   node scripts/fractal-planner-v2.js plan-day
   node scripts/fractal-planner-v2.js plan-day 2025-08-29
+  node scripts/fractal-planner-v2.js book-calendar
+  node scripts/fractal-planner-v2.js book-calendar 2025-08-29
   node scripts/fractal-planner-v2.js status
+
+Workflow:
+  1. Create daily plan: plan-day
+  2. Book to calendar: book-calendar (or during planning)
+  3. Execute plan: Use generated MCP commands in Claude Code
         `);
     }
 }
