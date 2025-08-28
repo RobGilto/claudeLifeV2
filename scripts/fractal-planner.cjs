@@ -636,26 +636,28 @@ class FractalPlanner {
     }
 
     async generateCalendarEvents(blocks, date) {
-        console.log(`  🔄 Attempting Google Calendar auto-sync...`);
+        console.log(`  🔄 Generating Google Calendar MCP integration...`);
         
-        // Try to create calendar events directly via MCP integration
-        const calendarCreated = await this.createGoogleCalendarEvents(blocks, date);
+        // Generate MCP commands for calendar events
+        const mcpCommands = this.generateMcpCalendarCommands(blocks, date);
+        this.saveMcpCommands(date, mcpCommands);
         
-        if (!calendarCreated) {
-            console.log(`  📖 Manual calendar entries for ${date}:`);
-            console.log(`  💡 Use /calendar-sync command for automated Google Calendar integration\n`);
+        // Always prepare calendar events via MCP
+        await this.createGoogleCalendarEvents(blocks, date);
+        
+        console.log(`\n  📋 Manual calendar entries for ${date} (if MCP unavailable):`);
+        blocks.forEach(block => {
+            const startTime = `${date}T${block.start}:00`;
+            const endTime = `${date}T${this.addMinutes(block.start, block.duration)}:00`;
             
-            blocks.forEach(block => {
-                const startTime = `${date}T${block.start}:00`;
-                const endTime = `${date}T${this.addMinutes(block.start, block.duration)}:00`;
-                
-                console.log(`  🗓️  ${block.start}-${this.addMinutes(block.start, block.duration)}: ${block.activity}`);
-                console.log(`     Start: ${startTime} | End: ${endTime} | Type: ${block.type}`);
-            });
-            
-            console.log(`\n  ⚡ For automated sync, run:`);
-            console.log(`     /calendar-sync ${date}`);
-        }
+            console.log(`  🗓️  ${block.start}-${this.addMinutes(block.start, block.duration)}: ${block.activity}`);
+            console.log(`     Type: ${block.type} | Alignment: ${block.alignment}`);
+        });
+        
+        console.log(`\n  ⚡ For automated Google Calendar sync:`);
+        console.log(`     • Use Claude Code with Google Calendar MCP configured`);
+        console.log(`     • MCP commands saved in planning/analytics/calendar-sync-${date}.json`);
+        console.log(`     • Run /calendar-sync ${date} in Claude Code`);
     }
 
     async createGoogleCalendarEvents(blocks, date) {
