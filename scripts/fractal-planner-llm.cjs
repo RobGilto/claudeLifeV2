@@ -639,6 +639,39 @@ Time blocks can be synced to Google Calendar using MCP integration.
         return new DateIndex();
     }
 
+    async clearDay(dateStr) {
+        const dateIndex = new DateIndex(dateStr ? new Date(dateStr) : new Date());
+        const identifiers = dateIndex.getIdentifiers();
+        
+        console.log(`\n🗑️  Clearing Day: ${identifiers.day}`);
+        
+        // Remove daily plan JSON file
+        const planFile = PlanStorage.getFilePath('day', identifiers.day);
+        if (fs.existsSync(planFile)) {
+            fs.unlinkSync(planFile);
+            PlanStorage.log(`Cleared day plan: ${identifiers.day}`);
+            console.log(`✅ Removed daily plan data: ${planFile}`);
+        } else {
+            console.log(`ℹ️  No daily plan found for ${identifiers.day}`);
+        }
+        
+        // Remove daily plan report
+        const reportFile = path.join(DAILY_REVIEWS_DIR, `plan-${identifiers.day}.md`);
+        if (fs.existsSync(reportFile)) {
+            fs.unlinkSync(reportFile);
+            console.log(`✅ Removed daily plan report: ${reportFile}`);
+        } else {
+            console.log(`ℹ️  No daily plan report found for ${identifiers.day}`);
+        }
+        
+        console.log(`\n🎯 Day cleared successfully!`);
+        console.log(`\n💡 Next steps:`);
+        console.log(`   - Create fresh plan: node scripts/fractal-planner-llm.cjs plan-day ${identifiers.day}`);
+        console.log(`   - Check status: node scripts/fractal-planner-llm.cjs status`);
+        
+        return { cleared: true, date: identifiers.day };
+    }
+
     async showStatus() {
         const dateIndex = new DateIndex();
         const identifiers = dateIndex.getIdentifiers();

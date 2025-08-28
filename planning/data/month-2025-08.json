@@ -1,0 +1,43 @@
+{
+  "id": "month-2025-08",
+  "month": "2025-08",
+  "type": "month",
+  "status": "active",
+  "parentPlans": {
+    "quarter": "2025-Q3"
+  },
+  "objectives": [
+    {
+      "id": "month-obj-1",
+      "title": "Advance 1-2 core AI/technical skills significantly",
+      "priority": 1,
+      "parentAlignment": "Quarterly technical foundation building",
+      "completed": false
+    },
+    {
+      "id": "month-obj-2",
+      "title": "Complete meaningful portfolio project milestone",
+      "priority": 2,
+      "parentAlignment": "Demonstrable skill evidence",
+      "completed": false
+    },
+    {
+      "id": "month-obj-3",
+      "title": "Analyze job market and adjust learning path",
+      "priority": 3,
+      "parentAlignment": "Strategic career positioning",
+      "completed": false
+    }
+  ],
+  "milestones": [
+    "Complete significant AI/ML skill advancement",
+    "Deliver portfolio project milestone",
+    "Update career strategy based on market analysis"
+  ],
+  "context": {
+    "theme": "Strategic Skill Building & Portfolio Development",
+    "focus": "Measurable progress toward 2026 AI engineer goal"
+  },
+  "created": "2025-08-28T02:27:45.000Z",
+  "modified": "2025-08-28T02:27:45.000Z"
+}

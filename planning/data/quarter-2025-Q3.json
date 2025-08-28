@@ -1,0 +1,50 @@
+{
+  "id": "quarter-2025-Q3",
+  "quarter": "2025-Q3",
+  "type": "quarter",
+  "status": "active",
+  "parentPlans": {
+    "year": "2025"
+  },
+  "objectives": [
+    {
+      "id": "quarter-obj-1",
+      "title": "Master 2-3 critical AI/technical skills to target level",
+      "priority": 1,
+      "parentAlignment": "Yearly AI engineer transformation",
+      "completed": false
+    },
+    {
+      "id": "quarter-obj-2",
+      "title": "Launch significant portfolio project demonstrating capabilities",
+      "priority": 2,
+      "parentAlignment": "Career transition credibility",
+      "completed": false
+    },
+    {
+      "id": "quarter-obj-3",
+      "title": "Build professional network and market presence",
+      "priority": 3,
+      "parentAlignment": "2026 career positioning",
+      "completed": false
+    }
+  ],
+  "priorities": [
+    "Build foundational AI/ML technical competencies",
+    "Create demonstrable portfolio projects",
+    "Establish professional presence and network"
+  ],
+  "milestones": [
+    "Achieve target proficiency in 2-3 critical AI technologies",
+    "Launch portfolio project showcasing technical capabilities",
+    "Complete professional certification or significant learning milestone",
+    "Build connections with 10+ AI/tech professionals"
+  ],
+  "context": {
+    "theme": "Strategic Foundation Building",
+    "focus": "Measurable skill advancement and professional positioning",
+    "constraints": "3-month intensive focus on career transition elements"
+  },
+  "created": "2025-08-28T02:27:29.000Z",
+  "modified": "2025-08-28T02:27:29.000Z"
+}

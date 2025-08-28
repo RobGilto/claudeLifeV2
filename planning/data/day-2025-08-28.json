@@ -1,12 +1,12 @@
 {
   "id": "day-2025-08-28",
   "date": "2025-08-28",
-  "type": "day", 
+  "type": "day",
   "status": "active",
   "parentPlans": {
-    "week": "week-2025-W35",
-    "month": "month-2025-08",
-    "quarter": "quarter-2025-Q3"
+    "week": "2025-W35",
+    "month": "2025-08",
+    "quarter": "2025-Q3"
   },
   "multiIndex": {
     "dayOfYear": 240,
@@ -14,7 +14,7 @@
     "dayOfWeek": 4,
     "weekOfYear": 35,
     "monthOfYear": 8,
-    "quarter": 3
+    "quarter": "2025-Q3"
   },
   "timeBlocks": [
     {
@@ -28,7 +28,7 @@
       "completed": false
     },
     {
-      "id": "block-2", 
+      "id": "block-2",
       "start": "11:00",
       "duration": 60,
       "title": "Communication & Admin",
@@ -39,7 +39,7 @@
     },
     {
       "id": "block-3",
-      "start": "14:00", 
+      "start": "14:00",
       "duration": 90,
       "title": "Deep Work Block 2",
       "activity": "Technical project work or advanced learning",
@@ -54,7 +54,7 @@
       "title": "Learning & Development",
       "activity": "Research, documentation, or skill practice",
       "alignment": "Continuous learning and skill gap closure",
-      "type": "learning", 
+      "type": "learning",
       "completed": false
     },
     {
@@ -77,7 +77,7 @@
       "completed": false
     },
     {
-      "id": "obj-2", 
+      "id": "obj-2",
       "title": "Document learnings and capture victories",
       "priority": 2,
       "parentAlignment": "Knowledge retention and confidence building",
@@ -98,9 +98,9 @@
   },
   "metrics": {
     "plannedHours": 5.5,
-    "deepWorkHours": 3.0,
-    "learningHours": 2.0
+    "deepWorkHours": 3,
+    "learningHours": 2
   },
-  "created": "2025-08-28T15:30:00+10:00",
-  "modified": "2025-08-28T15:30:00+10:00"
+  "created": "2025-08-28T02:33:39.000Z",
+  "modified": "2025-08-28T02:33:39.000Z"
 }
