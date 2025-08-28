@@ -316,6 +316,41 @@ class EnhancedFractalPlanner {
         }
     }
     
+    async bookCalendarEvents(planDate, mcpCommands) {
+        console.log(`\n📅 Executing ${mcpCommands.length} calendar bookings...`);
+        
+        for (let i = 0; i < mcpCommands.length; i++) {
+            const cmd = mcpCommands[i];
+            console.log(`\n📅 Booking event ${i + 1}/${mcpCommands.length}:`);
+            console.log(`   ${cmd.parameters.summary}`);
+            console.log(`   ${cmd.parameters.start.split('T')[1].slice(0, 5)} - ${cmd.parameters.end.split('T')[1].slice(0, 5)}`);
+            
+            try {
+                // This would be the actual MCP call in Claude Code environment
+                // For now, we'll generate the instructions
+                console.log(`\n🔧 Execute this MCP command in Claude Code:`);
+                console.log(`Use tool: ${cmd.tool}`);
+                console.log(`Parameters:`);
+                console.log(JSON.stringify(cmd.parameters, null, 2));
+                
+                const proceed = await this.ask('\n✅ Event created successfully? (y/n): ');
+                if (proceed.toLowerCase() !== 'y') {
+                    console.log('⚠️  Event booking interrupted. Remaining events not booked.');
+                    break;
+                }
+                
+            } catch (error) {
+                console.log(`⚠️  Error booking event: ${error.message}`);
+                const continueBooking = await this.ask('Continue with remaining events? (y/n): ');
+                if (continueBooking.toLowerCase() !== 'y') {
+                    break;
+                }
+            }
+        }
+        
+        console.log('\n✅ Calendar booking session completed!');
+    }
+    
     async planDayEnhanced(dateStr) {
         const today = new Date().toISOString().split('T')[0];
         const planDate = dateStr || today;
