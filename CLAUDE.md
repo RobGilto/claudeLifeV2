@@ -124,8 +124,18 @@ The `/weekly-checkin` command will:
 
 The system intelligently adapts to track what matters for this specific project.
 
-### Daily Check-In Protocols (Split Sessions)
-The daily check-in system splits into two focused sessions for better ADD-friendly workflow:
+### Daily Check-In Protocols (Multiple Sessions)
+The daily check-in system provides multiple touchpoints throughout the day for better ADD-friendly workflow:
+
+#### `/morning-checkin` or `/daily-checkin` Command
+Early-day energy assessment and intention-setting:
+- Wake time and morning energy level tracking
+- Sleep quality assessment
+- Physical state check-in
+- Daily intentions and top 3 priorities
+- Potential challenge identification
+- One commitment declaration
+- Silent victory detection from intentions
 
 #### `/noon-checkin` Command
 Mid-day energy and planning checkpoint:
@@ -141,13 +151,13 @@ End-of-day reflection and tomorrow planning:
 - Challenge and blocker identification
 - Gratitude and reflection prompts
 - Tomorrow's priority setting
-- Combined analysis of both sessions (if noon data exists)
+- Combined analysis of all sessions (if multiple exist)
 
 #### File Management
-- Both commands append to same `daily-YYYY-MM-DD.md` file
-- Metadata tracks which sessions completed: `sessions: [noon, evening]`
-- Analysis only runs after evening checkin with combined data
-- Victory detection runs after both sessions for comprehensive tracking
+- All commands append to same `journal/daily/daily-YYYY-MM-DD.md` file
+- Metadata tracks which sessions completed: `sessions: [morning, noon, evening]`
+- Analysis runs after evening checkin with combined data
+- Victory detection runs after each session for comprehensive tracking
 
 Daily entries are saved in journal/daily/ for long-term pattern recognition.
 
@@ -465,6 +475,144 @@ planning/
 - **Tracks What Matters**: Completion rates + wellbeing for holistic success
 - **Enables Continuous Improvement**: Performance data drives better planning
 - **ADD-Friendly**: Time-boxed, visual, with clear structures and next actions
+
+### Skill Management System
+A comprehensive skill tracking and development system for the AI engineering journey, integrating GitHub activity analysis with strategic skill investment planning.
+
+#### Core Commands
+
+##### `/skill-status` Command
+- Visual progress dashboard for all skill categories
+- Priority matrix: critical path, quick wins, maintenance, backlog
+- GitHub activity analysis with language usage trends
+- Weekly trajectory and improvement velocity tracking
+- Context-aware recommendations based on recent work
+- Streak tracking and momentum preservation
+
+##### `/skill-update` Command
+- Interactive skill level updates with evidence prompts
+- Practice hour tracking and adjustment
+- Evidence-based improvement suggestions
+- Automatic decay detection for unused skills
+- Updates `skills/skill-matrix.json` with new data
+
+##### `/skill-review` Command
+- Weekly skill progress review and planning
+- Gap analysis against 2026 targets
+- Practice effectiveness assessment
+- Next week focus recommendations
+
+##### `/skill-evidence` Command
+- Records specific evidence of skill usage
+- Links evidence to GitHub commits, projects, or learning
+- Provides confidence boost to skill assessments
+- Maintains evidence log for portfolio building
+
+##### `/skill-investor` Command
+- Strategic skill investment planning
+- ROI analysis for skill development paths
+- Time allocation optimization
+- Risk assessment for skill gaps
+
+##### `/skill-crafter` Command
+- Project-based skill development planning
+- Links skills to specific portfolio projects
+- Creates learning paths through practical application
+- Tracks skill acquisition through project milestones
+
+##### `/skill-salesman` Command
+- Resume and portfolio skill presentation
+- Evidence-based skill claims generator
+- Interview preparation with skill stories
+- LinkedIn profile optimization suggestions
+
+##### `/github-skill-scan` Command
+- Comprehensive GitHub activity analysis
+- Automatic skill evidence detection from commits
+- Language and framework usage tracking
+- Practice time inference from commit patterns
+- Project impact and complexity assessment
+- Updates skill matrix with detected evidence
+
+#### Skill Data Structure
+```
+skills/
+├── skill-matrix.json         # Current skill levels and targets
+├── skill-evidence.json       # Evidence log for skills
+├── skill-investment.json     # Strategic planning data
+├── github-analysis.md        # GitHub activity reports
+└── skill-reviews/            # Weekly review records
+```
+
+#### Integration Features
+- **GitHub MCP Integration**: Automatic skill detection from repository activity
+- **Victory System**: Links skill improvements to victory tracking
+- **Job Market Analysis**: Aligns skill development with market demands
+- **Daily Brief**: Includes skill recommendations based on gaps
+- **Fractal Planning**: Skill practice integrated into time blocks
+
+### Newsletter Management Protocol
+The newsletter system provides tools for content creation, competitor analysis, and audience engagement.
+
+#### `/newsletter-research` Command
+- Analyzes competitor newsletters for trending topics
+- Identifies content gaps and opportunities
+- Generates ready-to-send newsletter drafts
+- Matches your writing voice based on existing content
+- Saves research and drafts to `research/newsletters/`
+
+#### `/add-newsletter` Command
+- Interactive newsletter creation with guided prompts
+- Template selection and customization
+- Audience targeting and segmentation
+- Content scheduling and tracking
+- Outputs to `newsletters/drafts/`
+
+### Transcription Protocol
+Audio transcription support for brain dumps and voice notes.
+
+#### `/transcribe-brain-dump` Command
+- Converts audio files to text brain dumps
+- Supports .wav, .mp3, .m4a formats
+- Automatic topic detection from transcribed content
+- Maintains audio metadata (duration, file reference)
+- Saves to `journal/brain/` with transcription markers
+
+### Additional Review Commands
+Extended review commands for comprehensive reflection across all time scales.
+
+#### `/review-day` Command
+- Daily execution review against plan
+- Time block completion assessment
+- Energy and focus metrics throughout day
+- Quick wins and challenges identification
+- Updates `planning/data/day-YYYY-MM-DD.json`
+
+#### `/review-quarter` Command
+- Quarterly milestone and objective assessment
+- Strategic priority evaluation
+- Monthly performance aggregation
+- Long-term trend analysis
+- Major pivot or adjustment recommendations
+
+#### `/review-year` Command
+- Annual transformation goal assessment
+- Strategic vision alignment check
+- Quarterly performance synthesis
+- Year-over-year growth analysis
+- Next year planning foundation
+
+### Automation Protocols
+
+#### Auto Git Push Script
+The `scripts/auto-git-push.sh` script provides automated git operations:
+- Stages all changes with intelligent grouping
+- Generates descriptive commit messages
+- Automatic push to remote repository
+- Conflict detection and resolution prompts
+- Activity logging to `/logs/auto-git-push-YYYY-MM-DD.log`
+
+Usage: Can be scheduled via cron for regular automated commits or triggered manually for batch operations.
 
 ## MCP Integration and Setup
 
