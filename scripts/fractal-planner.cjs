@@ -531,7 +531,9 @@ class FractalPlanner {
         plan.metrics = {
             plannedHours: defaultBlocks.reduce((total, block) => total + (block.duration / 60), 0),
             deepWorkHours: defaultBlocks.filter(b => b.type === 'deep-work').reduce((total, block) => total + (block.duration / 60), 0),
-            learningHours: defaultBlocks.filter(b => b.type === 'learning').reduce((total, block) => total + (block.duration / 60), 0)
+            learningHours: defaultBlocks.filter(b => b.type === 'learning').reduce((total, block) => total + (block.duration / 60), 0),
+            adminHours: defaultBlocks.filter(b => b.type === 'admin').reduce((total, block) => total + (block.duration / 60), 0),
+            reviewHours: defaultBlocks.filter(b => b.type === 'review').reduce((total, block) => total + (block.duration / 60), 0)
         };
 
         plan.status = 'active';
@@ -605,8 +607,8 @@ class FractalPlanner {
                 const tags = [block.type, 'timeblock'];
                 const due = `${date}T${block.start}`;
 
-                // Check if task already exists
-                const checkCmd = `task project:${project} description.contains:"[${block.start}]" count`;
+                // Check if task already exists for today
+                const checkCmd = `task project:${project} description.contains:"[${block.start}]" due:${date} count`;
                 const checkResult = await execAsync(checkCmd);
                 const existingCount = parseInt(checkResult.stdout.trim());
                 
