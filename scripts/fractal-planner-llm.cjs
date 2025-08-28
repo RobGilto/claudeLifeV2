@@ -1265,33 +1265,64 @@ async function main() {
             case 'plan-year':
                 await planner.planYear(args[1]);
                 break;
+            case 'review-day':
+                await planner.reviewDay(args[1]);
+                break;
+            case 'review-week':
+                await planner.reviewWeek(args[1]);
+                break;
+            case 'review-month':
+                console.log('📊 Monthly review command - Implementation coming soon!');
+                console.log('For now, use the monthly review template in journal/planning/monthly-reviews/');
+                break;
+            case 'review-quarter':
+                console.log('📈 Quarterly review command - Implementation coming soon!');
+                console.log('For now, use the quarterly review template in journal/planning/quarterly-reviews/');
+                break;
             case 'status':
                 await planner.showStatus();
                 break;
             default:
                 console.log(`
-LLM-Friendly Fractal Planner
+🗓️ LLM-Friendly Fractal Planning & Review System
 
 Usage:
   node scripts/fractal-planner-llm.cjs [command] [args]
 
-Planning Commands:
-  plan-day [date]         - Create daily time blocks (5 blocks, ADD-optimized)
-  clear-day [date]        - Clear/remove daily plan and start fresh
+📅 Planning Commands:
+  plan-day [date]         - Create daily time blocks (4-5 blocks, ADD-optimized)
   plan-week [week]        - Create weekly priorities and goals
-  plan-month [month]      - Create monthly objectives and milestones
+  plan-month [month]      - Create monthly objectives and milestones  
   plan-quarter [quarter]  - Create quarterly strategic initiatives
   plan-year [year]        - Create yearly vision and transformation goals
-  status                  - Show current planning status
 
-Examples:
+📊 Review Commands:
+  review-day [date|yesterday|today]     - Conduct daily performance review
+  review-week [week|current|last]       - Weekly achievement and insights review
+  review-month [month|current|last]     - Monthly strategic assessment (coming soon)
+  review-quarter [quarter|current|last] - Quarterly transformation review (coming soon)
+
+🛠️ Utility Commands:
+  clear-day [date]        - Clear/remove daily plan and start fresh
+  status                  - Show current planning status and next actions
+
+📝 Planning Examples:
   node scripts/fractal-planner-llm.cjs plan-day 2025-08-28
-  node scripts/fractal-planner-llm.cjs clear-day 2025-08-28
   node scripts/fractal-planner-llm.cjs plan-week 2025-W35
   node scripts/fractal-planner-llm.cjs plan-month 2025-08
-  node scripts/fractal-planner-llm.cjs plan-quarter 2025-Q3
-  node scripts/fractal-planner-llm.cjs plan-year 2025
-  node scripts/fractal-planner-llm.cjs status
+
+📈 Review Examples:
+  node scripts/fractal-planner-llm.cjs review-day yesterday
+  node scripts/fractal-planner-llm.cjs review-day 2025-08-27
+  node scripts/fractal-planner-llm.cjs review-week current
+  node scripts/fractal-planner-llm.cjs review-week 2025-W34
+
+🎯 Features:
+  - Automatic date calculations (no more manual bash date math!)
+  - Multi-index display (Day X/365, Week Y/52, etc.)
+  - Victory detection and integration
+  - Parent plan alignment tracking
+  - ADD-optimized time blocks and templates
                 `);
         }
     } catch (error) {
