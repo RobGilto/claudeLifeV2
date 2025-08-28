@@ -794,7 +794,7 @@ ${performance.insights.join('\n') || 'No specific insights noted'}
 - Top priority: ${performance.tomorrowPriority || 'Not specified'}
 
 ## Performance Notes
-Generated from daily review session on ${new Date().toISOString().split('T')[0]}
+Generated from daily review session on ${formatSydneyDateString()}
 `;
 
         fs.writeFileSync(reportPath, reportContent);

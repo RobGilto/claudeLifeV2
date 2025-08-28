@@ -21,6 +21,9 @@ pids
 .env.test.local
 .env.production.local
 
+# Google API credentials
+client_secret_google_calendar.json
+
 # OS generated files
 .DS_Store
 .DS_Store?
