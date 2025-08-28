@@ -1,0 +1,70 @@
+{
+  "date": "2025-08-28",
+  "prepared": "2025-08-28T06:28:28.318Z",
+  "mode": "manual",
+  "blocks": [
+    {
+      "start": "09:00",
+      "duration": 90,
+      "activity": "AI/ML skill development - Boot.dev or project work",
+      "type": "deep-work",
+      "alignment": "2026 AI engineer transformation goal",
+      "calendarStart": "2025-08-28T09:00:00+11:00",
+      "calendarEnd": "2025-08-28T10:30:00+11:00"
+    },
+    {
+      "start": "11:00",
+      "duration": 60,
+      "activity": "Communication, admin, and planning tasks",
+      "type": "admin",
+      "alignment": "Sustainable daily practice and organization",
+      "calendarStart": "2025-08-28T11:00:00+11:00",
+      "calendarEnd": "2025-08-28T12:00:00+11:00"
+    },
+    {
+      "start": "14:00",
+      "duration": 90,
+      "activity": "Technical project work or advanced learning",
+      "type": "deep-work",
+      "alignment": "Portfolio building and technical mastery",
+      "calendarStart": "2025-08-28T14:00:00+11:00",
+      "calendarEnd": "2025-08-28T15:30:00+11:00"
+    },
+    {
+      "start": "16:00",
+      "duration": 60,
+      "activity": "Research, documentation, or skill practice",
+      "type": "learning",
+      "alignment": "Continuous learning and skill gap closure",
+      "calendarStart": "2025-08-28T16:00:00+11:00",
+      "calendarEnd": "2025-08-28T17:00:00+11:00"
+    },
+    {
+      "start": "18:00",
+      "duration": 90,
+      "activity": "Evening project work or intensive study",
+      "type": "deep-work",
+      "alignment": "Accelerated skill development",
+      "calendarStart": "2025-08-28T18:00:00+11:00",
+      "calendarEnd": "2025-08-28T19:30:00+11:00"
+    },
+    {
+      "start": "20:00",
+      "duration": 90,
+      "activity": "Advanced learning or portfolio development",
+      "type": "learning",
+      "alignment": "Professional development and practice",
+      "calendarStart": "2025-08-28T20:00:00+11:00",
+      "calendarEnd": "2025-08-28T21:30:00+11:00"
+    },
+    {
+      "start": "21:30",
+      "duration": 90,
+      "activity": "Final work session or skill consolidation",
+      "type": "review",
+      "alignment": "Day completion and progress review",
+      "calendarStart": "2025-08-28T21:30:00+11:00",
+      "calendarEnd": "2025-08-28T23:00:00+11:00"
+    }
+  ]
+}
