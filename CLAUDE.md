@@ -388,23 +388,41 @@ A comprehensive multi-scale planning system that creates aligned plans from dail
 
 #### Review Commands
 
-##### `/review-week` Command
-- Objective completion assessment
-- Energy, focus, and satisfaction metrics (1-10)
-- Weekly insights and adjustment identification
+##### `/review-day [relative_date]` Command
+- Comprehensive daily execution review against planned objectives
+- Automated victory detection from journal entries and activities
+- Energy, focus, and satisfaction pattern analysis
+- Multi-index positioning display (day X/365, week Y/52, etc.)
+- Parent plan alignment assessment (weekly/monthly/quarterly goals)
+- Automatic data gathering from daily journals and victory tracking
+- Supports relative dates: `today`, `yesterday` 
+- Outputs structured review to `journal/planning/daily-reviews/`
+
+##### `/review-week [week_id]` Command
+- Weekly objective completion assessment with daily breakdown
+- Energy, focus, and satisfaction metrics aggregation (1-10 scales)
+- Victory pattern analysis across the week period
 - Performance comparison with previous weeks
+- Strategic alignment evaluation with monthly/quarterly plans
+- Automatic template generation for comprehensive weekly reflection
+- Supports week formats: `2025-W34`, `current`, `last`
+- Outputs to `journal/planning/weekly-reviews/`
 
-##### `/review-month` Command
-- Objective and milestone completion review
-- Monthly satisfaction assessment  
-- Weekly performance aggregation and analysis
+##### `/review-month [month_id]` Command
+- Monthly objective and milestone completion review
+- Comprehensive victory analysis and achievement patterns
+- Weekly performance aggregation and trend analysis
 - Strategic insights for next month planning
+- Git commit analysis for technical progress tracking
+- Supports formats: `2025-08`, `current`, `last`
+- Outputs to `journal/planning/monthly-reviews/`
 
-##### `/review-quarter` and `/review-year` Commands
-- Major milestone and objective assessment
-- Strategic performance analysis
-- Long-term trend identification  
-- Vision alignment evaluation
+##### `/review-quarter [quarter_id]` and `/review-year [year_id]` Commands
+- Major milestone and objective assessment across extended periods
+- Strategic performance analysis and goal alignment evaluation
+- Long-term trend identification and pattern recognition
+- Vision alignment evaluation and strategic pivot recommendations
+- Comprehensive achievement synthesis across all sub-periods
 
 #### Taskmaster Integration
 
