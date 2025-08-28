@@ -87,9 +87,9 @@
     "constraints": "ADD-friendly max 90min blocks with clear transitions"
   },
   "metrics": {
-    "plannedHours": 5.5,
+    "plannedHours": 4.5,
     "deepWorkHours": 3,
-    "learningHours": 2
+    "learningHours": 1
   },
   "created": "2025-08-28T02:41:55.000Z",
   "modified": "2025-08-28T02:41:55.000Z"

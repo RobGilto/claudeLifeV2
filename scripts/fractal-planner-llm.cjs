@@ -258,12 +258,64 @@ class LLMFractalPlanner {
         };
     }
 
-    async planDay(dateStr) {
+    generateTimeAwareBlocks(startTime = null) {
+        // Get current Sydney time if no startTime provided
+        if (!startTime) {
+            const now = new Date();
+            const sydneyTime = new Date(now.toLocaleString('en-US', { timeZone: 'Australia/Sydney' }));
+            const currentHour = sydneyTime.getHours();
+            
+            // Round up to next hour for planning
+            startTime = `${String(Math.max(9, currentHour + 1)).padStart(2, '0')}:00`;
+            console.log(`🕐 Auto-detected start time: ${startTime} (current: ${String(currentHour).padStart(2, '0')}:${String(sydneyTime.getMinutes()).padStart(2, '0')})`);
+        }
+        
+        // Parse start time
+        const [startHour, startMin] = startTime.split(':').map(Number);
+        let currentHour = startHour;
+        let currentMin = startMin;
+        
+        const blocks = [];
+        const blockTemplates = [
+            { duration: 90, title: 'Deep Work Block 1', type: 'deep-work', activity: 'AI/ML skill development - Boot.dev or project work', alignment: '2026 AI engineer transformation goal' },
+            { duration: 60, title: 'Learning & Development', type: 'learning', activity: 'Research, documentation, or skill practice', alignment: 'Continuous learning and skill gap closure' },
+            { duration: 90, title: 'Deep Work Block 2', type: 'deep-work', activity: 'Technical project work or advanced learning', alignment: 'Portfolio building and technical mastery' },
+            { duration: 30, title: 'Planning & Reflection', type: 'reflection', activity: 'Daily review, tomorrow planning, victory capture', alignment: 'Continuous improvement and habit building' }
+        ];
+        
+        // Generate blocks starting from startTime
+        for (let i = 0; i < blockTemplates.length && currentHour < 18; i++) {
+            const template = blockTemplates[i];
+            
+            blocks.push({
+                start: `${String(currentHour).padStart(2, '0')}:${String(currentMin).padStart(2, '0')}`,
+                duration: template.duration,
+                title: template.title,
+                activity: template.activity,
+                alignment: template.alignment,
+                type: template.type
+            });
+            
+            // Add duration to current time + 30min break
+            currentMin += template.duration + 30;
+            while (currentMin >= 60) {
+                currentHour++;
+                currentMin -= 60;
+            }
+        }
+        
+        return blocks;
+    }
+
+    async planDay(dateStr, startTime = null) {
         const dateIndex = new DateIndex(dateStr ? new Date(dateStr) : new Date());
         const identifiers = dateIndex.getIdentifiers();
         
         console.log(`\n🗓️  Planning Day: ${identifiers.day}`);
         console.log(`📊 Multi-Index: Day ${identifiers.dayOfYear}/365 | Week ${identifiers.dayOfWeek}/7 | Month ${identifiers.dayOfMonth}/31`);
+        
+        // Generate time-aware blocks
+        const timeBlocks = this.generateTimeAwareBlocks(startTime);
         
         // Create plan structure
         const plan = {
@@ -284,7 +336,7 @@ class LLMFractalPlanner {
                 monthOfYear: identifiers.monthOfYear,
                 quarter: identifiers.quarter
             },
-            timeBlocks: this.defaultTimeBlocks.daily.map((block, index) => ({
+            timeBlocks: timeBlocks.map((block, index) => ({
                 id: `block-${index + 1}`,
                 ...block,
                 completed: false
