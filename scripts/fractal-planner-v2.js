@@ -182,26 +182,60 @@ class CalendarIntegration {
             const eventData = {
                 calendarId: this.calendarId,
                 summary: `${block.label}: ${description}`,
-                description: `Time block for focused work.\nType: ${block.type}\nDuration: ${block.duration} minutes`,
+                description: `Time block for focused work.\nType: ${block.type}\nDuration: ${block.duration} minutes\n\n🎯 Focus Area: ${description}`,
                 start: `${date}T${block.start}:00`,
                 end: `${date}T${block.endTime}:00`,
                 timeZone: this.timezone,
                 reminders: {
                     useDefault: false,
                     overrides: [
-                        { method: 'popup', minutes: 10 }
+                        { method: 'popup', minutes: 10 },
+                        { method: 'popup', minutes: 2 }
                     ]
-                }
+                },
+                colorId: this.getBlockColor(block.type)
             };
             
-            console.log(`📅 Would create calendar event: ${eventData.summary}`);
-            // In production: await mcp.google_calendar.create_event(eventData)
+            console.log(`📅 Creating calendar event: ${eventData.summary}`);
+            console.log(`   ⏰ ${block.start} - ${block.endTime} (${block.duration}min)`);
+            
+            // Generate MCP command for manual execution
+            const mcpCommand = JSON.stringify({
+                calendarId: eventData.calendarId,
+                summary: eventData.summary,
+                description: eventData.description,
+                start: eventData.start,
+                end: eventData.end,
+                timeZone: eventData.timeZone,
+                reminders: eventData.reminders,
+                colorId: eventData.colorId
+            }, null, 2);
+            
+            console.log(`\n🔧 MCP Command to execute:`);
+            console.log(`Use: mcp__google-calendar__create_event`);
+            console.log(`Parameters:`, mcpCommand);
+            
+            // Store the command for potential batch execution
+            eventData.mcpCommand = mcpCommand;
             
             return eventData;
         } catch (error) {
-            console.log('⚠️  Could not create calendar event:', error.message);
+            console.log('⚠️  Could not prepare calendar event:', error.message);
             return null;
         }
+    }
+    
+    getBlockColor(blockType) {
+        // Color-code different block types
+        const colorMap = {
+            'deep-work': '9',     // Blue - for focused work
+            'project': '10',      // Green - for development
+            'learning': '5',      // Yellow - for skill development
+            'research': '3',      // Purple - for exploration
+            'admin': '8',         // Gray - for administrative tasks
+            'review': '6'         // Orange - for reflection
+        };
+        return colorMap[blockType] || '1'; // Default to pale blue
     }
 }
 

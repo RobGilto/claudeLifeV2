@@ -607,10 +607,15 @@ class FractalPlanner {
                 const tags = [block.type, 'timeblock'];
                 const due = `${date}T${block.start}`;
 
-                // Check if task already exists for today
-                const checkCmd = `task project:${project} description.contains:"[${block.start}]" due:${date} count`;
-                const checkResult = await execAsync(checkCmd);
-                const existingCount = parseInt(checkResult.stdout.trim());
+                // Check if task already exists for today (excluding deleted/completed)
+                // Using exact description match to avoid false positives from TaskWarrior
+                let existingCount = 0;
+                try {
+                    const checkResult = await execAsync(`task status:pending description:"${taskDescription}" count`);
+                    existingCount = parseInt(checkResult.stdout.trim());
+                } catch (checkError) {
+                    existingCount = 0; // If command fails, assume no existing task
+                }
                 
                 if (existingCount === 0) {
                     const cmd = `task add "${taskDescription}" project:${project} +${tags.join(' +')} due:${due}`;
