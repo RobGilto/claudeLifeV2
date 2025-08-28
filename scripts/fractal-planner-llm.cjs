@@ -619,6 +619,24 @@ Time blocks can be synced to Google Calendar using MCP integration.
         return new DateIndex();
     }
 
+    parseQuarterString(quarterStr) {
+        // Parse formats like "2025-Q3" or just use current quarter
+        if (quarterStr && quarterStr.includes('-Q')) {
+            const [year, quarter] = quarterStr.split('-Q');
+            const quarterMonth = (parseInt(quarter) - 1) * 3;
+            return new DateIndex(new Date(parseInt(year), quarterMonth, 1));
+        }
+        return new DateIndex();
+    }
+
+    parseYearString(yearStr) {
+        // Parse formats like "2025" or just use current year
+        if (yearStr && /^\d{4}$/.test(yearStr)) {
+            return new DateIndex(new Date(parseInt(yearStr), 0, 1));
+        }
+        return new DateIndex();
+    }
+
     async showStatus() {
         const dateIndex = new DateIndex();
         const identifiers = dateIndex.getIdentifiers();
@@ -663,6 +681,12 @@ async function main() {
             case 'plan-month':
                 await planner.planMonth(args[1]);
                 break;
+            case 'plan-quarter':
+                await planner.planQuarter(args[1]);
+                break;
+            case 'plan-year':
+                await planner.planYear(args[1]);
+                break;
             case 'status':
                 await planner.showStatus();
                 break;
@@ -674,15 +698,19 @@ Usage:
   node scripts/fractal-planner-llm.cjs [command] [args]
 
 Planning Commands:
-  plan-day [date]      - Create daily time blocks (5 blocks, ADD-optimized)
-  plan-week [week]     - Create weekly priorities and goals
-  plan-month [month]   - Create monthly objectives and milestones
-  status              - Show current planning status
+  plan-day [date]         - Create daily time blocks (5 blocks, ADD-optimized)
+  plan-week [week]        - Create weekly priorities and goals
+  plan-month [month]      - Create monthly objectives and milestones
+  plan-quarter [quarter]  - Create quarterly strategic initiatives
+  plan-year [year]        - Create yearly vision and transformation goals
+  status                  - Show current planning status
 
 Examples:
   node scripts/fractal-planner-llm.cjs plan-day 2025-08-28
   node scripts/fractal-planner-llm.cjs plan-week 2025-W35
   node scripts/fractal-planner-llm.cjs plan-month 2025-08
+  node scripts/fractal-planner-llm.cjs plan-quarter 2025-Q3
+  node scripts/fractal-planner-llm.cjs plan-year 2025
   node scripts/fractal-planner-llm.cjs status
                 `);
         }
