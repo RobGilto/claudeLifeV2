@@ -168,13 +168,15 @@ class Plan {
         this.touch();
     }
 
-    addTimeBlock(startTime, duration, activity, alignment = null) {
+    addTimeBlock(startTime, duration, activity, alignment = null, type = 'general') {
         this.timeBlocks.push({
-            id: Date.now().toString(),
-            startTime,
+            id: 'block-' + (this.timeBlocks.length + 1),
+            start: startTime,
             duration, // in minutes
+            title: activity.split(' - ')[0] || activity.split(' (')[0] || activity,
             activity,
             alignment, // which higher-level objective this supports
+            type,
             completed: false,
             notes: ''
         });
@@ -449,7 +451,15 @@ class FractalPlanner {
 
         console.log(`\n🎯 Daily Objectives (max 3 for focus):`);
         defaultObjectives.forEach((objective, i) => {
-            plan.addObjective(objective);
+            plan.objectives.push({
+                id: `obj-${i + 1}`,
+                title: objective,
+                priority: i + 1,
+                parentAlignment: i === 0 ? '2026 AI engineer transformation' : 
+                                i === 1 ? 'Knowledge retention and confidence building' : 
+                                'Sustainable daily practice',
+                completed: false
+            });
             console.log(`  ${i + 1}. ${objective}`);
         });
 
@@ -482,17 +492,29 @@ class FractalPlanner {
         console.log(`⏱️  Total planned: ${plan.metrics.plannedHours}h (${plan.metrics.deepWorkHours}h deep work, ${plan.metrics.learningHours}h learning)`);
     }
 
+    addMinutes(timeStr, minutes) {
+        const [hours, mins] = timeStr.split(':').map(Number);
+        const totalMins = hours * 60 + mins + minutes;
+        const newHours = Math.floor(totalMins / 60);
+        const newMins = totalMins % 60;
+        return `${newHours.toString().padStart(2, '0')}:${newMins.toString().padStart(2, '0')}`;
+    }
+
     showParentContext(weekPlan, monthPlan, quarterPlan) {
         console.log(`\n📋 Parent Plan Context:`);
         
-        if (quarterPlan) {
+        if (quarterPlan && quarterPlan.priorities && quarterPlan.priorities.length > 0) {
             console.log(`🎯 Quarter Focus: ${quarterPlan.priorities.slice(0, 2).join(', ')}`);
         }
-        if (monthPlan) {
-            console.log(`📅 Month Goals: ${monthPlan.objectives.slice(0, 3).map(o => o.text).join(', ')}`);
+        if (monthPlan && monthPlan.objectives && monthPlan.objectives.length > 0) {
+            console.log(`📅 Month Goals: ${monthPlan.objectives.slice(0, 3).map(o => o.text || o).join(', ')}`);
         }
-        if (weekPlan) {
+        if (weekPlan && weekPlan.priorities && weekPlan.priorities.length > 0) {
             console.log(`📊 Week Priorities: ${weekPlan.priorities.slice(0, 3).join(', ')}`);
+        }
+        
+        if (!quarterPlan && !monthPlan && !weekPlan) {
+            console.log(`  No parent plans found - operating in standalone mode`);
         }
     }
 
