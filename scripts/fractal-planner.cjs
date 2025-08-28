@@ -402,30 +402,56 @@ class FractalPlanner {
         // Plan time blocks (4-5 blocks per day as per ADD optimization)
         console.log(`\n⏰ Time Block Planning (4-5 blocks recommended for ADD-friendly workflow):`);
         
+        // Use smart defaults based on Robert's AI engineering goals and ADD-friendly structure
         const defaultBlocks = [
-            { start: '09:00', duration: 90, label: 'Deep Work Block 1' },
-            { start: '11:00', duration: 60, label: 'Communication & Admin' },
-            { start: '14:00', duration: 90, label: 'Deep Work Block 2' },
-            { start: '16:00', duration: 60, label: 'Learning & Development' },
-            { start: '17:00', duration: 30, label: 'Planning & Reflection' }
+            { 
+                start: '09:00', 
+                duration: 90, 
+                activity: 'AI/ML skill development - Boot.dev or project work',
+                alignment: '2026 AI engineer transformation goal',
+                type: 'deep-work'
+            },
+            { 
+                start: '11:00', 
+                duration: 60, 
+                activity: 'Communication, admin, and planning tasks',
+                alignment: 'Sustainable daily practice and organization',
+                type: 'admin'
+            },
+            { 
+                start: '14:00', 
+                duration: 90, 
+                activity: 'Technical project work or advanced learning',
+                alignment: 'Portfolio building and technical mastery',
+                type: 'deep-work'
+            },
+            { 
+                start: '16:00', 
+                duration: 60, 
+                activity: 'Research, documentation, or skill practice',
+                alignment: 'Continuous learning and skill gap closure',
+                type: 'learning'
+            }
         ];
 
-        for (const block of defaultBlocks) {
-            const activity = await this.ask(`${block.label} (${block.start}, ${block.duration}min): `);
-            if (activity.trim()) {
-                const alignment = await this.ask(`Aligns with which higher-level goal? `);
-                plan.addTimeBlock(block.start, block.duration, activity, alignment || null);
-            }
-        }
+        // Add time blocks with defaults
+        defaultBlocks.forEach(block => {
+            plan.addTimeBlock(block.start, block.duration, block.activity, block.alignment, block.type);
+            console.log(`  ✓ ${block.start}-${this.addMinutes(block.start, block.duration)}: ${block.activity}`);
+        });
 
-        // Set daily objectives
+        // Set default daily objectives aligned with AI engineering goals
+        const defaultObjectives = [
+            'Complete meaningful technical progress',
+            'Document learnings and capture victories', 
+            'Maintain momentum with ADD-friendly structure'
+        ];
+
         console.log(`\n🎯 Daily Objectives (max 3 for focus):`);
-        for (let i = 1; i <= 3; i++) {
-            const objective = await this.ask(`Objective ${i}: `);
-            if (objective.trim()) {
-                plan.addObjective(objective);
-            }
-        }
+        defaultObjectives.forEach((objective, i) => {
+            plan.addObjective(objective);
+            console.log(`  ${i + 1}. ${objective}`);
+        });
 
         // Set parent relationships
         plan.parentPlans = [
@@ -434,11 +460,26 @@ class FractalPlanner {
             quarterPlan ? identifiers.quarter : null
         ].filter(Boolean);
 
+        // Add context and theme
+        plan.context = {
+            theme: 'Technical Excellence & Structured Learning',
+            energy: 'Morning focus on deep work, afternoon on application and review',
+            constraints: 'ADD-friendly max 90min blocks with clear transitions'
+        };
+
+        // Add metrics
+        plan.metrics = {
+            plannedHours: defaultBlocks.reduce((total, block) => total + (block.duration / 60), 0),
+            deepWorkHours: defaultBlocks.filter(b => b.type === 'deep-work').reduce((total, block) => total + (block.duration / 60), 0),
+            learningHours: defaultBlocks.filter(b => b.type === 'learning').reduce((total, block) => total + (block.duration / 60), 0)
+        };
+
         plan.status = 'active';
         PlanStorage.save(plan);
         
         console.log(`\n✅ Day plan saved for ${identifiers.day}`);
-        console.log(`📈 Linked to: ${plan.parentPlans.join(', ')}`);
+        console.log(`📈 Linked to: ${plan.parentPlans.join(', ') || 'No parent plans'}`);
+        console.log(`⏱️  Total planned: ${plan.metrics.plannedHours}h (${plan.metrics.deepWorkHours}h deep work, ${plan.metrics.learningHours}h learning)`);
     }
 
     showParentContext(weekPlan, monthPlan, quarterPlan) {
