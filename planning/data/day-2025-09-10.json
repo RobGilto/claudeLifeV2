@@ -1,0 +1,66 @@
+{
+  "id": "day-2025-09-10",
+  "date": "2025-09-10",
+  "type": "day",
+  "status": "active",
+  "parentPlans": {
+    "week": "2025-W37",
+    "month": "2025-09",
+    "quarter": "2025-Q3"
+  },
+  "multiIndex": {
+    "dayOfYear": 253,
+    "dayOfMonth": 10,
+    "dayOfWeek": 3,
+    "weekOfYear": 37,
+    "monthOfYear": 9,
+    "quarter": "2025-Q3"
+  },
+  "timeBlocks": [
+    {
+      "id": "block-1",
+      "start": "16:00",
+      "duration": 90,
+      "title": "Deep Work Block 1",
+      "activity": "AI/ML skill development - Boot.dev or project work",
+      "alignment": "2026 AI engineer transformation goal",
+      "type": "deep-work",
+      "completed": false
+    }
+  ],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": "Complete meaningful technical progress",
+      "priority": 1,
+      "parentAlignment": "2026 AI engineer transformation",
+      "completed": false
+    },
+    {
+      "id": "obj-2",
+      "title": "Document learnings and capture victories",
+      "priority": 2,
+      "parentAlignment": "Knowledge retention and confidence building",
+      "completed": false
+    },
+    {
+      "id": "obj-3",
+      "title": "Maintain momentum with ADD-friendly structure",
+      "priority": 3,
+      "parentAlignment": "Sustainable daily practice",
+      "completed": false
+    }
+  ],
+  "context": {
+    "theme": "Technical Excellence & Structured Learning",
+    "energy": "Morning focus on deep work, afternoon on application and review",
+    "constraints": "ADD-friendly max 90min blocks with clear transitions"
+  },
+  "metrics": {
+    "plannedHours": 5.5,
+    "deepWorkHours": 3,
+    "learningHours": 2
+  },
+  "created": "2025-08-28T05:32:01.000Z",
+  "modified": "2025-08-28T05:32:01.000Z"
+}
