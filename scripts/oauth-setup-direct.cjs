@@ -15,7 +15,7 @@ const crypto = require('crypto');
 
 console.log('🔐 Google Calendar OAuth2 Direct Setup\n');
 
-const CREDENTIALS_FILE = path.join(__dirname, '..', 'client_secret.json');
+const CREDENTIALS_FILE = path.join(__dirname, '..', 'client_secret_google_calendar.json');
 const TOKENS_FILE = path.join(__dirname, '..', '.google-tokens.json');
 
 // OAuth2 configuration
@@ -30,18 +30,17 @@ class OAuth2Setup {
 
     loadCredentials() {
         if (!fs.existsSync(CREDENTIALS_FILE)) {
-            console.log('❌ No client_secret.json found!');
+            console.log('❌ No client_secret_google_calendar.json found!');
             console.log('');
-            console.log('📋 Setup Steps:');
+            console.log('📋 The credentials file should already exist as:');
+            console.log('   client_secret_google_calendar.json');
+            console.log('');
+            console.log('💡 If missing, download from Google Cloud Console:');
             console.log('1. Go to: https://console.cloud.google.com/');
-            console.log('2. Create new project or select existing');
-            console.log('3. Enable Google Calendar API');
-            console.log('4. Go to Credentials → Create Credentials → OAuth 2.0 Client IDs');
-            console.log('5. Application type: Desktop application');
-            console.log('6. Download JSON and save as: client_secret.json');
-            console.log('7. Add to .gitignore to keep secure');
-            console.log('');
-            console.log('💡 Then run this script again');
+            console.log('2. Project: level-epoch-469021-e3');
+            console.log('3. APIs & Services → Credentials');
+            console.log('4. Download OAuth 2.0 Client JSON');
+            console.log('5. Save as: client_secret_google_calendar.json');
             return false;
         }
 
@@ -153,7 +152,7 @@ class OAuth2Setup {
         }
 
         const entriesToAdd = [
-            'client_secret.json',
+            'client_secret_google_calendar.json',
             '.google-tokens.json'
         ];
 

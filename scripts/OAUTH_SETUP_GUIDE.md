@@ -41,11 +41,15 @@ node scripts/calendar-sync-api.cjs --auto
 # Save the downloaded JSON as:
 # /home/robert/claudeRepos/claudeLifeV2/client_secret.json
 
-# It should contain something like:
+# Credentials are automatically loaded from .env file:
+# GOOGLE_CLIENT_ID=your-client-id.googleusercontent.com
+# GOOGLE_CLIENT_SECRET=your-client-secret
+
+# The client_secret.json format should be:
 {
   "installed": {
-    "client_id": "your-client-id.googleusercontent.com",
-    "client_secret": "your-client-secret",
+    "client_id": "process.env.GOOGLE_CLIENT_ID",
+    "client_secret": "process.env.GOOGLE_CLIENT_SECRET",
     "auth_uri": "https://accounts.google.com/o/oauth2/auth",
     "token_uri": "https://oauth2.googleapis.com/token",
     "redirect_uris": ["http://localhost"]
