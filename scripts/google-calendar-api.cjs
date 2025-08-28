@@ -281,6 +281,9 @@ if (require.main === module) {
             switch (command) {
                 case 'test':
                     console.log('🔍 Testing Google Calendar API connection...');
+                    console.log(`🔑 Token source: ${api.tokenSource || 'none'}`);
+                    console.log(`🎫 Access token: ${api.accessToken ? '✅ Available' : '❌ Missing'}`);
+                    
                     const calendars = await api.listCalendars();
                     console.log(`✅ Found ${calendars.length} calendars`);
                     calendars.forEach(cal => {
