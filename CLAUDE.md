@@ -476,8 +476,17 @@ planning/
 │   └── performance-[period]-[id].json
 ├── execution/                # Daily execution tracking
 │   └── execution-YYYY-MM-DD.json
-└── analytics/               # Exported analysis data
-    └── performance-export-YYYY-MM-DD.json
+├── analytics/                # Exported analysis data
+│   └── performance-export-YYYY-MM-DD.json
+journal/planning/             # Generated review templates
+├── daily-reviews/            # Comprehensive daily reviews
+│   └── review-YYYY-MM-DD.md
+├── weekly-reviews/           # Weekly strategic reviews
+│   └── review-YYYY-Www.md
+├── monthly-reviews/          # Monthly milestone assessments
+│   └── review-YYYY-MM.md
+└── quarterly-reviews/        # Quarterly strategic evaluations
+    └── review-YYYY-Qq.md
 ```
 
 #### Integration Features
@@ -493,6 +502,9 @@ planning/
 - **Tracks What Matters**: Completion rates + wellbeing for holistic success
 - **Enables Continuous Improvement**: Performance data drives better planning
 - **ADD-Friendly**: Time-boxed, visual, with clear structures and next actions
+- **Automated Date Handling**: Enhanced DateIndex class eliminates manual date calculations
+- **Intelligent Victory Detection**: Automatic analysis of achievements from existing data
+- **Contextual Reviews**: Reviews pull relevant data from journals, victories, and Git activity
 
 ### Skill Management System
 A comprehensive skill tracking and development system for the AI engineering journey, integrating GitHub activity analysis with strategic skill investment planning.

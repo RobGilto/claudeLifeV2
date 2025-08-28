@@ -22,6 +22,7 @@
  * Utility Commands:
  * - status [period]      - Show current planning status and next actions
  * - clear-day [date]     - Clear/remove daily plan and start fresh
+ * - calendar-sync [date] - Sync daily time blocks to Google Calendar
  */
 
 const fs = require('fs');
