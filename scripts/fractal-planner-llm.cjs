@@ -947,10 +947,16 @@ node scripts/fractal-planner-llm.cjs calendar-sync ${plan.date}
         fs.writeFileSync(syncDataPath, JSON.stringify(syncData, null, 2));
         
         console.log(`\n✅ Calendar sync data prepared and saved to: ${syncDataPath}`);
+        console.log(`\n📋 Setup Google Calendar MCP (one-time setup):`);
+        console.log(`   1. Install: npx @cocal/google-calendar-mcp`);
+        console.log(`   2. Get credentials from Google Cloud Console`);
+        console.log(`   3. Configure Claude Code MCP settings`);
+        console.log(`   4. See CLAUDE.md for detailed setup instructions`);
+        
         console.log(`\n💡 Next steps:`);
-        console.log(`   - Copy the MCP commands above and run them in Claude Code`);
-        console.log(`   - Verify events appear in your Google Calendar`);
-        console.log(`   - Use /taskmaster-start to begin execution`);
+        console.log(`   - For MCP: Copy the tool commands above and use in Claude Code`);
+        console.log(`   - For manual: Copy times into your calendar app`);
+        console.log(`   - Start execution: node scripts/fractal-planner-llm.cjs taskmaster-start`);
         
         return { success: true, events: calendarEvents.length, failures: failures.length };
     }

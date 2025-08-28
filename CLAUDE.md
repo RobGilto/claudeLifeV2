@@ -385,6 +385,7 @@ A comprehensive multi-scale planning system that creates aligned plans from dail
 - Each block aligned with higher-level objectives
 - Daily objectives (max 3 for focus)
 - Automatic integration with Taskmaster execution
+- Built-in calendar sync capability
 
 #### Review Commands
 
@@ -505,6 +506,24 @@ journal/planning/             # Generated review templates
 - **Automated Date Handling**: Enhanced DateIndex class eliminates manual date calculations
 - **Intelligent Victory Detection**: Automatic analysis of achievements from existing data
 - **Contextual Reviews**: Reviews pull relevant data from journals, victories, and Git activity
+
+#### Calendar Integration
+
+##### `/calendar-sync [date]` Command
+- Converts daily time blocks into Google Calendar events
+- Automatic time zone handling (Australia/Sydney)
+- Color-coded events by block type (deep-work=blue, learning=green)
+- Popup reminders at 10 and 2 minutes before each block
+- Generates both MCP commands and manual entry options
+- Saves sync data for tracking and potential automation
+- Provides setup instructions for Google Calendar MCP integration
+
+**Calendar Sync Features:**
+- **Smart Scheduling**: Respects Australia/Sydney timezone automatically
+- **Block Type Colors**: Visual differentiation in calendar (deep-work, learning, admin, review)
+- **Strategic Context**: Event descriptions include alignment with higher-level goals
+- **Dual Options**: Both automated MCP sync and manual calendar entry
+- **Setup Guidance**: One-time Google Calendar MCP configuration instructions
 
 ### Skill Management System
 A comprehensive skill tracking and development system for the AI engineering journey, integrating GitHub activity analysis with strategic skill investment planning.
