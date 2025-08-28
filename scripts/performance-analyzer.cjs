@@ -16,8 +16,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { PlanStorage, DateIndex } = require('./fractal-planner.js');
-const { ExecutionStorage } = require('./taskmaster.js');
+const { PlanStorage, DateIndex } = require('./fractal-planner.cjs');
+const { ExecutionStorage } = require('./taskmaster.cjs');
 
 // Configuration
 const ANALYTICS_DIR = path.join(__dirname, '..', 'planning', 'analytics');
@@ -500,7 +500,7 @@ class PerformanceAnalyzer {
         for (const period of periods) {
             const plan = PlanStorage.load(period, identifiers[period]);
             if (!plan) {
-                suggestions.push(`Create ${period} plan: node scripts/fractal-planner.js plan-${period}`);
+                suggestions.push(`Create ${period} plan: node scripts/fractal-planner.cjs plan-${period}`);
                 break; // Start with highest level missing
             }
         }
@@ -508,13 +508,13 @@ class PerformanceAnalyzer {
         // Check for pending reviews
         const lastWeek = this.getPreviousWeekId();
         if (PlanStorage.load('week', lastWeek) && !PlanStorage.loadPerformance('week', lastWeek)) {
-            suggestions.push(`Review last week: node scripts/fractal-planner.js review-week ${lastWeek}`);
+            suggestions.push(`Review last week: node scripts/fractal-planner.cjs review-week ${lastWeek}`);
         }
 
         // Execution suggestions
         const todayExecution = ExecutionStorage.load(identifiers.day);
         if (!todayExecution) {
-            suggestions.push(`Start daily execution: node scripts/taskmaster.js start`);
+            suggestions.push(`Start daily execution: node scripts/taskmaster.cjs start`);
         }
 
         suggestions.forEach(suggestion => console.log(`  • ${suggestion}`));

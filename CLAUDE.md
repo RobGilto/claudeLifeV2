@@ -334,6 +334,138 @@ lessons/
 - **Prevention strategies**: Actionable steps to avoid similar issues
 - **ADD-optimized**: Non-overwhelming weekly reviews with clear action items
 
+### Fractal Planning Protocol
+A comprehensive multi-scale planning system that creates aligned plans from daily time blocks to yearly vision, with integrated performance tracking and continuous improvement.
+
+#### Core Concepts
+- **Multi-Indexing**: Every date is simultaneously indexed as day/week/month/quarter/year
+- **Fractal Alignment**: Plans cascade from year → quarter → month → week → day
+- **Performance Tracking**: Each period has completion rates, wellbeing metrics, and insights
+- **Continuous Adjustment**: Reviews feed back into planning for iterative improvement
+
+#### Planning Commands
+
+##### `/plan-year` Command
+- Strategic yearly vision and transformation goals
+- 3-4 major strategic priorities
+- 8-12 yearly objectives and milestones  
+- Success metrics definition
+- Creates foundation for all lower-level plans
+
+##### `/plan-quarter` Command
+- 3-5 strategic priorities aligned with yearly vision
+- 6-10 quarterly objectives and major milestones
+- Quarterly theme/focus area
+- Inherits alignment from yearly plan
+
+##### `/plan-month` Command  
+- 5-8 monthly objectives and 4 milestones
+- Monthly theme connected to quarterly priorities
+- Tactical execution of strategic initiatives
+- Bridge between strategic quarters and tactical weeks
+
+##### `/plan-week` Command
+- 3-5 weekly priorities and 8 weekly objectives
+- Weekly context/theme
+- Operational planning aligned with monthly goals
+- Sets up daily time block allocation
+
+##### `/plan-day` Command
+- 4-5 time blocks optimized for ADD workflow
+- Each block aligned with higher-level objectives
+- Daily objectives (max 3 for focus)
+- Automatic integration with Taskmaster execution
+
+#### Review Commands
+
+##### `/review-week` Command
+- Objective completion assessment
+- Energy, focus, and satisfaction metrics (1-10)
+- Weekly insights and adjustment identification
+- Performance comparison with previous weeks
+
+##### `/review-month` Command
+- Objective and milestone completion review
+- Monthly satisfaction assessment  
+- Weekly performance aggregation and analysis
+- Strategic insights for next month planning
+
+##### `/review-quarter` and `/review-year` Commands
+- Major milestone and objective assessment
+- Strategic performance analysis
+- Long-term trend identification  
+- Vision alignment evaluation
+
+#### Taskmaster Integration
+
+##### `/taskmaster-start` Command
+- Loads daily plan and initializes execution session
+- Shows alignment context from higher-level plans
+- Provides time block overview with completion tracking
+- Integrates with fractal planning hierarchy
+
+##### `/taskmaster-block` Command
+- Executes specific time blocks with focus tracking
+- Records energy and focus metrics before/during/after
+- Tracks interruptions and challenges
+- Maintains alignment with strategic objectives
+
+##### `/taskmaster-complete` Command
+- Records outcomes and completion metrics
+- Updates original plan completion status
+- Suggests next time block for seamless flow
+- Feeds data into performance tracking system
+
+#### Performance Analytics
+
+##### `/performance-dashboard` Command
+- Current period status across all planning levels
+- Recent performance trends and highlights
+- Wellbeing metric tracking over time
+- Recommended next actions based on gaps
+
+##### `/performance-compare` Command
+- Side-by-side comparison of any two periods
+- Completion rate, wellbeing, and productivity analysis
+- Improvement/decline identification with insights
+- Actionable recommendations for optimization
+
+##### `/performance-trend` Command
+- Multi-period trend analysis (weeks, months, quarters)
+- Pattern detection (cyclical, consistent trends)
+- Moving averages and direction analysis
+- Trend-based improvement recommendations
+
+#### Data Structure and Storage
+```
+planning/
+├── data/                     # Plan and performance JSON files
+│   ├── day-YYYY-MM-DD.json
+│   ├── week-YYYY-Www.json
+│   ├── month-YYYY-MM.json
+│   ├── quarter-YYYY-Qq.json
+│   ├── year-YYYY.json
+│   └── performance-[period]-[id].json
+├── execution/                # Daily execution tracking
+│   └── execution-YYYY-MM-DD.json
+└── analytics/               # Exported analysis data
+    └── performance-export-YYYY-MM-DD.json
+```
+
+#### Integration Features
+- **Seamless Hierarchy**: Plans automatically inherit from parent levels
+- **Real-time Alignment**: Daily execution shows weekly/monthly/quarterly context
+- **Performance Feedback**: Reviews inform future planning iterations
+- **ADD Optimization**: 4-5 daily blocks, visual progress, clear next actions
+- **Data Export**: JSON/CSV export for external analysis tools
+
+#### Key Benefits
+- **Reduces Planning Overhead**: Hierarchy eliminates redundant planning
+- **Maintains Strategic Focus**: Daily actions stay aligned with yearly vision
+- **Tracks What Matters**: Completion rates + wellbeing for holistic success
+- **Enables Continuous Improvement**: Performance data drives better planning
+- **ADD-Friendly**: Time-boxed, visual, with clear structures and next actions
+
 ## Quality Checks
 
 Before committing, verify:

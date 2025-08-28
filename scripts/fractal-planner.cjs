@@ -794,26 +794,26 @@ class FractalPlanner {
         const suggestions = [];
 
         if (!plans.year) {
-            suggestions.push(`📅 Create year plan: node scripts/fractal-planner.js plan-year`);
+            suggestions.push(`📅 Create year plan: node scripts/fractal-planner.cjs plan-year`);
         }
         if (!plans.quarter) {
-            suggestions.push(`📊 Create quarter plan: node scripts/fractal-planner.js plan-quarter`);
+            suggestions.push(`📊 Create quarter plan: node scripts/fractal-planner.cjs plan-quarter`);
         }
         if (!plans.month) {
-            suggestions.push(`📆 Create month plan: node scripts/fractal-planner.js plan-month`);
+            suggestions.push(`📆 Create month plan: node scripts/fractal-planner.cjs plan-month`);
         }
         if (!plans.week) {
-            suggestions.push(`📋 Create week plan: node scripts/fractal-planner.js plan-week`);
+            suggestions.push(`📋 Create week plan: node scripts/fractal-planner.cjs plan-week`);
         }
         if (!plans.day) {
-            suggestions.push(`🎯 Create daily plan: node scripts/fractal-planner.js plan-day`);
+            suggestions.push(`🎯 Create daily plan: node scripts/fractal-planner.cjs plan-day`);
         }
 
         // Review suggestions
         const previousWeek = this.getPreviousWeek();
         const prevWeekId = previousWeek.getIdentifiers().week;
         if (PlanStorage.load('week', prevWeekId) && !PlanStorage.loadPerformance('week', prevWeekId)) {
-            suggestions.push(`📈 Review previous week: node scripts/fractal-planner.js review-week ${prevWeekId}`);
+            suggestions.push(`📈 Review previous week: node scripts/fractal-planner.cjs review-week ${prevWeekId}`);
         }
 
         suggestions.forEach(suggestion => console.log(`  • ${suggestion}`));

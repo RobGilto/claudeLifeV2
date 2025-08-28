@@ -18,7 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
-const { PlanStorage, DateIndex, Plan } = require('./fractal-planner.js');
+const { PlanStorage, DateIndex, Plan } = require('./fractal-planner.cjs');
 
 // Configuration
 const EXECUTION_DIR = path.join(__dirname, '..', 'planning', 'execution');
