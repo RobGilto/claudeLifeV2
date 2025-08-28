@@ -55,7 +55,7 @@ class GoogleCalendarAPI {
     }
 
     async makeRequest(endpoint, method = 'GET', body = null) {
-        const url = endpoint.startsWith('http') ? endpoint : `${CALENDAR_API_BASE}${endpoint}`;
+        let url = endpoint.startsWith('http') ? endpoint : `${CALENDAR_API_BASE}${endpoint}`;
         
         const options = {
             method,
