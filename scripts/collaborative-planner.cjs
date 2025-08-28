@@ -913,12 +913,12 @@ async function main() {
     const command = args[0];
     const period = args[1];
     
-    const interface = new CollaborativePlanningInterface();
+    const planningInterface = new CollaborativePlanningInterface();
     
     try {
         switch (command) {
             case 'collaborate-day':
-                await interface.startCollaboration('day', period);
+                await planningInterface.startCollaboration('day', period);
                 break;
             case 'collaborate-week':
                 console.log('Weekly collaborative planning - Coming soon!');
