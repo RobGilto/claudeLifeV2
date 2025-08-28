@@ -81,8 +81,8 @@ class TimeAwareDate {
             nextMinute = 0;
         }
         
-        // Don't schedule after 6 PM
-        if (nextHour >= 18) {
+        // Don't schedule after 11 PM
+        if (nextHour >= 23) {
             return null; // Too late for new blocks
         }
         
@@ -103,23 +103,24 @@ class TimeAwareDate {
         }
         
         // Generate time blocks from current time
-        const blockDurations = [90, 75, 60, 45, 30]; // Decreasing duration as day progresses
-        const blockTypes = ['deep-work', 'project', 'research', 'admin', 'review'];
-        const blockLabels = [
-            'Deep Work Session',
-            'Project Development', 
-            'Research & Learning',
-            'Planning & Admin',
-            'Review & Reflection'
-        ];
+        const isEvening = currentBlock.hour >= 18;
+        const blockDurations = isEvening 
+            ? [60, 45, 45, 30, 30] // Evening: shorter blocks
+            : [90, 75, 60, 45, 30]; // Day: standard decreasing duration
+        const blockTypes = isEvening
+            ? ['learning', 'project', 'research', 'admin', 'review']
+            : ['deep-work', 'project', 'research', 'admin', 'review'];
+        const blockLabels = isEvening
+            ? ['Evening Learning', 'Light Project Work', 'Research & Reading', 'Admin & Planning', 'Daily Review']
+            : ['Deep Work Session', 'Project Development', 'Research & Learning', 'Planning & Admin', 'Review & Reflection'];
         
         for (let i = 0; i < maxBlocks && currentBlock; i++) {
             const duration = blockDurations[Math.min(i, blockDurations.length - 1)];
             const endHour = currentBlock.hour + Math.floor((currentBlock.minute + duration) / 60);
             const endMinute = (currentBlock.minute + duration) % 60;
             
-            // Stop if we'd go past 6 PM
-            if (endHour > 18 || (endHour === 18 && endMinute > 0)) {
+            // Stop if we'd go past 11 PM
+            if (endHour > 23 || (endHour === 23 && endMinute > 0)) {
                 break;
             }
             
@@ -141,8 +142,8 @@ class TimeAwareDate {
                 currentBlock.minute = currentBlock.minute - 60;
             }
             
-            if (currentBlock.hour >= 18) {
-                break; // Don't schedule past 6 PM
+            if (currentBlock.hour >= 23) {
+                break; // Don't schedule past 11 PM
             }
             
             currentBlock.start = `${String(currentBlock.hour).padStart(2, '0')}:${String(currentBlock.minute).padStart(2, '0')}`;
