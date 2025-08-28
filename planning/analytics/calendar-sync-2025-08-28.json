@@ -1,0 +1,38 @@
+{
+  "date": "2025-08-28",
+  "synced": "2025-08-28T04:59:10.429Z",
+  "blocks": [
+    {
+      "start": "09:00",
+      "duration": 90,
+      "activity": "AI/ML skill development - Boot.dev or project work",
+      "type": "deep-work",
+      "calendarStart": "2025-08-28T09:00:00",
+      "calendarEnd": "2025-08-28T10:30:00"
+    },
+    {
+      "start": "11:00",
+      "duration": 60,
+      "activity": "Communication, admin, and planning tasks",
+      "type": "admin",
+      "calendarStart": "2025-08-28T11:00:00",
+      "calendarEnd": "2025-08-28T12:00:00"
+    },
+    {
+      "start": "14:00",
+      "duration": 90,
+      "activity": "Technical project work or advanced learning",
+      "type": "deep-work",
+      "calendarStart": "2025-08-28T14:00:00",
+      "calendarEnd": "2025-08-28T15:30:00"
+    },
+    {
+      "start": "16:00",
+      "duration": 60,
+      "activity": "Research, documentation, or skill practice",
+      "type": "learning",
+      "calendarStart": "2025-08-28T16:00:00",
+      "calendarEnd": "2025-08-28T17:00:00"
+    }
+  ]
+}

@@ -447,11 +447,21 @@ class FractalPlanner {
             }
         ];
 
-        // Add time blocks with defaults and time awareness
+        // Add time blocks with defaults and time awareness (avoiding duplicates)
         defaultBlocks.forEach(block => {
             const blockStatus = this.getBlockStatus(block, currentTime, isToday);
-            plan.addTimeBlock(block.start, block.duration, block.activity, block.alignment, block.type);
-            console.log(`  ${blockStatus.icon} ${block.start}-${this.addMinutes(block.start, block.duration)}: ${block.activity}`);
+            
+            // Check if block already exists (same start time and activity)
+            const existingBlock = plan.timeBlocks.find(b => 
+                b.start === block.start && b.activity === block.activity
+            );
+            
+            if (!existingBlock) {
+                plan.addTimeBlock(block.start, block.duration, block.activity, block.alignment, block.type);
+                console.log(`  ${blockStatus.icon} ${block.start}-${this.addMinutes(block.start, block.duration)}: ${block.activity}`);
+            } else {
+                console.log(`  ${blockStatus.icon} ${block.start}-${this.addMinutes(block.start, block.duration)}: ${block.activity} (existing)`);
+            }
             if (blockStatus.note) console.log(`     ${blockStatus.note}`);
         });
 
