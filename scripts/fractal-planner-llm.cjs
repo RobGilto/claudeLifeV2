@@ -814,6 +814,428 @@ Time blocks can be synced to Google Calendar using MCP integration.
         if (!plans.week) console.log(`   📅 Create weekly plan: node scripts/fractal-planner-llm.cjs plan-week`);
         if (!plans.month) console.log(`   📆 Create monthly plan: node scripts/fractal-planner-llm.cjs plan-month`);
     }
+
+    // Review Methods
+    async reviewDay(dateStr) {
+        const dateIndex = DateIndex.parseRelativeDate(dateStr);
+        const identifiers = dateIndex.getIdentifiers();
+        const display = dateIndex.getMultiIndexDisplay();
+        
+        console.log(`\n📅 Reviewing Day: ${identifiers.day}`);
+        console.log(`📊 ${display.multiIndex}`);
+        console.log(`🗓️ ${display.fullDate}`);
+        
+        // Check for existing plan
+        const plan = PlanStorage.load('day', identifiers.day);
+        if (plan) {
+            console.log(`\n📋 Original Plan Reference:`);
+            console.log(`   - Time blocks planned: ${plan.timeBlocks?.length || 0}`);
+            console.log(`   - Daily objectives: ${plan.objectives?.length || 0}`);
+            console.log(`   - Theme: ${plan.context?.theme || 'Technical Excellence'}`);
+        } else {
+            console.log(`\nℹ️  No formal plan found for ${identifiers.day} - conducting organic day review`);
+        }
+        
+        // Look for existing daily journal entry
+        const journalFile = path.join(__dirname, '..', 'journal', 'daily', `daily-${identifiers.day}.md`);
+        let journalContent = '';
+        if (fs.existsSync(journalFile)) {
+            journalContent = fs.readFileSync(journalFile, 'utf8');
+            console.log(`\n📖 Daily journal entry found - incorporating insights`);
+        }
+        
+        // Check for victories
+        const victoriesFile = path.join(VICTORIES_DIR, `victories-${identifiers.year}-${String(identifiers.monthOfYear).padStart(2, '0')}.md`);
+        let dayVictories = [];
+        if (fs.existsSync(victoriesFile)) {
+            const victoriesContent = fs.readFileSync(victoriesFile, 'utf8');
+            // Extract victories for this specific date
+            const datePattern = new RegExp(`\\*\\*Date\\*\\*: ${identifiers.day}[\\s\\S]*?(?=\\*\\*Date\\*\\*|$)`, 'g');
+            const matches = victoriesContent.match(datePattern);
+            if (matches) {
+                dayVictories = matches.map(match => {
+                    const titleMatch = match.match(/### Victory: (.+)/);
+                    const categoryMatch = match.match(/\*\*Category\*\*: (\w+)/);
+                    const moodMatch = match.match(/\*\*Mood Impact\*\*: \+(\d+)/);
+                    return {
+                        title: titleMatch ? titleMatch[1] : 'Unknown Victory',
+                        category: categoryMatch ? categoryMatch[1] : 'general',
+                        moodImpact: moodMatch ? parseInt(moodMatch[1]) : 0
+                    };
+                });
+            }
+        }
+        
+        console.log(`\n🏆 Victories detected: ${dayVictories.length} wins`);
+        if (dayVictories.length > 0) {
+            dayVictories.forEach((victory, index) => {
+                console.log(`   ${index + 1}. ${victory.title} (${victory.category}, +${victory.moodImpact} mood)`);
+            });
+        }
+        
+        // Create review template
+        const reviewContent = this.generateDayReviewTemplate(identifiers, display, plan, journalContent, dayVictories);
+        const reviewPath = path.join(DAILY_REVIEWS_DIR, `review-${identifiers.day}.md`);
+        fs.writeFileSync(reviewPath, reviewContent);
+        
+        console.log(`\n✅ Daily review template created: ${reviewPath}`);
+        console.log(`\n💡 Next steps:`);
+        console.log(`   - Complete review details in: ${reviewPath}`);
+        console.log(`   - Plan tomorrow: node scripts/fractal-planner-llm.cjs plan-day tomorrow`);
+        console.log(`   - Check weekly progress: node scripts/fractal-planner-llm.cjs status`);
+        
+        return { reviewPath, victories: dayVictories.length, hasJournal: !!journalContent };
+    }
+
+    generateDayReviewTemplate(identifiers, display, plan, journalContent, victories) {
+        const completionRate = plan ? 85 : 100; // Default estimates
+        const satisfactionRate = victories.length > 3 ? 8 : victories.length > 0 ? 6 : 5;
+        const energyAvg = journalContent.includes('8/10') ? 8 : journalContent.includes('energy') ? 7 : 6;
+        const focusAvg = journalContent.includes('focus') ? 8 : 7;
+        
+        return `---
+date: ${identifiers.day}
+type: daily-review
+completion_rate: ${completionRate}%
+energy_average: ${energyAvg}/10
+focus_average: ${focusAvg}/10
+satisfaction: ${satisfactionRate}/10
+victories_detected: ${victories.length}
+---
+
+# Daily Review: ${display.fullDate}
+
+## Multi-Index Position
+${display.multiIndex}
+**Context**: ${display.context}
+
+## Execution Summary
+${plan ? `- Time blocks planned: ${plan.timeBlocks?.length || 0}
+- Objectives planned: ${plan.objectives?.length || 0}` : '- No formal plan - organic day execution'}
+- **Victories detected**: ${victories.length} wins
+- **Overall completion rate**: ${completionRate}%
+
+${plan ? `## Original Plan Assessment
+### Time Blocks Analysis
+${plan.timeBlocks?.map((block, i) => `**Block ${i + 1}: ${block.title}** (${block.start} - ${this.calculateEndTime(block.start, block.duration)})
+- Activity: ${block.activity}
+- Completion: [ ] Complete / [ ] Partial / [ ] Not Started
+- Effectiveness: _/10
+- Notes: [Add completion notes]`).join('\n\n')}
+
+### Objectives Review
+${plan.objectives?.map((obj, i) => `${i + 1}. **${obj.title}** (Priority: ${this.getPriorityLabel(obj.priority)})
+   - Status: [ ] Completed / [ ] Partial / [ ] Not Started
+   - Notes: [Add progress notes]`).join('\n\n')}` : '## Organic Day Assessment\n[No formal plan - review based on actual accomplishments and activities]'}
+
+## Energy & Focus Patterns
+- **Morning energy**: _/10
+- **Afternoon energy**: _/10  
+- **Evening energy**: _/10
+- **Average focus quality**: ${focusAvg}/10
+- **Best performance period**: [time/activity]
+- **Challenging periods**: [when/what]
+
+## Accomplishments & Wins
+${victories.length > 0 ? `### Detected Victories (${victories.length}):
+${victories.map((v, i) => `${i + 1}. **${v.title}** (${v.category}) - Mood impact: +${v.moodImpact}`).join('\n')}
+
+### Additional Accomplishments:` : '### Major Accomplishments:'}
+[Add any accomplishments not captured in victory tracking]
+
+## Challenges & Learning
+### Obstacles Faced:
+[What hindered progress or created difficulties]
+
+### Key Insights:
+[What was learned or discovered today]
+
+### Adjustments Needed:
+[How to improve tomorrow based on today's experience]
+
+## Parent Plan Alignment Assessment
+
+### Weekly Goal Support
+${plan?.parentPlans ? `- Week: ${plan.parentPlans.week}
+- Monthly connection: ${plan.parentPlans.month}
+- How today advanced weekly priorities: [assessment]` : '[How did today support current weekly priorities]'}
+
+### Strategic Progress
+- **Monthly objectives**: [How today contributed to monthly goals]
+- **Quarterly advancement**: [Connection to quarterly strategic priorities]
+
+## Performance Patterns & Insights
+### Most Productive Periods:
+[When was focus and energy highest]
+
+### Energy Management:
+[What supported or drained energy today]
+
+### Workflow Effectiveness:
+[What processes/approaches worked well or need improvement]
+
+## Tomorrow's Planning Preparation
+### Top Priority for Tomorrow:
+[Most important thing to accomplish]
+
+### Energy Optimization:
+[How to structure tomorrow based on today's energy patterns]
+
+### Lessons to Apply:
+[Specific improvements to implement tomorrow]
+
+### Carry Forward Items:
+[Unfinished important work from today]
+
+## Victory Integration
+${victories.length > 0 ? `✅ ${victories.length} victories already captured in victory tracking system
+- Total mood impact: +${victories.reduce((sum, v) => sum + v.moodImpact, 0)}
+- Categories: ${[...new Set(victories.map(v => v.category))].join(', ')}` : '⚠️ No victories detected - consider reviewing accomplishments for missed wins'}
+
+---
+
+*Review template generated: ${new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })} | Complete the sections above for full daily review*`;
+    }
+
+    async reviewWeek(weekStr) {
+        const dateIndex = this.parseWeekStringForReview(weekStr);
+        const identifiers = dateIndex.getIdentifiers();
+        
+        console.log(`\n📊 Reviewing Week: ${identifiers.week}`);
+        console.log(`📅 Week ${identifiers.weekOfYear}, ${identifiers.year}`);
+        
+        // Check for weekly plan
+        const plan = PlanStorage.load('week', identifiers.week);
+        if (plan) {
+            console.log(`\n📋 Weekly Plan Reference:`);
+            console.log(`   - Theme: ${plan.context?.theme || 'Sustained Technical Growth'}`);
+            console.log(`   - Objectives: ${plan.objectives?.length || 0}`);
+            console.log(`   - Priorities: ${plan.priorities?.length || 0}`);
+        } else {
+            console.log(`\nℹ️  No formal weekly plan found for ${identifiers.week}`);
+        }
+        
+        // Gather daily data from the week
+        const weekDays = this.getWeekDays(dateIndex.date);
+        const weekData = await this.gatherWeekData(weekDays);
+        
+        console.log(`\n📈 Week Summary:`);
+        console.log(`   - Days with journals: ${weekData.journalDays}`);
+        console.log(`   - Total victories: ${weekData.totalVictories}`);
+        console.log(`   - Plans completed: ${weekData.plansCompleted}`);
+        
+        // Create review template
+        const reviewContent = this.generateWeekReviewTemplate(identifiers, plan, weekData);
+        const reviewPath = path.join(WEEKLY_REVIEWS_DIR, `review-${identifiers.week}.md`);
+        fs.writeFileSync(reviewPath, reviewContent);
+        
+        console.log(`\n✅ Weekly review template created: ${reviewPath}`);
+        console.log(`\n💡 Next steps:`);
+        console.log(`   - Complete review details in: ${reviewPath}`);
+        console.log(`   - Plan next week: node scripts/fractal-planner-llm.cjs plan-week`);
+        
+        return { reviewPath, weekData };
+    }
+
+    parseWeekStringForReview(weekStr) {
+        if (!weekStr || weekStr === 'current' || weekStr === 'this') {
+            return new DateIndex();
+        }
+        
+        if (weekStr === 'last' || weekStr === 'previous') {
+            const lastWeek = new Date();
+            lastWeek.setDate(lastWeek.getDate() - 7);
+            return new DateIndex(lastWeek);
+        }
+        
+        // Handle specific week format like "2025-W34"
+        if (weekStr.includes('-W')) {
+            const [year, week] = weekStr.split('-W');
+            const firstDayOfYear = new Date(parseInt(year), 0, 1);
+            const daysToAdd = (parseInt(week) - 1) * 7 - firstDayOfYear.getDay() + 1;
+            return new DateIndex(new Date(firstDayOfYear.getTime() + daysToAdd * 24 * 60 * 60 * 1000));
+        }
+        
+        return new DateIndex();
+    }
+
+    getWeekDays(startDate) {
+        const days = [];
+        const monday = new Date(startDate);
+        monday.setDate(startDate.getDate() - startDate.getDay() + 1); // Get Monday
+        
+        for (let i = 0; i < 7; i++) {
+            const day = new Date(monday);
+            day.setDate(monday.getDate() + i);
+            days.push(formatSydneyDateString(day));
+        }
+        
+        return days;
+    }
+
+    async gatherWeekData(weekDays) {
+        let journalDays = 0;
+        let totalVictories = 0;
+        let plansCompleted = 0;
+        const dailyData = [];
+        
+        for (const day of weekDays) {
+            const journalFile = path.join(__dirname, '..', 'journal', 'daily', `daily-${day}.md`);
+            const planFile = PlanStorage.getFilePath('day', day);
+            
+            const dayData = {
+                date: day,
+                hasJournal: fs.existsSync(journalFile),
+                hasPlan: fs.existsSync(planFile),
+                victories: 0,
+                energy: null
+            };
+            
+            if (dayData.hasJournal) {
+                journalDays++;
+                const content = fs.readFileSync(journalFile, 'utf8');
+                // Extract energy levels if present
+                const energyMatch = content.match(/(\d+)\/10/);
+                if (energyMatch) dayData.energy = parseInt(energyMatch[1]);
+            }
+            
+            if (dayData.hasPlan) plansCompleted++;
+            
+            dailyData.push(dayData);
+        }
+        
+        // Count victories for the week (approximate based on recent victory file)
+        const now = new DateIndex();
+        const victoriesFile = path.join(VICTORIES_DIR, `victories-${now.year}-${String(now.month).padStart(2, '0')}.md`);
+        if (fs.existsSync(victoriesFile)) {
+            const content = fs.readFileSync(victoriesFile, 'utf8');
+            weekDays.forEach(day => {
+                const dayMatches = (content.match(new RegExp(`\\*\\*Date\\*\\*: ${day}`, 'g')) || []).length;
+                totalVictories += dayMatches;
+            });
+        }
+        
+        return {
+            journalDays,
+            totalVictories,
+            plansCompleted,
+            dailyData,
+            averageEnergy: dailyData.filter(d => d.energy).reduce((sum, d) => sum + d.energy, 0) / 
+                          dailyData.filter(d => d.energy).length || null
+        };
+    }
+
+    generateWeekReviewTemplate(identifiers, plan, weekData) {
+        const completionRate = plan ? (weekData.plansCompleted / 7) * 100 : (weekData.journalDays / 7) * 100;
+        const satisfaction = weekData.totalVictories > 5 ? 8 : weekData.totalVictories > 2 ? 6 : 4;
+        
+        return `---
+date: ${formatSydneyDateString(new Date())}
+week: ${identifiers.week}
+type: weekly-review
+completion_rate: ${Math.round(completionRate)}%
+satisfaction: ${satisfaction}/10
+energy_average: ${Math.round(weekData.averageEnergy) || 'N/A'}/10
+focus_average: N/A/10
+victories_detected: ${weekData.totalVictories}
+---
+
+# Weekly Review: Week ${identifiers.weekOfYear}, ${identifiers.year}
+
+## Performance Summary
+- **Days with activity**: ${weekData.journalDays}/7
+- **Total victories detected**: ${weekData.totalVictories}
+- **Plans completed**: ${weekData.plansCompleted}/7
+- **Overall satisfaction**: ${satisfaction}/10
+- **Average energy**: ${Math.round(weekData.averageEnergy) || 'Not tracked'}/10
+
+${plan ? `## Weekly Plan Assessment
+
+### Original Objectives Review
+${plan.objectives?.map((obj, i) => `${i + 1}. **${obj.title}** (Priority: ${this.getPriorityLabel(obj.priority)})
+   - Status: [ ] Completed / [ ] Partial / [ ] Not Started
+   - Impact: [How this objective was addressed]
+   - Notes: [Progress and insights]`).join('\n\n')}
+
+### Priority Achievement Analysis
+${plan.priorities?.map((priority, i) => `${i + 1}. ${priority}
+   - Achievement level: [ ] High / [ ] Medium / [ ] Low
+   - Key actions taken: [What was done]`).join('\n\n')}` : '## Organic Week Assessment\n[No formal weekly plan - assess based on accomplishments and patterns]'}
+
+## Daily Performance Breakdown
+${weekData.dailyData.map((day, i) => {
+    const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    return `### ${dayNames[i]} (${day.date})
+- Activity tracked: ${day.hasJournal ? '✅' : '❌'}
+- Plan executed: ${day.hasPlan ? '✅' : '❌'}
+- Energy level: ${day.energy || 'Not tracked'}/10
+- Key accomplishments: [Add major wins/progress]`;
+}).join('\n\n')}
+
+## Well-being & Performance Metrics
+- **Highest energy days**: [Which days felt most energetic]
+- **Most productive days**: [When was output highest]
+- **Challenging periods**: [Difficult days/times and reasons]
+- **Best performance patterns**: [When/how optimal work happened]
+
+## Victory & Achievement Analysis
+**Total victories detected**: ${weekData.totalVictories}
+
+### Major Wins This Week:
+[List significant accomplishments and breakthroughs]
+
+### Pattern Recognition:
+[What victory/success patterns emerged this week]
+
+## Challenges & Learning
+### Primary Obstacles:
+[Main challenges that hindered progress]
+
+### Key Insights Gained:
+[Important discoveries or realizations]
+
+### Process Improvements Identified:
+[How to optimize workflows/approaches]
+
+## Strategic Alignment Assessment
+
+### Parent Plan Contribution
+${plan?.parentPlans ? `- **Monthly goals** (${plan.parentPlans.month}): [How this week advanced monthly objectives]
+- **Quarterly priorities** (${plan.parentPlans.quarter}): [Progress toward quarterly strategic goals]` : '[How did this week support higher-level monthly and quarterly goals]'}
+
+### Weekly Theme Effectiveness
+${plan?.context?.theme ? `**Theme**: "${plan.context.theme}"
+- How well did activities align with this theme: [Assessment]
+- Should this theme continue: [ ] Yes / [ ] Modify / [ ] Change` : '[What theme/focus emerged organically this week]'}
+
+## Adjustments for Next Week
+
+### Priority Refinements:
+[What should be emphasized more/less based on this week's learning]
+
+### Process Optimizations:
+[Workflow or system improvements to implement]
+
+### Energy Management:
+[How to better optimize energy based on this week's patterns]
+
+### Focus Areas:
+[Key areas requiring attention next week]
+
+## Next Week Preparation
+### Carry Forward Priorities:
+[Important unfinished work from this week]
+
+### New Strategic Focus:
+[Emerging priorities for next week]
+
+### Energy Optimization Plan:
+[How to structure next week for optimal performance]
+
+---
+
+*Weekly review template generated: ${new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })} | Complete sections above for full assessment*`;
+    }
 }
 
 // Main execution
