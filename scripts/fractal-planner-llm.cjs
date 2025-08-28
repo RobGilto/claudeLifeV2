@@ -94,9 +94,11 @@ class PlanStorage {
     }
 
     static save(plan) {
-        const filePath = this.getFilePath(plan.period, plan.identifier);
+        const period = plan.type;
+        const identifier = plan.id.replace(`${period}-`, '');
+        const filePath = this.getFilePath(period, identifier);
         fs.writeFileSync(filePath, JSON.stringify(plan, null, 2));
-        this.log(`Saved ${plan.period} plan: ${plan.identifier}`);
+        this.log(`Saved ${period} plan: ${identifier}`);
         return filePath;
     }
 
