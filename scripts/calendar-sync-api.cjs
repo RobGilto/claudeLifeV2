@@ -86,15 +86,16 @@ async function syncCalendarEvents(date, autoMode = false) {
     
     // Check if we have OAuth access token
     if (!api.accessToken) {
-        console.log('⚠️ No OAuth2 access token found!');
-        console.log('   Google Calendar API requires OAuth2 authentication.');
-        console.log('');
-        console.log('   Quick Setup Options:');
-        console.log('   1. Use existing MCP integration (recommended)');
-        console.log('   2. Set up OAuth2 credentials');
-        console.log('');
-        console.log('   For now, showing manual event details...\n');
-        autoMode = false;  // Fall back to manual mode
+        if (autoMode) {
+            console.log('⚠️ No OAuth2 access token found for automatic mode!');
+            console.log('   Google Calendar API requires OAuth2 authentication.');
+            console.log('');
+            console.log('   Setup detected MCP tokens - they should work for MCP commands.');
+            console.log('   For direct API automation, additional OAuth2 setup may be needed.');
+            console.log('');
+            console.log('   Falling back to MCP command mode...\n');
+            autoMode = false;  // Fall back to manual mode
+        }
     }
 
     if (autoMode) {
