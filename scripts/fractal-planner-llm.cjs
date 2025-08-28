@@ -2,17 +2,26 @@
 
 /**
  * LLM-Friendly Fractal Planning System
- * Purpose: Non-interactive multi-scale planning for day/week/month/quarter/year
+ * Purpose: Non-interactive multi-scale planning and reviewing for day/week/month/quarter/year
  * Usage: node scripts/fractal-planner-llm.cjs [command] [args]
  * Dependencies: fs, path (no readline - LLM compatible)
  * 
- * Commands:
+ * Planning Commands:
  * - plan-day [date]      - Create daily time blocks with sensible defaults
  * - plan-week [week]     - Create weekly goals and priorities 
  * - plan-month [month]   - Create monthly objectives and milestones
  * - plan-quarter [Q]     - Create quarterly strategic initiatives
  * - plan-year [year]     - Create yearly vision and major goals
+ * 
+ * Review Commands:
+ * - review-day [date|yesterday|today]     - Conduct daily performance review
+ * - review-week [week|current|last]       - Weekly achievement and insights review
+ * - review-month [month|current|last]     - Monthly strategic assessment
+ * - review-quarter [quarter|current|last] - Quarterly transformation review
+ * 
+ * Utility Commands:
  * - status [period]      - Show current planning status and next actions
+ * - clear-day [date]     - Clear/remove daily plan and start fresh
  */
 
 const fs = require('fs');
