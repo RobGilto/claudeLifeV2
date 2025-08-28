@@ -415,6 +415,477 @@ class FractalPlanner {
         });
     }
 
+    async planWeek(weekStr) {
+        const dateIndex = weekStr ? this.parsePeriod(weekStr, 'week') : new DateIndex();
+        const identifiers = dateIndex.getIdentifiers();
+        
+        console.log(`\n📅 Planning Week: ${identifiers.week}`);
+        console.log(`📊 Context: Month ${identifiers.month}, Quarter ${identifiers.quarter}`);
+
+        let plan = PlanStorage.load('week', identifiers.week) || new Plan('week', identifiers.week);
+        
+        // Load parent plans
+        const monthPlan = PlanStorage.load('month', identifiers.month);
+        const quarterPlan = PlanStorage.load('quarter', identifiers.quarter);
+        
+        this.showParentContext(null, monthPlan, quarterPlan);
+
+        console.log(`\n🎯 Weekly Priorities (3-5 key focus areas):`);
+        for (let i = 1; i <= 5; i++) {
+            const priority = await this.ask(`Priority ${i}: `);
+            if (priority.trim()) {
+                plan.priorities.push(priority);
+            }
+        }
+
+        console.log(`\n📋 Weekly Objectives:`);
+        for (let i = 1; i <= 8; i++) {
+            const objective = await this.ask(`Objective ${i}: `);
+            if (objective.trim()) {
+                plan.addObjective(objective);
+            }
+        }
+
+        const context = await this.ask(`\n📝 Weekly Context/Theme: `);
+        plan.context = context;
+
+        plan.parentPlans = [monthPlan ? identifiers.month : null, quarterPlan ? identifiers.quarter : null].filter(Boolean);
+        plan.status = 'active';
+        PlanStorage.save(plan);
+        
+        console.log(`\n✅ Week plan saved for ${identifiers.week}`);
+    }
+
+    async planMonth(monthStr) {
+        const dateIndex = monthStr ? this.parsePeriod(monthStr, 'month') : new DateIndex();
+        const identifiers = dateIndex.getIdentifiers();
+        
+        console.log(`\n📆 Planning Month: ${identifiers.month}`);
+        console.log(`📊 Context: Quarter ${identifiers.quarter}, Year ${identifiers.year}`);
+
+        let plan = PlanStorage.load('month', identifiers.month) || new Plan('month', identifiers.month);
+        
+        const quarterPlan = PlanStorage.load('quarter', identifiers.quarter);
+        const yearPlan = PlanStorage.load('year', identifiers.year);
+        
+        if (quarterPlan) {
+            console.log(`🎯 Quarter Focus: ${quarterPlan.priorities.slice(0, 3).join(', ')}`);
+        }
+        if (yearPlan) {
+            console.log(`🌟 Year Vision: ${yearPlan.context}`);
+        }
+
+        console.log(`\n🎯 Monthly Objectives (5-8 key outcomes):`);
+        for (let i = 1; i <= 8; i++) {
+            const objective = await this.ask(`Objective ${i}: `);
+            if (objective.trim()) {
+                plan.addObjective(objective);
+            }
+        }
+
+        console.log(`\n🏆 Monthly Milestones:`);
+        for (let i = 1; i <= 4; i++) {
+            const milestone = await this.ask(`Milestone ${i}: `);
+            if (milestone.trim()) {
+                plan.milestones.push({
+                    id: Date.now().toString() + i,
+                    text: milestone,
+                    targetDate: null,
+                    completed: false
+                });
+            }
+        }
+
+        const theme = await this.ask(`\n📝 Monthly Theme: `);
+        plan.context = theme;
+
+        plan.parentPlans = [quarterPlan ? identifiers.quarter : null, yearPlan ? identifiers.year : null].filter(Boolean);
+        plan.status = 'active';
+        PlanStorage.save(plan);
+        
+        console.log(`\n✅ Month plan saved for ${identifiers.month}`);
+    }
+
+    async planQuarter(quarterStr) {
+        const dateIndex = quarterStr ? this.parsePeriod(quarterStr, 'quarter') : new DateIndex();
+        const identifiers = dateIndex.getIdentifiers();
+        
+        console.log(`\n📈 Planning Quarter: ${identifiers.quarter}`);
+        
+        let plan = PlanStorage.load('quarter', identifiers.quarter) || new Plan('quarter', identifiers.quarter);
+        
+        const yearPlan = PlanStorage.load('year', identifiers.year);
+        if (yearPlan) {
+            console.log(`🌟 Year Vision: ${yearPlan.context}`);
+            console.log(`🎯 Year Priorities: ${yearPlan.priorities.slice(0, 3).join(', ')}`);
+        }
+
+        console.log(`\n🎯 Quarterly Strategic Priorities (3-5 major focus areas):`);
+        for (let i = 1; i <= 5; i++) {
+            const priority = await this.ask(`Strategic Priority ${i}: `);
+            if (priority.trim()) {
+                plan.priorities.push(priority);
+            }
+        }
+
+        console.log(`\n📋 Quarterly Objectives:`);
+        for (let i = 1; i <= 10; i++) {
+            const objective = await this.ask(`Objective ${i}: `);
+            if (objective.trim()) {
+                plan.addObjective(objective);
+            }
+        }
+
+        console.log(`\n🏆 Major Milestones:`);
+        for (let i = 1; i <= 6; i++) {
+            const milestone = await this.ask(`Milestone ${i}: `);
+            if (milestone.trim()) {
+                plan.milestones.push({
+                    id: Date.now().toString() + i,
+                    text: milestone,
+                    targetDate: null,
+                    completed: false
+                });
+            }
+        }
+
+        const context = await this.ask(`\n📝 Quarterly Theme/Focus: `);
+        plan.context = context;
+
+        plan.parentPlans = yearPlan ? [identifiers.year] : [];
+        plan.status = 'active';
+        PlanStorage.save(plan);
+        
+        console.log(`\n✅ Quarter plan saved for ${identifiers.quarter}`);
+    }
+
+    async planYear(yearStr) {
+        const year = yearStr || new Date().getFullYear().toString();
+        
+        console.log(`\n🌟 Planning Year: ${year}`);
+        console.log(`🎯 Vision & Transformation Planning`);
+
+        let plan = PlanStorage.load('year', year) || new Plan('year', year);
+
+        console.log(`\n🌟 Year Vision:`);
+        const vision = await this.ask(`What do you want to become/achieve this year? `);
+        plan.context = vision;
+
+        console.log(`\n🎯 Strategic Priorities (3-4 major focus areas):`);
+        for (let i = 1; i <= 4; i++) {
+            const priority = await this.ask(`Strategic Priority ${i}: `);
+            if (priority.trim()) {
+                plan.priorities.push(priority);
+            }
+        }
+
+        console.log(`\n📋 Year Objectives:`);
+        for (let i = 1; i <= 12; i++) {
+            const objective = await this.ask(`Objective ${i}: `);
+            if (objective.trim()) {
+                plan.addObjective(objective);
+            }
+        }
+
+        console.log(`\n🏆 Major Milestones:`);
+        for (let i = 1; i <= 8; i++) {
+            const milestone = await this.ask(`Milestone ${i}: `);
+            if (milestone.trim()) {
+                plan.milestones.push({
+                    id: Date.now().toString() + i,
+                    text: milestone,
+                    targetDate: null,
+                    completed: false
+                });
+            }
+        }
+
+        console.log(`\n📊 Success Metrics:`);
+        const metrics = await this.ask(`How will you measure success? `);
+        plan.metrics.success = metrics;
+
+        plan.status = 'active';
+        PlanStorage.save(plan);
+        
+        console.log(`\n✅ Year plan saved for ${year}`);
+    }
+
+    async reviewWeek(weekStr) {
+        const dateIndex = weekStr ? this.parsePeriod(weekStr, 'week') : this.getPreviousWeek();
+        const identifiers = dateIndex.getIdentifiers();
+        
+        console.log(`\n📊 Reviewing Week: ${identifiers.week}`);
+        
+        const plan = PlanStorage.load('week', identifiers.week);
+        if (!plan) {
+            console.log(`❌ No plan found for week ${identifiers.week}`);
+            return;
+        }
+
+        const performance = new Performance('week', identifiers.week);
+        
+        // Review objectives
+        console.log(`\n🎯 Objective Review:`);
+        for (const objective of plan.objectives) {
+            const completed = await this.ask(`"${objective.text}" - Completed? (y/n): `);
+            objective.completed = completed.toLowerCase() === 'y';
+        }
+
+        performance.calculateStats(plan);
+        
+        console.log(`\n📈 Week Performance:`);
+        console.log(`Completion Rate: ${performance.completionRate.toFixed(1)}%`);
+        console.log(`Objectives: ${performance.objectiveStats.completed}/${performance.objectiveStats.total}`);
+
+        // Insights and adjustments
+        console.log(`\n🔍 Weekly Insights:`);
+        const insights = await this.ask(`Key insights from this week: `);
+        performance.insights.push(insights);
+
+        const adjustments = await this.ask(`Adjustments for next week: `);
+        performance.adjustments.push(adjustments);
+
+        // Well-being metrics
+        const energy = await this.ask(`Average energy level (1-10): `);
+        const focus = await this.ask(`Average focus quality (1-10): `);
+        const satisfaction = await this.ask(`Week satisfaction (1-10): `);
+        
+        performance.wellbeingMetrics = {
+            energy: parseInt(energy) || 5,
+            focus: parseInt(focus) || 5,
+            satisfaction: parseInt(satisfaction) || 5
+        };
+
+        PlanStorage.savePerformance(performance);
+        PlanStorage.save(plan); // Save updated completion status
+        
+        console.log(`\n✅ Week review completed for ${identifiers.week}`);
+        this.showPerformanceSummary(performance);
+    }
+
+    async reviewMonth(monthStr) {
+        const dateIndex = monthStr ? this.parsePeriod(monthStr, 'month') : this.getPreviousMonth();
+        const identifiers = dateIndex.getIdentifiers();
+        
+        console.log(`\n📅 Reviewing Month: ${identifiers.month}`);
+        
+        const plan = PlanStorage.load('month', identifiers.month);
+        if (!plan) {
+            console.log(`❌ No plan found for month ${identifiers.month}`);
+            return;
+        }
+
+        const performance = new Performance('month', identifiers.month);
+        
+        // Review objectives and milestones
+        console.log(`\n🎯 Objective Review:`);
+        for (const objective of plan.objectives) {
+            const completed = await this.ask(`"${objective.text}" - Completed? (y/n): `);
+            objective.completed = completed.toLowerCase() === 'y';
+        }
+
+        console.log(`\n🏆 Milestone Review:`);
+        for (const milestone of plan.milestones) {
+            const completed = await this.ask(`"${milestone.text}" - Completed? (y/n): `);
+            milestone.completed = completed.toLowerCase() === 'y';
+        }
+
+        performance.calculateStats(plan);
+        
+        // Gather weekly performance for context
+        const weeklyPerformances = this.getWeeklyPerformancesForMonth(identifiers.month);
+        if (weeklyPerformances.length > 0) {
+            const avgWeeklyCompletion = weeklyPerformances.reduce((sum, wp) => sum + wp.completionRate, 0) / weeklyPerformances.length;
+            console.log(`\n📊 Weekly Average: ${avgWeeklyCompletion.toFixed(1)}% completion rate`);
+        }
+
+        console.log(`\n📈 Month Performance:`);
+        console.log(`Completion Rate: ${performance.completionRate.toFixed(1)}%`);
+        console.log(`Objectives: ${performance.objectiveStats.completed}/${performance.objectiveStats.total}`);
+        console.log(`Milestones: ${plan.milestones.filter(m => m.completed).length}/${plan.milestones.length}`);
+
+        // Monthly insights
+        const insights = await this.ask(`\n🔍 Key insights from this month: `);
+        performance.insights.push(insights);
+
+        const adjustments = await this.ask(`Adjustments for next month: `);
+        performance.adjustments.push(adjustments);
+
+        const satisfaction = await this.ask(`Month satisfaction (1-10): `);
+        performance.wellbeingMetrics = {
+            satisfaction: parseInt(satisfaction) || 5
+        };
+
+        PlanStorage.savePerformance(performance);
+        PlanStorage.save(plan);
+        
+        console.log(`\n✅ Month review completed for ${identifiers.month}`);
+        this.showPerformanceSummary(performance);
+    }
+
+    async showStatus(period = 'all') {
+        const now = new DateIndex();
+        const identifiers = now.getIdentifiers();
+        
+        console.log(`\n📊 Fractal Planning Status - ${now.toString()}`);
+        console.log(`📅 Current Indices: Day ${identifiers.dayOfYear}, Week ${identifiers.weekOfYear}, Month ${identifiers.monthOfYear}, Q${identifiers.quarterOfYear}`);
+
+        if (period === 'all' || period === 'day') {
+            this.showPlanStatus('day', identifiers.day);
+        }
+        if (period === 'all' || period === 'week') {
+            this.showPlanStatus('week', identifiers.week);
+        }
+        if (period === 'all' || period === 'month') {
+            this.showPlanStatus('month', identifiers.month);
+        }
+        if (period === 'all' || period === 'quarter') {
+            this.showPlanStatus('quarter', identifiers.quarter);
+        }
+        if (period === 'all' || period === 'year') {
+            this.showPlanStatus('year', identifiers.year);
+        }
+
+        console.log(`\n🎯 Recommended Next Actions:`);
+        this.suggestNextActions(identifiers);
+    }
+
+    showPlanStatus(period, identifier) {
+        const plan = PlanStorage.load(period, identifier);
+        const performance = PlanStorage.loadPerformance(period, identifier);
+        
+        if (plan) {
+            const completedObjectives = plan.objectives.filter(obj => obj.completed).length;
+            const completionRate = plan.objectives.length > 0 ? (completedObjectives / plan.objectives.length) * 100 : 0;
+            
+            console.log(`\n${this.getPeriodEmoji(period)} ${period.toUpperCase()}: ${identifier} (${plan.status})`);
+            console.log(`  📋 Objectives: ${completedObjectives}/${plan.objectives.length} (${completionRate.toFixed(1)}%)`);
+            if (plan.priorities.length > 0) {
+                console.log(`  🎯 Priorities: ${plan.priorities.slice(0, 3).join(', ')}`);
+            }
+            if (performance) {
+                console.log(`  📈 Performance: ${performance.completionRate.toFixed(1)}% | Satisfaction: ${performance.wellbeingMetrics.satisfaction || 'N/A'}/10`);
+            }
+        } else {
+            console.log(`\n${this.getPeriodEmoji(period)} ${period.toUpperCase()}: ${identifier} - ❌ No plan`);
+        }
+    }
+
+    getPeriodEmoji(period) {
+        const emojis = {
+            day: '📅',
+            week: '📊',
+            month: '📆',
+            quarter: '📈',
+            year: '🌟'
+        };
+        return emojis[period] || '📋';
+    }
+
+    suggestNextActions(identifiers) {
+        const plans = {
+            day: PlanStorage.load('day', identifiers.day),
+            week: PlanStorage.load('week', identifiers.week),
+            month: PlanStorage.load('month', identifiers.month),
+            quarter: PlanStorage.load('quarter', identifiers.quarter),
+            year: PlanStorage.load('year', identifiers.year)
+        };
+
+        const suggestions = [];
+
+        if (!plans.year) {
+            suggestions.push(`📅 Create year plan: node scripts/fractal-planner.js plan-year`);
+        }
+        if (!plans.quarter) {
+            suggestions.push(`📊 Create quarter plan: node scripts/fractal-planner.js plan-quarter`);
+        }
+        if (!plans.month) {
+            suggestions.push(`📆 Create month plan: node scripts/fractal-planner.js plan-month`);
+        }
+        if (!plans.week) {
+            suggestions.push(`📋 Create week plan: node scripts/fractal-planner.js plan-week`);
+        }
+        if (!plans.day) {
+            suggestions.push(`🎯 Create daily plan: node scripts/fractal-planner.js plan-day`);
+        }
+
+        // Review suggestions
+        const previousWeek = this.getPreviousWeek();
+        const prevWeekId = previousWeek.getIdentifiers().week;
+        if (PlanStorage.load('week', prevWeekId) && !PlanStorage.loadPerformance('week', prevWeekId)) {
+            suggestions.push(`📈 Review previous week: node scripts/fractal-planner.js review-week ${prevWeekId}`);
+        }
+
+        suggestions.forEach(suggestion => console.log(`  • ${suggestion}`));
+    }
+
+    parsePeriod(periodStr, type) {
+        // Parse various period formats and return DateIndex
+        if (type === 'week' && periodStr.includes('W')) {
+            const [year, week] = periodStr.split('-W');
+            const firstDay = new Date(parseInt(year), 0, 1);
+            const daysToAdd = (parseInt(week) - 1) * 7;
+            firstDay.setDate(firstDay.getDate() + daysToAdd);
+            return new DateIndex(firstDay);
+        }
+        if (type === 'month') {
+            return new DateIndex(`${periodStr}-01`);
+        }
+        if (type === 'quarter') {
+            const [year, quarter] = periodStr.split('-Q');
+            const month = (parseInt(quarter) - 1) * 3;
+            return new DateIndex(new Date(parseInt(year), month, 1));
+        }
+        
+        return new DateIndex(periodStr);
+    }
+
+    getPreviousWeek() {
+        const now = new Date();
+        now.setDate(now.getDate() - 7);
+        return new DateIndex(now);
+    }
+
+    getPreviousMonth() {
+        const now = new Date();
+        now.setMonth(now.getMonth() - 1);
+        return new DateIndex(now);
+    }
+
+    getWeeklyPerformancesForMonth(monthStr) {
+        // Load all weekly performances for the given month
+        const performances = [];
+        const [year, month] = monthStr.split('-');
+        
+        // Get all weeks that fall within this month (simplified)
+        for (let week = 1; week <= 52; week++) {
+            const weekId = `${year}-W${week.toString().padStart(2, '0')}`;
+            const performance = PlanStorage.loadPerformance('week', weekId);
+            if (performance) {
+                performances.push(performance);
+            }
+        }
+        
+        return performances;
+    }
+
+    showPerformanceSummary(performance) {
+        console.log(`\n📊 Performance Summary:`);
+        console.log(`  Completion Rate: ${performance.completionRate.toFixed(1)}%`);
+        if (performance.wellbeingMetrics.energy) {
+            console.log(`  Energy: ${performance.wellbeingMetrics.energy}/10`);
+        }
+        if (performance.wellbeingMetrics.focus) {
+            console.log(`  Focus: ${performance.wellbeingMetrics.focus}/10`);
+        }
+        if (performance.wellbeingMetrics.satisfaction) {
+            console.log(`  Satisfaction: ${performance.wellbeingMetrics.satisfaction}/10`);
+        }
+        if (performance.insights.length > 0) {
+            console.log(`  💡 Insights: ${performance.insights[0]}`);
+        }
+    }
+
     showHelp() {
         console.log(`
 🌀 Fractal Planning System
