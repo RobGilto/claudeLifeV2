@@ -492,6 +492,52 @@ class EnhancedFractalPlanner {
         ];
     }
     
+    async generateCalendarScript(planDate, mcpCommands) {
+        try {
+            const scriptContent = `#!/usr/bin/env node
+/**
+ * Auto-generated Calendar Booking Script
+ * Date: ${planDate}
+ * Generated: ${new Date().toISOString()}
+ * 
+ * This script contains MCP commands to book time blocks in Google Calendar
+ * Run with Claude Code to execute the calendar events creation
+ */
+
+console.log('📅 Booking ${mcpCommands.length} time blocks for ${planDate}...');
+
+const events = ${JSON.stringify(mcpCommands, null, 2)};
+
+console.log('\\n🔧 MCP Commands to execute in Claude Code:');
+console.log('Copy and paste each command below into Claude Code:');
+console.log('=' .repeat(60));
+
+events.forEach((cmd, index) => {
+    console.log(\`\\nEvent \${index + 1}:\`);
+    console.log(\`Tool: \${cmd.tool}\`);
+    console.log('Parameters:', JSON.stringify(cmd.parameters, null, 2));
+    console.log('-'.repeat(40));
+});
+
+console.log('\\n✅ All calendar events prepared!');
+console.log('💡 Tip: Execute these MCP commands in Claude Code to book your calendar');
+`;
+
+            const scriptPath = path.join(LOGS_DIR, `calendar-booking-${planDate}.js`);
+            fs.writeFileSync(scriptPath, scriptContent);
+            
+            console.log(`\n📝 Calendar booking script generated:`);
+            console.log(`   📁 ${scriptPath}`);
+            console.log(`\n🚀 To execute calendar bookings:`);
+            console.log(`   1. Run: node ${scriptPath}`);
+            console.log(`   2. Copy MCP commands to Claude Code`);
+            console.log(`   3. Execute each command to create calendar events`);
+            
+        } catch (error) {
+            console.log('⚠️  Could not generate calendar script:', error.message);
+        }
+    }
+    
     async showStatus() {
         console.log('\n📊 Enhanced Planning System Status');
         console.log(`⏰ Current Time: ${this.timeaware.getCurrentTimeString()}`);
