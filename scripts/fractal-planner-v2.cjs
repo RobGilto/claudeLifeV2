@@ -26,62 +26,138 @@ const LOGS_DIR = path.join(__dirname, '..', 'logs');
     }
 });
 
-// Enhanced Date utilities with Sydney timezone
+// --- REFACTORED: More robust and configurable Date/Time utilities ---
+const BLOCK_CONFIG = {
+    WORKDAY: {
+        durations: [90, 75, 60, 45, 30],
+        types: ['deep-work', 'project', 'research', 'admin', 'review'],
+        labels: ['Deep Work Session', 'Project Development', 'Research & Learning', 'Planning & Admin', 'Review & Reflection'],
+    },
+    EVENING: {
+        durations: [60, 45, 45, 30, 30],
+        types: ['learning', 'project', 'research', 'admin', 'review'],
+        labels: ['Evening Learning', 'Light Project Work', 'Research & Reading', 'Admin & Planning', 'Daily Review'],
+    },
+    START_HOUR: 9,
+    END_HOUR: 23,
+    BLOCK_INTERVAL_MINUTES: 15, // Gap between blocks
+    ROUND_UP_MINUTES: 15,      // Round up current time to the nearest 15 mins
+    MAX_BLOCKS: 5,
+};
+
 class TimeAwareDate {
     constructor(date = new Date()) {
-        this.sydneyTime = new Date().toLocaleString('en-US', { 
-            timeZone: 'Australia/Sydney', year: 'numeric', month: '2-digit', day: '2-digit',
-            hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+        const timeZone = 'Australia/Sydney';
+        const formatter = new Intl.DateTimeFormat('en-CA', {
+            timeZone,
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false,
         });
-        this.date = new Date(this.sydneyTime);
+
+        const parts = formatter.formatToParts(date).reduce((acc, part) => {
+            if (part.type !== 'literal') {
+                acc[part.type] = part.value;
+            }
+            return acc;
+        }, {});
+        
+        const isoString = `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}`;
+        this.date = new Date(isoString);
+
         this.currentHour = this.date.getHours();
         this.currentMinute = this.date.getMinutes();
-        this.dayOfWeek = this.date.getDay();
+        this.dayOfWeek = this.date.getDay(); // Sunday is 0, Saturday is 6
         this.isWeekend = this.dayOfWeek === 0 || this.dayOfWeek === 6;
     }
-    
+
     getCurrentTimeString() {
-        return `${String(this.currentHour).padStart(2, '0')}:${String(this.currentMinute).padStart(2, '0')}`;
+        return this.date.toTimeString().slice(0, 5); // HH:MM
     }
-    
-    getNextAvailableBlock(duration = 60) {
+
+    _formatTime(hour, minute) {
+        return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+    }
+
+    getNextAvailableBlock() {
         let nextHour = this.currentHour;
-        let nextMinute = Math.ceil(this.currentMinute / 15) * 15;
-        if (nextMinute >= 60) { nextHour++; nextMinute = 0; }
-        nextMinute += 15;
-        if (nextMinute >= 60) { nextHour++; nextMinute = nextMinute - 60; }
-        if (nextHour < 9) { nextHour = 9; nextMinute = 0; }
-        if (nextHour >= 23) { return null; }
-        return { start: `${String(nextHour).padStart(2, '0')}:${String(nextMinute).padStart(2, '0')}`, hour: nextHour, minute: nextMinute };
+        let nextMinute = this.currentMinute;
+
+        const remainder = nextMinute % BLOCK_CONFIG.ROUND_UP_MINUTES;
+        if (remainder > 0) {
+            nextMinute += BLOCK_CONFIG.ROUND_UP_MINUTES - remainder;
+        }
+
+        nextMinute += BLOCK_CONFIG.BLOCK_INTERVAL_MINUTES;
+
+        if (nextMinute >= 60) {
+            nextHour += Math.floor(nextMinute / 60);
+            nextMinute %= 60;
+        }
+
+        if (nextHour < BLOCK_CONFIG.START_HOUR) {
+            nextHour = BLOCK_CONFIG.START_HOUR;
+            nextMinute = 0;
+        }
+
+        if (nextHour >= BLOCK_CONFIG.END_HOUR) {
+            return null;
+        }
+        
+        return { 
+            start: this._formatTime(nextHour, nextMinute), 
+            hour: nextHour, 
+            minute: nextMinute 
+        };
     }
-    
+
     generateAvailableBlocks() {
         const blocks = [];
-        const maxBlocks = 5;
-        let currentBlock = this.getNextAvailableBlock();
-        if (!currentBlock) { return blocks; }
-        const isEvening = currentBlock.hour >= 18;
-        const blockDurations = isEvening ? [60, 45, 45, 30, 30] : [90, 75, 60, 45, 30];
-        const blockTypes = isEvening ? ['learning', 'project', 'research', 'admin', 'review'] : ['deep-work', 'project', 'research', 'admin', 'review'];
-        const blockLabels = isEvening ? ['Evening Learning', 'Light Project Work', 'Research & Reading', 'Admin & Planning', 'Daily Review'] : ['Deep Work Session', 'Project Development', 'Research & Learning', 'Planning & Admin', 'Review & Reflection'];
-        
-        for (let i = 0; i < maxBlocks && currentBlock; i++) {
-            const duration = blockDurations[Math.min(i, blockDurations.length - 1)];
-            const endHour = currentBlock.hour + Math.floor((currentBlock.minute + duration) / 60);
-            const endMinute = (currentBlock.minute + duration) % 60;
-            if (endHour > 23 || (endHour === 23 && endMinute > 0)) { break; }
+        let currentBlockStartTime = this.getNextAvailableBlock();
+        if (!currentBlockStartTime) {
+            return blocks;
+        }
+
+        const isEvening = currentBlockStartTime.hour >= 18;
+        const config = isEvening ? BLOCK_CONFIG.EVENING : BLOCK_CONFIG.WORKDAY;
+
+        for (let i = 0; i < BLOCK_CONFIG.MAX_BLOCKS; i++) {
+            const duration = config.durations[i] || config.durations[config.durations.length - 1];
             
+            let endMinute = currentBlockStartTime.minute + duration;
+            let endHour = currentBlockStartTime.hour + Math.floor(endMinute / 60);
+            endMinute %= 60;
+
+            if (endHour >= BLOCK_CONFIG.END_HOUR) {
+                break;
+            }
+
             blocks.push({
-                id: `block-${i + 1}`, start: currentBlock.start, duration: duration,
-                type: blockTypes[i % blockTypes.length], label: blockLabels[i % blockLabels.length],
-                endTime: `${String(endHour).padStart(2, '0')}:${String(endMinute).padStart(2, '0')}`
+                id: `block-${i + 1}`,
+                start: currentBlockStartTime.start,
+                endTime: this._formatTime(endHour, endMinute),
+                duration: duration,
+                type: config.types[i],
+                label: config.labels[i],
             });
+
+            let nextStartMinute = endMinute + BLOCK_CONFIG.BLOCK_INTERVAL_MINUTES;
+            let nextStartHour = endHour + Math.floor(nextStartMinute / 60);
+            nextStartMinute %= 60;
             
-            currentBlock.hour = endHour;
-            currentBlock.minute = endMinute + 15;
-            if (currentBlock.minute >= 60) { currentBlock.hour++; currentBlock.minute = currentBlock.minute - 60; }
-            if (currentBlock.hour >= 23) { break; }
-            currentBlock.start = `${String(currentBlock.hour).padStart(2, '0')}:${String(currentBlock.minute).padStart(2, '0')}`;
+            if (nextStartHour >= BLOCK_CONFIG.END_HOUR) {
+                break;
+            }
+
+            currentBlockStartTime = { 
+                start: this._formatTime(nextStartHour, nextStartMinute), 
+                hour: nextStartHour, 
+                minute: nextStartMinute 
+            };
         }
         return blocks;
     }
@@ -98,23 +174,38 @@ class CalendarIntegration {
         });
         this.calendar = google.calendar({ version: 'v3', auth });
     }
-    
+
     async checkAvailability(date, startTime, endTime) {
+        const timeMin = `${date}T${startTime}:00`;
+        const timeMax = `${date}T${endTime}:00`;
+
         try {
-            console.log(`⏳ Checking calendar availability for ${startTime} - ${endTime}...`);
+            console.log(`⏳ Checking calendar availability from ${timeMin} to ${timeMax} in ${this.timezone}...`);
             const response = await this.calendar.freebusy.query({
                 requestBody: {
-                    timeMin: `${date}T${startTime}:00Z`,
-                    timeMax: `${date}T${endTime}:00Z`,
+                    timeMin: timeMin,
+                    timeMax: timeMax,
                     timeZone: this.timezone,
                     items: [{ id: this.calendarId }],
                 },
             });
+
+            if (!response.data.calendars || !response.data.calendars[this.calendarId]) {
+                 console.log('⚠️  Calendar ID not found in free/busy response. Assuming available.');
+                 return true;
+            }
+
             const busySlots = response.data.calendars[this.calendarId].busy;
-            return busySlots.length === 0;
+            const isAvailable = busySlots.length === 0;
+            
+            if (!isAvailable) {
+                console.log(`   Busy slots found:`, busySlots.map(s => `from ${new Date(s.start).toLocaleTimeString()} to ${new Date(s.end).toLocaleTimeString()}`));
+            }
+            
+            return isAvailable;
         } catch (error) {
-            console.log('⚠️  Could not check calendar availability:', error.message);
-            return true; // Default to available if check fails
+            console.log('⚠️  Could not check calendar availability due to an API error:', error.message);
+            throw new Error(`Failed to check calendar availability: ${error.message}`);
         }
     }
     
@@ -237,68 +328,123 @@ class EnhancedFractalPlanner {
         }
         console.log('\n✅ Calendar booking session completed!');
     }
-    
-    async planDayEnhanced(dateStr) {
-        const today = new Date().toISOString().split('T')[0];
-        const planDate = dateStr || today;
-        const isToday = planDate === today;
-        
+
+    // --- REFACTORED: `planDayEnhanced` broken into smaller, manageable methods ---
+
+    _displayPlanHeader(planDate, isToday) {
         console.log(`\n🗓️  Enhanced Daily Planning for: ${planDate}`);
         if (isToday) {
             console.log(`⏰ Current Sydney Time: ${this.timeaware.getCurrentTimeString()}`);
             console.log(`📊 ${this.timeaware.isWeekend ? 'Weekend' : 'Weekday'} Schedule\n`);
         }
-        
-        const availableBlocks = isToday ? this.timeaware.generateAvailableBlocks() : this.generateFullDayBlocks();
-        if (availableBlocks.length === 0) {
-            console.log('⚠️  Too late in the day for new time blocks.');
-            return;
-        }
-        
-        console.log(`📋 Available Time Blocks (${availableBlocks.length} blocks):`);
-        availableBlocks.forEach(block => console.log(`  ${block.start} - ${block.endTime} (${block.duration}min) - ${block.label}`));
+    }
 
-        const plan = {
-            id: planDate, type: 'day', date: planDate, status: 'active',
-            timeBlocks: [], objectives: [], calendarEvents: [],
-            metadata: { createdAt: new Date().toISOString(), currentTime: this.timeaware.getCurrentTimeString(), isToday: isToday }
-        };
-        
-        console.log('\n🎯 Define Activities for Each Block:');
-        const calendarBookingMode = await this.ask('\n📅 Calendar booking mode:\n  1) Interactive (ask for each block)\n  2) Auto-book all blocks\n  3) Skip calendar booking\nChoice (1-3): ');
-        
-        for (const block of availableBlocks) {
-            const isAvailable = await this.calendar.checkAvailability(planDate, block.start, block.endTime);
-            if (!isAvailable) {
-                console.log(`⚠️  ${block.start} - ${block.endTime} has conflicts. Skipping...`);
-                continue;
-            }
-            
-            const activity = await this.ask(`${block.label} (${block.start} - ${block.endTime}): `);
-            if (activity.trim()) {
-                block.activity = activity;
-                plan.timeBlocks.push(block);
-                
-                let shouldBook = false;
-                switch (calendarBookingMode) {
-                    case '1': shouldBook = (await this.ask('📅 Add to Google Calendar? (y/n): ')).toLowerCase() === 'y'; break;
-                    case '2': shouldBook = true; break;
-                    default: shouldBook = false;
-                }
-                
-                if (shouldBook) {
-                    const event = await this.calendar.createTimeBlockEvent(planDate, block, activity);
-                    if (event) { plan.calendarEvents.push(event); }
-                }
-            }
-        }
-        
+    async _getCalendarBookingMode() {
+        const question = '\n📅 Calendar booking mode:\n  1) Interactive (ask for each block)\n  2) Auto-book all blocks\n  3) Skip calendar booking\nChoice (1-3): ';
+        return await this.ask(question);
+    }
+
+    async _collectDailyObjectives() {
+        const objectives = [];
         console.log('\n🎯 Daily Objectives (max 3 for focus):');
         for (let i = 1; i <= 3; i++) {
             const objective = await this.ask(`Objective ${i}: `);
-            if (objective.trim()) { plan.objectives.push({ id: `obj-${i}`, text: objective, priority: i }); }
+            if (objective.trim()) {
+                objectives.push({ id: `obj-${i}`, text: objective, priority: i });
+            }
         }
+        return objectives;
+    }
+
+    async _processTimeBlocks(availableBlocks, planDate, bookingMode) {
+        const filledBlocks = [];
+        const calendarEvents = [];
+
+        console.log('\n🎯 Define Activities for Each Block:');
+
+        for (const block of availableBlocks) {
+            try {
+                const isAvailable = await this.calendar.checkAvailability(planDate, block.start, block.endTime);
+                if (!isAvailable) {
+                    console.log(`⚠️  ${block.start} - ${block.endTime} has conflicts. Skipping...`);
+                    continue;
+                }
+
+                const activity = await this.ask(`${block.label} (${block.start} - ${block.endTime}): `);
+                if (!activity.trim()) {
+                    continue;
+                }
+                
+                block.activity = activity;
+                filledBlocks.push(block);
+
+                let shouldBook = false;
+                if (bookingMode === '1') {
+                    const confirmation = await this.ask('   └─ 📅 Add to Google Calendar? (y/n): ');
+                    shouldBook = confirmation.toLowerCase() === 'y';
+                } else if (bookingMode === '2') {
+                    shouldBook = true;
+                }
+
+                if (shouldBook) {
+                    console.log(`   └─ 🚀 Booking event...`);
+                    const event = await this.calendar.createTimeBlockEvent(planDate, block, activity);
+                    if (event) {
+                        calendarEvents.push(event);
+                    }
+                }
+            } catch (error) {
+                console.log(`❌ An error occurred while processing block ${block.start}: ${error.message}. Moving to next block.`);
+                continue;
+            }
+        }
+        return { filledBlocks, calendarEvents };
+    }
+
+    async planDayEnhanced(dateStr) {
+        const today = new Date().toISOString().split('T')[0];
+        const planDate = dateStr || today;
+        const isToday = planDate === today;
+
+        this._displayPlanHeader(planDate, isToday);
+
+        const availableBlocks = isToday 
+            ? this.timeaware.generateAvailableBlocks() 
+            : this.generateFullDayBlocks();
+
+        if (availableBlocks.length === 0) {
+            console.log('⚠️  No available time blocks to plan for today.');
+            return;
+        }
+
+        console.log(`📋 Available Time Blocks (${availableBlocks.length} blocks):`);
+        availableBlocks.forEach(b => console.log(`  ${b.start} - ${b.endTime} (${b.duration}min) - ${b.label}`));
+
+        const bookingMode = await this._getCalendarBookingMode();
+        const { filledBlocks, calendarEvents } = await this._processTimeBlocks(availableBlocks, planDate, bookingMode);
         
+        if (filledBlocks.length === 0) {
+            console.log('\nℹ️ No activities were defined. Plan not saved.');
+            return;
+        }
+
+        const objectives = await this._collectDailyObjectives();
+
+        const plan = {
+            id: planDate,
+            type: 'day',
+            date: planDate,
+            status: 'active',
+            timeBlocks: filledBlocks,
+            objectives: objectives,
+            calendarEvents: calendarEvents,
+            metadata: {
+                createdAt: new Date().toISOString(),
+                currentTime: this.timeaware.getCurrentTimeString(),
+                isToday: isToday
+            }
+        };
+
         EnhancedPlanStorage.save(plan);
         console.log('\n✅ Enhanced daily plan created successfully!');
         console.log(`📁 Saved to: planning/data/day-${planDate}.json`);
