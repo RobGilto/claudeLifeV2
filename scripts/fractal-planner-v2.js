@@ -360,8 +360,11 @@ class EnhancedFractalPlanner {
             }
         };
         
-        // Collect activities for each block
+        // Collect activities and iteratively book calendar
         console.log('\n🎯 Define Activities for Each Block:');
+        const calendarBookingMode = await this.ask('\n📅 Calendar booking mode:\n  1) Interactive (ask for each block)\n  2) Auto-book all blocks\n  3) Skip calendar booking\nChoice (1-3): ');
+        
+        let mcpCommands = [];
         
         for (const block of availableBlocks) {
             // Check calendar availability
@@ -382,15 +385,40 @@ class EnhancedFractalPlanner {
                 block.activity = activity;
                 plan.timeBlocks.push(block);
                 
-                // Optionally create calendar event
-                const createEvent = await this.ask('Add to Google Calendar? (y/n): ');
-                if (createEvent.toLowerCase() === 'y') {
+                let shouldBook = false;
+                
+                switch (calendarBookingMode) {
+                    case '1': // Interactive
+                        const bookThis = await this.ask('📅 Add to Google Calendar? (y/n): ');
+                        shouldBook = bookThis.toLowerCase() === 'y';
+                        break;
+                    case '2': // Auto-book all
+                        shouldBook = true;
+                        break;
+                    case '3': // Skip
+                        shouldBook = false;
+                        break;
+                    default:
+                        shouldBook = false;
+                }
+                
+                if (shouldBook) {
                     const event = await this.calendar.createTimeBlockEvent(planDate, block, activity);
                     if (event) {
                         plan.calendarEvents.push(event);
+                        mcpCommands.push({
+                            tool: 'mcp__google-calendar__create_event',
+                            parameters: JSON.parse(event.mcpCommand)
+                        });
+                        console.log(`✅ Calendar event prepared for ${block.start} - ${block.endTime}`);
                     }
                 }
             }
+        }
+        
+        // Generate batch calendar booking script
+        if (mcpCommands.length > 0) {
+            await this.generateCalendarScript(planDate, mcpCommands);
         }
         
         // Add daily objectives
