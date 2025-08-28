@@ -302,6 +302,9 @@ class EnhancedFractalPlanner {
                 case 'plan-day':
                     await this.planDayEnhanced(args[1]);
                     break;
+                case 'book-calendar':
+                    await this.bookExistingPlan(args[1]);
+                    break;
                 case 'status':
                     await this.showStatus();
                     break;
@@ -349,6 +352,63 @@ class EnhancedFractalPlanner {
         }
         
         console.log('\n✅ Calendar booking session completed!');
+    }
+    
+    async bookExistingPlan(dateStr) {
+        const today = new Date().toISOString().split('T')[0];
+        const planDate = dateStr || today;
+        
+        console.log(`\n📅 Loading plan for: ${planDate}`);
+        
+        const existingPlan = EnhancedPlanStorage.load('day', planDate);
+        if (!existingPlan) {
+            console.log(`⚠️  No plan found for ${planDate}`);
+            console.log(`💡 Create a plan first with: node scripts/fractal-planner-v2.js plan-day ${planDate}`);
+            return;
+        }
+        
+        if (existingPlan.timeBlocks.length === 0) {
+            console.log(`⚠️  No time blocks found in plan for ${planDate}`);
+            return;
+        }
+        
+        console.log(`📋 Found ${existingPlan.timeBlocks.length} time blocks:`);
+        existingPlan.timeBlocks.forEach((block, index) => {
+            console.log(`  ${index + 1}. ${block.start} - ${block.endTime} - ${block.activity || block.label}`);
+        });
+        
+        const bookAll = await this.ask('\n📅 Book all blocks in Google Calendar? (y/n): ');
+        if (bookAll.toLowerCase() !== 'y') {
+            console.log('❌ Calendar booking cancelled');
+            return;
+        }
+        
+        // Generate MCP commands for all blocks
+        let mcpCommands = [];
+        for (const block of existingPlan.timeBlocks) {
+            const event = await this.calendar.createTimeBlockEvent(
+                planDate, 
+                block, 
+                block.activity || block.label
+            );
+            if (event) {
+                mcpCommands.push({
+                    tool: 'mcp__google-calendar__create_event',
+                    parameters: JSON.parse(event.mcpCommand)
+                });
+            }
+        }
+        
+        if (mcpCommands.length > 0) {
+            console.log(`\n🚀 Ready to book ${mcpCommands.length} calendar events`);
+            const executeNow = await this.ask('Execute calendar bookings now? (y/n): ');
+            
+            if (executeNow.toLowerCase() === 'y') {
+                await this.bookCalendarEvents(planDate, mcpCommands);
+            } else {
+                await this.generateCalendarScript(planDate, mcpCommands);
+            }
+        }
     }
     
     async planDayEnhanced(dateStr) {
