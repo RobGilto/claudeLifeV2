@@ -218,6 +218,40 @@ class LLMFractalPlanner {
                     priority: 3,
                     parentAlignment: 'Strategic career positioning'
                 }
+            ],
+            quarterly: [
+                {
+                    title: 'Master 2-3 critical AI/technical skills to target level',
+                    priority: 1,
+                    parentAlignment: 'Yearly AI engineer transformation'
+                },
+                {
+                    title: 'Launch significant portfolio project demonstrating capabilities',
+                    priority: 2,
+                    parentAlignment: 'Career transition credibility'
+                },
+                {
+                    title: 'Build professional network and market presence',
+                    priority: 3,
+                    parentAlignment: '2026 career positioning'
+                }
+            ],
+            yearly: [
+                {
+                    title: 'Complete career transition to AI Engineer role',
+                    priority: 1,
+                    parentAlignment: 'Life transformation goal'
+                },
+                {
+                    title: 'Build comprehensive AI implementation portfolio',
+                    priority: 2,
+                    parentAlignment: 'Professional credibility and skill demonstration'
+                },
+                {
+                    title: 'Achieve financial stability and debt management',
+                    priority: 3,
+                    parentAlignment: 'Personal financial security'
+                }
             ]
         };
     }
