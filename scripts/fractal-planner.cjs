@@ -909,6 +909,168 @@ Generated from daily review session on ${new Date().toISOString().split('T')[0]}
         this.showPerformanceSummary(performance);
     }
 
+    async reviewQuarter(quarterStr) {
+        const dateIndex = quarterStr ? this.parsePeriod(quarterStr, 'quarter') : this.getPreviousQuarter();
+        const identifiers = dateIndex.getIdentifiers();
+        
+        console.log(`\n📈 Reviewing Quarter: ${identifiers.quarter}`);
+        
+        const plan = PlanStorage.load('quarter', identifiers.quarter);
+        if (!plan) {
+            console.log(`❌ No plan found for quarter ${identifiers.quarter}`);
+            return;
+        }
+
+        const performance = new Performance('quarter', identifiers.quarter);
+        
+        // Review strategic priorities and objectives
+        console.log(`\n🎯 Strategic Priority Review:`);
+        for (const priority of plan.priorities) {
+            const impact = await this.ask(`Priority: "${priority}" - Impact achieved (1-10): `);
+            priority.impact = parseInt(impact) || 5;
+        }
+
+        console.log(`\n📋 Quarterly Objective Review:`);
+        for (const objective of plan.objectives) {
+            const completed = await this.ask(`"${objective.text}" - Completed? (y/n): `);
+            objective.completed = completed.toLowerCase() === 'y';
+        }
+
+        console.log(`\n🏆 Major Milestone Review:`);
+        for (const milestone of plan.milestones) {
+            const completed = await this.ask(`"${milestone.text}" - Achieved? (y/n): `);
+            milestone.completed = completed.toLowerCase() === 'y';
+        }
+
+        performance.calculateStats(plan);
+        
+        console.log(`\n📈 Quarter Performance:`);
+        console.log(`Completion Rate: ${performance.completionRate.toFixed(1)}%`);
+        console.log(`Objectives: ${performance.objectiveStats.completed}/${performance.objectiveStats.total}`);
+        console.log(`Milestones: ${plan.milestones.filter(m => m.completed).length}/${plan.milestones.length}`);
+
+        // Strategic insights
+        const strategicInsights = await this.ask(`\n🔍 Strategic insights from this quarter: `);
+        const transformationProgress = await this.ask(`Transformation progress assessment: `);
+        const nextQuarterFocus = await this.ask(`Strategic focus for next quarter: `);
+        const yearlyAlignment = await this.ask(`Yearly vision alignment (1-10): `);
+
+        performance.insights.push(strategicInsights);
+        performance.transformationProgress = transformationProgress;
+        performance.nextQuarterFocus = nextQuarterFocus;
+        performance.yearlyAlignment = parseInt(yearlyAlignment) || 5;
+
+        const satisfaction = await this.ask(`Quarter satisfaction (1-10): `);
+        performance.wellbeingMetrics = {
+            satisfaction: parseInt(satisfaction) || 5,
+            strategicImpact: parseInt(yearlyAlignment) || 5
+        };
+
+        PlanStorage.savePerformance(performance);
+        PlanStorage.save(plan);
+        
+        console.log(`\n✅ Quarter review completed for ${identifiers.quarter}`);
+        this.showPerformanceSummary(performance);
+    }
+
+    async reviewYear(yearStr) {
+        const year = yearStr || this.getPreviousYear();
+        
+        console.log(`\n🌟 Reviewing Year: ${year}`);
+        console.log(`🎯 Transformation Review & Mission Evolution`);
+
+        const plan = PlanStorage.load('year', year);
+        if (!plan) {
+            console.log(`❌ No plan found for year ${year}`);
+            return;
+        }
+
+        const performance = new Performance('year', year);
+        
+        console.log(`\n🌟 Mission Statement Assessment:`);
+        console.log(`Original Mission: "${plan.context}"`);
+        const missionFulfillment = await this.ask(`Mission fulfillment (1-10): `);
+        const missionEvolution = await this.ask(`How has your mission evolved this year?: `);
+        const newMission = await this.ask(`Refined mission statement for next year: `);
+
+        console.log(`\n🎯 Strategic Priority Review:`);
+        for (const priority of plan.priorities) {
+            const achievement = await this.ask(`Priority: "${priority}" - Achievement level (1-10): `);
+            priority.achievement = parseInt(achievement) || 5;
+        }
+
+        console.log(`\n📋 Yearly Objective Review:`);
+        for (const objective of plan.objectives) {
+            const completed = await this.ask(`"${objective.text}" - Completed? (y/n): `);
+            objective.completed = completed.toLowerCase() === 'y';
+        }
+
+        console.log(`\n🏆 Major Milestone Review:`);
+        for (const milestone of plan.milestones) {
+            const completed = await this.ask(`"${milestone.text}" - Achieved? (y/n): `);
+            milestone.completed = completed.toLowerCase() === 'y';
+        }
+
+        performance.calculateStats(plan);
+
+        // Transformation assessment
+        console.log(`\n🔄 Transformation Assessment:`);
+        const careerProgress = await this.ask(`Career transformation progress (1-10): `);
+        const personalGrowth = await this.ask(`Personal growth achievement (1-10): `);
+        const financialProgress = await this.ask(`Financial goal progress (1-10): `);
+        const overallTransformation = await this.ask(`Overall transformation score (1-10): `);
+
+        // Year insights
+        const keyInsights = await this.ask(`\n💡 Key insights from this year: `);
+        const majorAccomplishments = await this.ask(`Major accomplishments beyond planned goals: `);
+        const biggestChallenges = await this.ask(`Biggest challenges overcome: `);
+        const nextYearStrategy = await this.ask(`Strategic direction for next year: `);
+
+        performance.transformationMetrics = {
+            careerProgress: parseInt(careerProgress) || 5,
+            personalGrowth: parseInt(personalGrowth) || 5,
+            financialProgress: parseInt(financialProgress) || 5,
+            overallTransformation: parseInt(overallTransformation) || 5
+        };
+
+        performance.missionFulfillment = parseInt(missionFulfillment) || 5;
+        performance.missionEvolution = missionEvolution;
+        performance.newMission = newMission;
+        performance.insights.push(keyInsights);
+        performance.majorAccomplishments = majorAccomplishments;
+        performance.biggestChallenges = biggestChallenges;
+        performance.nextYearStrategy = nextYearStrategy;
+
+        const satisfaction = await this.ask(`Year satisfaction (1-10): `);
+        performance.wellbeingMetrics = {
+            satisfaction: parseInt(satisfaction) || 5,
+            transformation: parseInt(overallTransformation) || 5
+        };
+
+        PlanStorage.savePerformance(performance);
+        PlanStorage.save(plan);
+        
+        console.log(`\n✅ Year review completed for ${year}`);
+        console.log(`📈 Transformation Score: ${performance.transformationMetrics.overallTransformation}/10`);
+        console.log(`🎯 Mission Fulfillment: ${performance.missionFulfillment}/10`);
+        this.showPerformanceSummary(performance);
+    }
+
+    getPreviousQuarter() {
+        const now = new Date();
+        const currentQuarter = Math.ceil((now.getMonth() + 1) / 3);
+        if (currentQuarter === 1) {
+            return `${now.getFullYear() - 1}-Q4`;
+        } else {
+            return `${now.getFullYear()}-Q${currentQuarter - 1}`;
+        }
+    }
+
+    getPreviousYear() {
+        const now = new Date();
+        return (now.getFullYear() - 1).toString();
+    }
+
     async showStatus(period = 'all') {
         const now = new DateIndex();
         const identifiers = now.getIdentifiers();
@@ -1088,6 +1250,7 @@ Planning Commands:
   plan-year [year]     - Plan yearly vision and transformation goals
 
 Review Commands:
+  review-day [date]    - Analyze previous day's performance and learning  
   review-week [week]   - Analyze previous week's performance
   review-month [month] - Assess previous month's achievements
   review-quarter [Q]   - Evaluate previous quarter's progress
