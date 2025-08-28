@@ -18,7 +18,8 @@ require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 // Google Calendar API configuration
 const API_KEY = process.env.GOOGLE_API_KEY;
 const CALENDAR_API_BASE = 'https://www.googleapis.com/calendar/v3';
-const OAUTH_TOKEN_FILE = path.join(process.env.HOME, '.config', 'google-calendar-mcp', 'tokens.json');
+const MCP_TOKEN_FILE = path.join(process.env.HOME, '.config', 'google-calendar-mcp', 'tokens.json');
+const DIRECT_TOKEN_FILE = path.join(__dirname, '..', '.google-tokens.json');
 
 class GoogleCalendarAPI {
     constructor() {
@@ -30,10 +31,22 @@ class GoogleCalendarAPI {
 
     loadTokens() {
         try {
-            if (fs.existsSync(OAUTH_TOKEN_FILE)) {
-                const tokens = JSON.parse(fs.readFileSync(OAUTH_TOKEN_FILE, 'utf8'));
+            // Try direct OAuth tokens first
+            if (fs.existsSync(DIRECT_TOKEN_FILE)) {
+                const tokens = JSON.parse(fs.readFileSync(DIRECT_TOKEN_FILE, 'utf8'));
                 this.accessToken = tokens.access_token;
                 this.refreshToken = tokens.refresh_token;
+                this.tokenSource = 'direct';
+                return;
+            }
+            
+            // Fall back to MCP tokens
+            if (fs.existsSync(MCP_TOKEN_FILE)) {
+                const tokens = JSON.parse(fs.readFileSync(MCP_TOKEN_FILE, 'utf8'));
+                this.accessToken = tokens.access_token;
+                this.refreshToken = tokens.refresh_token;
+                this.tokenSource = 'mcp';
+                return;
             }
         } catch (error) {
             console.warn('⚠️ Could not load OAuth tokens:', error.message);
@@ -42,15 +55,22 @@ class GoogleCalendarAPI {
 
     saveTokens() {
         if (this.accessToken || this.refreshToken) {
-            const dir = path.dirname(OAUTH_TOKEN_FILE);
+            // Save to appropriate location based on source
+            const tokenFile = this.tokenSource === 'direct' ? DIRECT_TOKEN_FILE : MCP_TOKEN_FILE;
+            const dir = path.dirname(tokenFile);
+            
             if (!fs.existsSync(dir)) {
                 fs.mkdirSync(dir, { recursive: true });
             }
-            fs.writeFileSync(OAUTH_TOKEN_FILE, JSON.stringify({
+            
+            const tokenData = {
                 access_token: this.accessToken,
                 refresh_token: this.refreshToken,
-                token_type: 'Bearer'
-            }, null, 2));
+                token_type: 'Bearer',
+                updated_at: new Date().toISOString()
+            };
+            
+            fs.writeFileSync(tokenFile, JSON.stringify(tokenData, null, 2));
         }
     }
 
