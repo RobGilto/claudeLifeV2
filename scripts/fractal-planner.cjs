@@ -83,8 +83,9 @@ class DateIndex {
         const dayOfQuarter = Math.floor((this.date - quarterStart) / (1000 * 60 * 60 * 24)) + 1;
         
         const monthStart = new Date(this.year, this.month - 1, 1);
-        const firstWeekOfMonth = Math.ceil((monthStart.getDay() + 1) / 7);
-        const weekOfMonth = Math.ceil((this.day + monthStart.getDay()) / 7);
+        const firstDayOfWeek = monthStart.getDay(); // 0=Sunday, 6=Saturday
+        const adjustedFirstDay = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1; // Convert to Monday=0
+        const weekOfMonth = Math.ceil((this.day + adjustedFirstDay) / 7);
         
         const quarterStartWeek = Math.ceil((quarterStart.getDay() + 1) / 7);
         const weekOfQuarter = this.week - Math.ceil(((this.quarter - 1) * 3 * 30.44 + quarterStart.getDay()) / 7) + 1;
@@ -758,7 +759,11 @@ class FractalPlanner {
         const identifiers = now.getIdentifiers();
         
         console.log(`\n📊 Fractal Planning Status - ${now.toString()}`);
-        console.log(`📅 Current Indices: Day ${identifiers.dayOfYear}, Week ${identifiers.weekOfYear}, Month ${identifiers.monthOfYear}, Q${identifiers.quarterOfYear}`);
+        console.log(`📅 Multi-Perspective Indices:`);
+        console.log(`   Day: ${identifiers.dayOfYear}/365 | Week ${identifiers.dayOfWeek}/7 | Month ${identifiers.dayOfMonth}/${new Date(now.year, now.month, 0).getDate()} | Quarter ${identifiers.dayOfQuarter}/92`);
+        console.log(`   Week: ${identifiers.weekOfYear}/53 | Month ${identifiers.weekOfMonth}/5 | Quarter ${identifiers.weekOfQuarter}/13`);
+        console.log(`   Month: ${identifiers.monthOfYear}/12 | Quarter ${identifiers.monthOfQuarter}/3`);
+        console.log(`   Quarter: ${identifiers.quarterOfYear}/4`);
 
         if (period === 'all' || period === 'day') {
             this.showPlanStatus('day', identifiers.day);
