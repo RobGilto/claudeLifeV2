@@ -1,0 +1,23 @@
+{
+  "timestamp": "2025-08-28T06:10:12.658Z",
+  "event": {
+    "summary": "Focus Block - Deep Work Session",
+    "start": "2025-08-28T06:10:12.000Z",
+    "end": "2025-08-28T09:10:12.000Z",
+    "timeZone": "Australia/Sydney",
+    "description": "3-hour focused work block for concentrated productivity",
+    "reminders": {
+      "useDefault": false,
+      "overrides": [
+        {
+          "method": "popup",
+          "minutes": 10
+        },
+        {
+          "method": "popup",
+          "minutes": 2
+        }
+      ]
+    }
+  }
+}
