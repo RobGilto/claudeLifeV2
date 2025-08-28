@@ -474,16 +474,21 @@ class FractalPlanner {
 
         console.log(`\n🎯 Daily Objectives (max 3 for focus):`);
         defaultObjectives.forEach((objective, i) => {
-            plan.objectives.push({
-                id: `obj-${i + 1}`,
-                title: objective,
-                priority: i + 1,
-                parentAlignment: i === 0 ? '2026 AI engineer transformation' : 
-                                i === 1 ? 'Knowledge retention and confidence building' : 
-                                'Sustainable daily practice',
-                completed: false
-            });
-            console.log(`  ${i + 1}. ${objective}`);
+            // Check if objective already exists
+            const existingObjective = plan.objectives.find(obj => obj.title === objective);
+            
+            if (!existingObjective) {
+                plan.objectives.push({
+                    id: `obj-${i + 1}`,
+                    title: objective,
+                    priority: i + 1,
+                    parentAlignment: i === 0 ? '2026 AI engineer transformation' : 
+                                    i === 1 ? 'Knowledge retention and confidence building' : 
+                                    'Sustainable daily practice',
+                    completed: false
+                });
+            }
+            console.log(`  ${i + 1}. ${objective}${existingObjective ? ' (existing)' : ''}`);
         });
 
         // Set parent relationships
@@ -578,12 +583,21 @@ class FractalPlanner {
                 const tags = [block.type, 'timeblock'];
                 const due = `${date}T${block.start}`;
 
-                const cmd = `task add "${taskDescription}" project:${project} +${tags.join(' +')} due:${due}`;
-                const result = await execAsync(cmd);
+                // Check if task already exists
+                const checkCmd = `task project:${project} description.contains:"[${block.start}]" count`;
+                const checkResult = await execAsync(checkCmd);
+                const existingCount = parseInt(checkResult.stdout.trim());
                 
-                if (result.stdout) {
-                    const taskId = result.stdout.match(/Created task (\d+)/)?.[1];
-                    console.log(`  ✓ Task created: ${taskId} - ${taskDescription}`);
+                if (existingCount === 0) {
+                    const cmd = `task add "${taskDescription}" project:${project} +${tags.join(' +')} due:${due}`;
+                    const result = await execAsync(cmd);
+                    
+                    if (result.stdout) {
+                        const taskId = result.stdout.match(/Created task (\d+)/)?.[1];
+                        console.log(`  ✓ Task created: ${taskId} - ${taskDescription}`);
+                    }
+                } else {
+                    console.log(`  ⚠️ Task already exists: ${taskDescription}`);
                 }
             } catch (error) {
                 console.log(`  ⚠️  TaskWarrior task creation failed: ${block.activity}`);
