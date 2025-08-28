@@ -399,6 +399,101 @@ class LLMFractalPlanner {
         return plan;
     }
 
+    async planQuarter(quarterStr) {
+        const dateIndex = quarterStr ? this.parseQuarterString(quarterStr) : new DateIndex();
+        const identifiers = dateIndex.getIdentifiers();
+        
+        console.log(`\n📅 Planning Quarter: ${identifiers.quarter}`);
+        
+        const plan = {
+            id: `quarter-${identifiers.quarter}`,
+            quarter: identifiers.quarter,
+            type: 'quarter',
+            status: 'active',
+            parentPlans: {
+                year: identifiers.year
+            },
+            objectives: this.defaultObjectives.quarterly.map((obj, index) => ({
+                id: `quarter-obj-${index + 1}`,
+                ...obj,
+                completed: false
+            })),
+            priorities: [
+                'Build foundational AI/ML technical competencies',
+                'Create demonstrable portfolio projects',
+                'Establish professional presence and network'
+            ],
+            milestones: [
+                'Achieve target proficiency in 2-3 critical AI technologies',
+                'Launch portfolio project showcasing technical capabilities',
+                'Complete professional certification or significant learning milestone',
+                'Build connections with 10+ AI/tech professionals'
+            ],
+            context: {
+                theme: 'Strategic Foundation Building',
+                focus: 'Measurable skill advancement and professional positioning',
+                constraints: '3-month intensive focus on career transition elements'
+            },
+            created: getSydneyDate().toISOString(),
+            modified: getSydneyDate().toISOString()
+        };
+
+        const planPath = PlanStorage.save(plan);
+        console.log(`\n✅ Quarterly plan created: ${planPath}`);
+        
+        return plan;
+    }
+
+    async planYear(yearStr) {
+        const dateIndex = yearStr ? this.parseYearString(yearStr) : new DateIndex();
+        const identifiers = dateIndex.getIdentifiers();
+        
+        console.log(`\n📅 Planning Year: ${identifiers.year}`);
+        
+        const plan = {
+            id: `year-${identifiers.year}`,
+            year: identifiers.year,
+            type: 'year',
+            status: 'active',
+            objectives: this.defaultObjectives.yearly.map((obj, index) => ({
+                id: `year-obj-${index + 1}`,
+                ...obj,
+                completed: false
+            })),
+            vision: 'Successful transition from Technical Support to AI Engineer by mid-2026',
+            strategicPriorities: [
+                'Technical Mastery: Master AI/ML implementation and deployment',
+                'Portfolio Development: Build comprehensive project showcase',
+                'Professional Transition: Secure AI Engineer role with competitive compensation',
+                'Financial Security: Manage mortgage and build emergency fund'
+            ],
+            majorMilestones: [
+                'Q1: Complete foundational AI/ML skills and first major project',
+                'Q2: Launch professional portfolio and begin networking',
+                'Q3: Achieve key certifications and advanced project delivery',
+                'Q4: Secure interviews and transition to AI Engineer role'
+            ],
+            successMetrics: [
+                'Land AI Engineer role with 20%+ salary increase',
+                'Complete 3-5 portfolio projects demonstrating AI implementation',
+                'Achieve Azure AI Engineer and Data Scientist certifications',
+                'Build professional network of 50+ AI/tech connections'
+            ],
+            context: {
+                theme: 'Life Transformation: Technical Support → AI Engineer',
+                focus: 'Systematic career transition with financial security',
+                constraints: 'Balance intensive learning with current job responsibilities'
+            },
+            created: getSydneyDate().toISOString(),
+            modified: getSydneyDate().toISOString()
+        };
+
+        const planPath = PlanStorage.save(plan);
+        console.log(`\n✅ Yearly plan created: ${planPath}`);
+        
+        return plan;
+    }
+
     createDailyReport(plan, identifiers) {
         const dayNames = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
         const dayName = dayNames[identifiers.dayOfWeek];
