@@ -547,7 +547,7 @@ class FractalPlanner {
         
         // Generate Google Calendar events
         console.log(`\n📅 Calendar integration available:`);
-        this.generateCalendarEvents(defaultBlocks, identifiers.day);
+        await this.generateCalendarEvents(defaultBlocks, identifiers.day);
         
         console.log(`\n✅ Day plan saved for ${identifiers.day}`);
         console.log(`📈 Linked to: ${plan.parentPlans.join(', ') || 'No parent plans'}`);
@@ -635,20 +635,27 @@ class FractalPlanner {
         }
     }
 
-    generateCalendarEvents(blocks, date) {
-        console.log(`  📖 Manual calendar entries for ${date}:`);
-        console.log(`  💡 Use /calendar-sync command for automated Google Calendar integration\n`);
+    async generateCalendarEvents(blocks, date) {
+        console.log(`  🔄 Attempting Google Calendar auto-sync...`);
         
-        blocks.forEach(block => {
-            const startTime = `${date}T${block.start}:00`;
-            const endTime = `${date}T${this.addMinutes(block.start, block.duration)}:00`;
+        // Try to create calendar events directly via MCP integration
+        const calendarCreated = await this.createGoogleCalendarEvents(blocks, date);
+        
+        if (!calendarCreated) {
+            console.log(`  📖 Manual calendar entries for ${date}:`);
+            console.log(`  💡 Use /calendar-sync command for automated Google Calendar integration\n`);
             
-            console.log(`  🗓️  ${block.start}-${this.addMinutes(block.start, block.duration)}: ${block.activity}`);
-            console.log(`     Start: ${startTime} | End: ${endTime} | Type: ${block.type}`);
-        });
-        
-        console.log(`\n  ⚡ For automated sync, run:`);
-        console.log(`     /calendar-sync ${date}`);
+            blocks.forEach(block => {
+                const startTime = `${date}T${block.start}:00`;
+                const endTime = `${date}T${this.addMinutes(block.start, block.duration)}:00`;
+                
+                console.log(`  🗓️  ${block.start}-${this.addMinutes(block.start, block.duration)}: ${block.activity}`);
+                console.log(`     Start: ${startTime} | End: ${endTime} | Type: ${block.type}`);
+            });
+            
+            console.log(`\n  ⚡ For automated sync, run:`);
+            console.log(`     /calendar-sync ${date}`);
+        }
     }
 
     showParentContext(weekPlan, monthPlan, quarterPlan) {

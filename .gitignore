@@ -55,3 +55,5 @@ npm-debug.log*
 
 # Archive drafts that might contain sensitive data
 archive/drafts/
+# Google OAuth credentials
+.google-tokens.json
