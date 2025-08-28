@@ -18,6 +18,15 @@ function loadDayPlan(date) {
   return JSON.parse(fs.readFileSync(planPath, 'utf8'));
 }
 
+// Calculate end time from start time and duration
+function calculateEndTime(startTime, duration) {
+  const [hours, minutes] = startTime.split(':').map(Number);
+  const totalMinutes = hours * 60 + minutes + duration;
+  const endHours = Math.floor(totalMinutes / 60);
+  const endMins = totalMinutes % 60;
+  return `${endHours.toString().padStart(2, '0')}:${endMins.toString().padStart(2, '0')}`;
+}
+
 // Generate MCP-compatible calendar events
 function createCalendarEvents(date) {
   const plan = loadDayPlan(date);
@@ -35,22 +44,19 @@ function createCalendarEvents(date) {
 
   plan.timeBlocks?.forEach((block, index) => {
     const colorId = colorMap[block.type] || '1';
+    const endTime = calculateEndTime(block.start, block.duration);
     
     console.log(`# Event ${index + 1}: ${block.activity}`);
-    console.log(`# MCP Command (copy and execute):`);
+    console.log(`# Time: ${block.start} - ${endTime} (${block.duration}min)`);
+    console.log(`# Claude MCP Command:`);
     console.log('```');
-    console.log('mcp_call("google-calendar", "create_event", {');
+    console.log(`/mcp call google-calendar create_event '{`);
     console.log(`  "calendarId": "primary",`);
     console.log(`  "summary": "${block.activity}",`);
-    console.log(`  "description": "🎯 2026 AI engineering goal\\n⚡ Type: ${block.type}\\n📋 Daily Plan Block",`);
-    console.log(`  "start": {`);
-    console.log(`    "dateTime": "${date}T${block.startTime}:00",`);
-    console.log(`    "timeZone": "Australia/Sydney"`);
-    console.log(`  },`);
-    console.log(`  "end": {`);
-    console.log(`    "dateTime": "${date}T${block.endTime}:00",`);
-    console.log(`    "timeZone": "Australia/Sydney"`);
-    console.log(`  },`);
+    console.log(`  "description": "🎯 ${block.alignment}\\n⚡ Type: ${block.type}\\n📋 Daily Plan Block",`);
+    console.log(`  "start": "${date}T${block.start}:00",`);
+    console.log(`  "end": "${date}T${endTime}:00",`);
+    console.log(`  "timeZone": "Australia/Sydney",`);
     console.log(`  "reminders": {`);
     console.log(`    "useDefault": false,`);
     console.log(`    "overrides": [`);
@@ -59,7 +65,7 @@ function createCalendarEvents(date) {
     console.log(`    ]`);
     console.log(`  },`);
     console.log(`  "colorId": "${colorId}"`);
-    console.log('})');
+    console.log(`}'`);
     console.log('```\n');
   });
 }
