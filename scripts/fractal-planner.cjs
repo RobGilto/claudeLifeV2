@@ -386,9 +386,20 @@ class FractalPlanner {
     async planDay(dateStr) {
         const dateIndex = new DateIndex(dateStr ? new Date(dateStr) : new Date());
         const identifiers = dateIndex.getIdentifiers();
+        const currentTime = getSydneyDate(new Date());
+        const isToday = identifiers.day === formatSydneyDateString(currentTime);
         
         console.log(`\n🗓️  Planning Day: ${identifiers.day}`);
         console.log(`📊 Multi-Index: Week ${identifiers.week}, Month ${identifiers.month}, Quarter ${identifiers.quarter}`);
+        
+        if (isToday) {
+            const timeStr = currentTime.toLocaleTimeString('en-AU', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                timeZone: 'Australia/Sydney'
+            });
+            console.log(`🕐 Current Time: ${timeStr} (Sydney)`);
+        }
 
         // Load or create day plan
         let plan = PlanStorage.load('day', identifiers.day) || new Plan('day', identifiers.day);
@@ -436,10 +447,12 @@ class FractalPlanner {
             }
         ];
 
-        // Add time blocks with defaults
+        // Add time blocks with defaults and time awareness
         defaultBlocks.forEach(block => {
+            const blockStatus = this.getBlockStatus(block, currentTime, isToday);
             plan.addTimeBlock(block.start, block.duration, block.activity, block.alignment, block.type);
-            console.log(`  ✓ ${block.start}-${this.addMinutes(block.start, block.duration)}: ${block.activity}`);
+            console.log(`  ${blockStatus.icon} ${block.start}-${this.addMinutes(block.start, block.duration)}: ${block.activity}`);
+            if (blockStatus.note) console.log(`     ${blockStatus.note}`);
         });
 
         // Set default daily objectives aligned with AI engineering goals
@@ -487,6 +500,16 @@ class FractalPlanner {
         plan.status = 'active';
         PlanStorage.save(plan);
         
+        // Create TaskWarrior tasks for time blocks
+        if (isToday) {
+            console.log(`\n📋 Creating TaskWarrior tasks...`);
+            await this.createTaskWarriorTasks(defaultBlocks, identifiers.day);
+        }
+        
+        // Generate Google Calendar events
+        console.log(`\n📅 Calendar integration available:`);
+        this.generateCalendarEvents(defaultBlocks, identifiers.day);
+        
         console.log(`\n✅ Day plan saved for ${identifiers.day}`);
         console.log(`📈 Linked to: ${plan.parentPlans.join(', ') || 'No parent plans'}`);
         console.log(`⏱️  Total planned: ${plan.metrics.plannedHours}h (${plan.metrics.deepWorkHours}h deep work, ${plan.metrics.learningHours}h learning)`);
@@ -498,6 +521,81 @@ class FractalPlanner {
         const newHours = Math.floor(totalMins / 60);
         const newMins = totalMins % 60;
         return `${newHours.toString().padStart(2, '0')}:${newMins.toString().padStart(2, '0')}`;
+    }
+
+    getBlockStatus(block, currentTime, isToday) {
+        if (!isToday) {
+            return { icon: '⏱️', note: null };
+        }
+
+        const currentHour = currentTime.getHours();
+        const currentMin = currentTime.getMinutes();
+        const currentTotalMins = currentHour * 60 + currentMin;
+
+        const [blockHour, blockMin] = block.start.split(':').map(Number);
+        const blockStartMins = blockHour * 60 + blockMin;
+        const blockEndMins = blockStartMins + block.duration;
+
+        if (currentTotalMins < blockStartMins) {
+            const minsUntil = blockStartMins - currentTotalMins;
+            return { 
+                icon: '🔮', 
+                note: `starts in ${Math.floor(minsUntil / 60)}h ${minsUntil % 60}m`
+            };
+        } else if (currentTotalMins >= blockStartMins && currentTotalMins < blockEndMins) {
+            const minsLeft = blockEndMins - currentTotalMins;
+            return { 
+                icon: '🔥', 
+                note: `ACTIVE - ${Math.floor(minsLeft / 60)}h ${minsLeft % 60}m remaining`
+            };
+        } else {
+            return { 
+                icon: '✅', 
+                note: 'completed window'
+            };
+        }
+    }
+
+    async createTaskWarriorTasks(blocks, date) {
+        const { exec } = require('child_process');
+        const { promisify } = require('util');
+        const execAsync = promisify(exec);
+
+        for (const block of blocks) {
+            try {
+                const taskDescription = `[${block.start}] ${block.activity}`;
+                const project = 'planning.daily';
+                const tags = [block.type, 'timeblock'];
+                const due = `${date}T${block.start}`;
+
+                const cmd = `task add "${taskDescription}" project:${project} +${tags.join(' +')} due:${due}`;
+                const result = await execAsync(cmd);
+                
+                if (result.stdout) {
+                    const taskId = result.stdout.match(/Created task (\d+)/)?.[1];
+                    console.log(`  ✓ Task created: ${taskId} - ${taskDescription}`);
+                }
+            } catch (error) {
+                console.log(`  ⚠️  TaskWarrior task creation failed: ${block.activity}`);
+                PlanStorage.log(`TaskWarrior error: ${error.message}`);
+            }
+        }
+    }
+
+    generateCalendarEvents(blocks, date) {
+        console.log(`  📖 Manual calendar entries for ${date}:`);
+        console.log(`  💡 Use /calendar-sync command for automated Google Calendar integration\n`);
+        
+        blocks.forEach(block => {
+            const startTime = `${date}T${block.start}:00`;
+            const endTime = `${date}T${this.addMinutes(block.start, block.duration)}:00`;
+            
+            console.log(`  🗓️  ${block.start}-${this.addMinutes(block.start, block.duration)}: ${block.activity}`);
+            console.log(`     Start: ${startTime} | End: ${endTime} | Type: ${block.type}`);
+        });
+        
+        console.log(`\n  ⚡ For automated sync, run:`);
+        console.log(`     /calendar-sync ${date}`);
     }
 
     showParentContext(weekPlan, monthPlan, quarterPlan) {
