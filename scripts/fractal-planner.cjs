@@ -416,6 +416,7 @@ class FractalPlanner {
         console.log(`\n⏰ Time Block Planning (4-5 blocks recommended for ADD-friendly workflow):`);
         
         // Use smart defaults based on Robert's AI engineering goals and ADD-friendly structure
+        // Extended availability until 11 PM with ADD-optimized blocks
         const defaultBlocks = [
             { 
                 start: '09:00', 
@@ -444,6 +445,27 @@ class FractalPlanner {
                 activity: 'Research, documentation, or skill practice',
                 alignment: 'Continuous learning and skill gap closure',
                 type: 'learning'
+            },
+            { 
+                start: '18:00', 
+                duration: 90, 
+                activity: 'Evening project work or intensive study',
+                alignment: 'Accelerated skill development',
+                type: 'deep-work'
+            },
+            { 
+                start: '20:00', 
+                duration: 90, 
+                activity: 'Advanced learning or portfolio development',
+                alignment: 'Professional development and practice',
+                type: 'learning'
+            },
+            { 
+                start: '21:30', 
+                duration: 90, 
+                activity: 'Final work session or skill consolidation',
+                alignment: 'Day completion and progress review',
+                type: 'review'
             }
         ];
 
