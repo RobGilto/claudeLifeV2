@@ -116,7 +116,7 @@ class GoogleCalendarAPI {
 
     async listCalendars() {
         try {
-            const response = await this.makeRequest('/calendars');
+            const response = await this.makeRequest('/users/me/calendarList');
             return response.items || [];
         } catch (error) {
             console.error('Error listing calendars:', error.message);
@@ -228,14 +228,21 @@ class GoogleCalendarAPI {
 
     // Helper to set up OAuth if needed
     async setupOAuth() {
-        console.log('🔐 OAuth Setup Required');
-        console.log('   Please follow these steps:');
+        console.log('🔐 OAuth2 Setup Required for Google Calendar');
+        console.log('   Google Calendar API requires OAuth2 authentication, API keys alone won\'t work.');
+        console.log('');
+        console.log('   Setup Steps:');
         console.log('   1. Go to https://console.cloud.google.com/');
         console.log('   2. Enable Google Calendar API');
-        console.log('   3. Create OAuth 2.0 credentials');
-        console.log('   4. Download the credentials JSON');
-        console.log('   5. Run the OAuth flow to get access tokens');
-        console.log('\n   Or use the API key for limited read-only access');
+        console.log('   3. Create OAuth 2.0 credentials (not API key)');
+        console.log('   4. Download credentials as client_secret.json');
+        console.log('   5. Use Google Calendar MCP or OAuth flow');
+        console.log('');
+        console.log('   Alternative: Use the existing MCP integration:');
+        console.log('   - Ensure MCP is configured in Claude Desktop');
+        console.log('   - Use /mcp commands for calendar operations');
+        console.log('');
+        console.log('   For now, this script will provide manual event details');
     }
 }
 
