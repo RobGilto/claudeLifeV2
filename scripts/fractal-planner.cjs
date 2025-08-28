@@ -12,6 +12,7 @@
  * - plan-month [month]   - Plan monthly objectives and milestones
  * - plan-quarter [Q]     - Plan quarterly strategic initiatives
  * - plan-year [year]     - Plan yearly vision and major goals
+ * - review-day [date]    - Review previous day's performance and learning
  * - review-week [week]   - Review previous week's performance
  * - review-month [month] - Review previous month's achievements
  * - review-quarter [Q]   - Review previous quarter's progress
@@ -340,6 +341,9 @@ class FractalPlanner {
                 case 'plan-year':
                     await this.planYear(args[1]);
                     break;
+                case 'review-day':
+                    await this.reviewDay(args[1]);
+                    break;
                 case 'review-week':
                     await this.reviewWeek(args[1]);
                     break;
@@ -639,6 +643,157 @@ class FractalPlanner {
         PlanStorage.save(plan);
         
         console.log(`\n✅ Year plan saved for ${year}`);
+    }
+
+    async reviewDay(dateStr) {
+        const dateIndex = dateStr ? new DateIndex(new Date(dateStr)) : this.getPreviousDay();
+        const identifiers = dateIndex.getIdentifiers();
+        
+        console.log(`\n📅 Reviewing Day: ${identifiers.day}`);
+        console.log(`📊 Multi-Index: Day ${identifiers.dayOfYear}/365 | Week ${identifiers.dayOfWeek}/7 | Month ${identifiers.dayOfMonth}/${new Date(dateIndex.year, dateIndex.month, 0).getDate()} | Quarter ${identifiers.dayOfQuarter}/92`);
+        
+        const dayPlan = PlanStorage.load('day', identifiers.day);
+        if (!dayPlan) {
+            console.log(`❌ No plan found for day ${identifiers.day}`);
+            return;
+        }
+
+        const performance = new Performance('day', identifiers.day);
+        
+        // Review time blocks and objectives
+        console.log(`\n⏰ Time Block Review:`);
+        for (const timeBlock of dayPlan.timeBlocks) {
+            const completed = await this.ask(`"${timeBlock.activity}" (${timeBlock.duration}min) - Completed effectively? (y/n): `);
+            timeBlock.completed = completed.toLowerCase() === 'y';
+            
+            if (completed.toLowerCase() === 'y') {
+                const effectiveness = await this.ask(`Effectiveness (1-10): `);
+                timeBlock.effectiveness = parseInt(effectiveness) || 5;
+            }
+        }
+
+        console.log(`\n🎯 Daily Objective Review:`);
+        for (const objective of dayPlan.objectives) {
+            const completed = await this.ask(`"${objective.text}" - Completed? (y/n): `);
+            objective.completed = completed.toLowerCase() === 'y';
+        }
+
+        performance.calculateStats(dayPlan);
+
+        console.log(`\n📈 Day Performance:`);
+        console.log(`Objective Completion: ${performance.objectiveStats.completed}/${performance.objectiveStats.total}`);
+        console.log(`Time Block Completion: ${dayPlan.timeBlocks.filter(tb => tb.completed).length}/${dayPlan.timeBlocks.length}`);
+
+        // Daily reflection questions
+        const energy = await this.ask(`\n⚡ Average energy today (1-10): `);
+        const focus = await this.ask(`🎯 Focus quality (1-10): `);
+        const satisfaction = await this.ask(`😊 Day satisfaction (1-10): `);
+        const accomplishments = await this.ask(`🏆 Key accomplishments (however small): `);
+        const challenges = await this.ask(`⚠️ Main challenges faced: `);
+        const insights = await this.ask(`💡 Key insights or learning: `);
+        const tomorrowPriority = await this.ask(`📋 Top priority for tomorrow: `);
+
+        performance.wellbeingMetrics = {
+            energy: parseInt(energy) || 5,
+            focus: parseInt(focus) || 5,
+            satisfaction: parseInt(satisfaction) || 5
+        };
+
+        performance.insights.push(insights);
+        performance.accomplishments = accomplishments;
+        performance.challenges = challenges;
+        performance.tomorrowPriority = tomorrowPriority;
+
+        // Check alignment with parent plans
+        const weekPlan = PlanStorage.load('week', identifiers.week);
+        const monthPlan = PlanStorage.load('month', identifiers.month);
+        
+        if (weekPlan) {
+            const weekAlignment = await this.ask(`📊 How well did today support weekly priorities (1-10)?: `);
+            performance.weekAlignment = parseInt(weekAlignment) || 5;
+        }
+
+        PlanStorage.savePerformance(performance);
+        PlanStorage.save(dayPlan);
+
+        console.log(`\n✅ Day review completed for ${identifiers.day}`);
+        this.showPerformanceSummary(performance);
+
+        // Generate readable report
+        await this.generateDailyReviewReport(identifiers.day, performance, dayPlan);
+    }
+
+    async generateDailyReviewReport(dayId, performance, dayPlan) {
+        const reportDir = path.join(__dirname, '..', 'journal', 'planning', 'daily-reviews');
+        if (!fs.existsSync(reportDir)) {
+            fs.mkdirSync(reportDir, { recursive: true });
+        }
+
+        const reportPath = path.join(reportDir, `review-${dayId}.md`);
+        const dateIndex = new DateIndex(new Date(dayId));
+        const identifiers = dateIndex.getIdentifiers();
+
+        const completedBlocks = dayPlan.timeBlocks.filter(tb => tb.completed).length;
+        const completedObjectives = dayPlan.objectives.filter(obj => obj.completed).length;
+        const blockEffectiveness = dayPlan.timeBlocks
+            .filter(tb => tb.effectiveness)
+            .reduce((sum, tb, _, arr) => sum + tb.effectiveness / arr.length, 0);
+
+        const reportContent = `---
+date: ${dayId}
+type: daily-review
+completion_rate: ${performance.completionRate.toFixed(1)}%
+energy_average: ${performance.wellbeingMetrics.energy}/10
+focus_average: ${performance.wellbeingMetrics.focus}/10
+satisfaction: ${performance.wellbeingMetrics.satisfaction}/10
+week_alignment: ${performance.weekAlignment || 'N/A'}/10
+---
+
+# Daily Review: ${dayId}
+
+## Execution Summary
+- Time blocks completed: ${completedBlocks}/${dayPlan.timeBlocks.length}
+- Objectives achieved: ${completedObjectives}/${dayPlan.objectives.length}
+- Overall completion rate: ${performance.completionRate.toFixed(1)}%
+- Average block effectiveness: ${blockEffectiveness.toFixed(1)}/10
+
+## Time Block Analysis
+${dayPlan.timeBlocks.map(tb => 
+    `- **${tb.activity}** (${tb.duration}min): ${tb.completed ? '✅' : '❌'} ${tb.effectiveness ? `[${tb.effectiveness}/10]` : ''}`
+).join('\n')}
+
+## Energy & Focus Patterns
+- Energy level: ${performance.wellbeingMetrics.energy}/10
+- Focus quality: ${performance.wellbeingMetrics.focus}/10
+- Day satisfaction: ${performance.wellbeingMetrics.satisfaction}/10
+
+## Accomplishments & Wins
+${performance.accomplishments || 'No specific accomplishments noted'}
+
+## Challenges & Learning
+${performance.challenges || 'No specific challenges noted'}
+
+## Key Insights
+${performance.insights.join('\n') || 'No specific insights noted'}
+
+## Alignment Assessment
+- Weekly goal support: ${performance.weekAlignment || 'Not assessed'}/10
+
+## Tomorrow's Planning
+- Top priority: ${performance.tomorrowPriority || 'Not specified'}
+
+## Performance Notes
+Generated from daily review session on ${new Date().toISOString().split('T')[0]}
+`;
+
+        fs.writeFileSync(reportPath, reportContent);
+        console.log(`📄 Daily review report saved: journal/planning/daily-reviews/review-${dayId}.md`);
+    }
+
+    getPreviousDay() {
+        const now = new Date();
+        now.setDate(now.getDate() - 1);
+        return new DateIndex(now);
     }
 
     async reviewWeek(weekStr) {
