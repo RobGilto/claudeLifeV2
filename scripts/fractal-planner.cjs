@@ -76,16 +76,46 @@ class DateIndex {
     }
 
     getIdentifiers() {
+        const dayOfWeek = this.date.getDay();
+        const mondayBasedDayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek; // Monday=1, Sunday=7
+        
+        const quarterStart = new Date(this.year, (this.quarter - 1) * 3, 1);
+        const dayOfQuarter = Math.floor((this.date - quarterStart) / (1000 * 60 * 60 * 24)) + 1;
+        
+        const monthStart = new Date(this.year, this.month - 1, 1);
+        const firstWeekOfMonth = Math.ceil((monthStart.getDay() + 1) / 7);
+        const weekOfMonth = Math.ceil((this.day + monthStart.getDay()) / 7);
+        
+        const quarterStartWeek = Math.ceil((quarterStart.getDay() + 1) / 7);
+        const weekOfQuarter = this.week - Math.ceil(((this.quarter - 1) * 3 * 30.44 + quarterStart.getDay()) / 7) + 1;
+        
+        const monthOfQuarter = ((this.month - 1) % 3) + 1;
+
         return {
+            // Primary identifiers
             day: this.toString(),
             week: `${this.year}-W${this.week.toString().padStart(2, '0')}`,
             month: `${this.year}-${this.month.toString().padStart(2, '0')}`,
             quarter: `${this.year}-Q${this.quarter}`,
             year: `${this.year}`,
+            
+            // Absolute indexes (within year)
             dayOfYear: this.dayOfYear,
             weekOfYear: this.week,
             monthOfYear: this.month,
-            quarterOfYear: this.quarter
+            quarterOfYear: this.quarter,
+            
+            // Multi-perspective indexes (day from different lenses)
+            dayOfWeek: mondayBasedDayOfWeek,        // 1-7 (Mon=1, Sun=7)
+            dayOfMonth: this.day,                   // 1-31
+            dayOfQuarter: dayOfQuarter,             // 1-92
+            
+            // Multi-perspective indexes (week from different lenses)
+            weekOfMonth: weekOfMonth,               // 1-6
+            weekOfQuarter: Math.max(1, weekOfQuarter), // 1-13
+            
+            // Multi-perspective indexes (month from different lenses)
+            monthOfQuarter: monthOfQuarter          // 1-3
         };
     }
 }
