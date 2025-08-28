@@ -16,83 +16,18 @@
     "monthOfYear": 8,
     "quarter": 3
   },
-  "timeBlocks": [
-    {
-      "id": "block-1",
-      "start": "09:00",
-      "duration": 90,
-      "title": "Boot.dev AI Learning Sprint",
-      "objective": "Complete 2 AI/ML modules on Boot.dev platform",
-      "alignment": "Skill development toward 2026 AI engineer goal",
-      "type": "deep-work"
-    },
-    {
-      "id": "block-2", 
-      "start": "10:45",
-      "duration": 75,
-      "title": "Claude Code Workflow Optimization",
-      "objective": "Integrate calendar MCP and improve planning automation",
-      "alignment": "Productivity systems enhancement",
-      "type": "project"
-    },
-    {
-      "id": "block-3",
-      "start": "13:30",
-      "duration": 60,
-      "title": "GitHub Actions & CI/CD Learning",
-      "objective": "Set up automated testing pipeline for portfolio project",
-      "alignment": "Technical skills - DevOps practices",
-      "type": "deep-work"
-    },
-    {
-      "id": "block-4",
-      "start": "15:00",
-      "duration": 45,
-      "title": "Job Market Research & Skills Gap",
-      "objective": "Analyze Sydney AI job postings and update skill priorities",
-      "alignment": "Career transition strategic planning",
-      "type": "research"
-    },
-    {
-      "id": "block-5",
-      "start": "16:00",
-      "duration": 30,
-      "title": "Daily Review & Tomorrow Prep",
-      "objective": "Complete evening check-in and plan tomorrow's priorities",
-      "alignment": "Continuous improvement cycle",
-      "type": "admin"
-    }
-  ],
-  "objectives": [
-    {
-      "id": "obj-1",
-      "title": "Complete 2 Boot.dev AI modules",
-      "priority": 1,
-      "parentAlignment": "2026 AI engineer transformation"
-    },
-    {
-      "id": "obj-2",
-      "title": "Deploy one automated workflow improvement",
-      "priority": 2,
-      "parentAlignment": "Productivity system optimization"
-    },
-    {
-      "id": "obj-3",
-      "title": "Document 3 new technical learnings",
-      "priority": 3,
-      "parentAlignment": "Knowledge capture and retention"
-    }
-  ],
+  "timeBlocks": [],
+  "objectives": [],
   "context": {
-    "theme": "Technical Excellence & System Building",
-    "energy": "Morning focus on learning, afternoon on application",
-    "constraints": "ADD-friendly 90min max blocks with clear transitions"
+    "theme": "",
+    "energy": "",
+    "constraints": "ADD-friendly max 90min blocks with clear transitions"
   },
   "metrics": {
-    "plannedHours": 5.5,
-    "deepWorkHours": 2.5,
-    "learningHours": 3.5
+    "plannedHours": 0,
+    "deepWorkHours": 0,
+    "learningHours": 0
   },
-  "created": "2025-08-28T10:30:00+10:00",
-  "modified": "2025-08-28T10:30:00+10:00"
+  "created": "2025-08-28T15:30:00+10:00",
+  "modified": "2025-08-28T15:30:00+10:00"
 }
