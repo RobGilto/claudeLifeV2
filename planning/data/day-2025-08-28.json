@@ -2,11 +2,32 @@
   "period": "day",
   "identifier": "2025-08-28",
   "created": "2025-08-28T04:36:26.000Z",
-  "modified": "2025-08-28T04:36:26.000Z",
+  "modified": "2025-08-28T04:46:44.000Z",
   "status": "active",
   "parentPlans": [],
   "childPlans": [],
   "objectives": [
+    {
+      "id": "obj-1",
+      "title": "Complete meaningful technical progress",
+      "priority": 1,
+      "parentAlignment": "2026 AI engineer transformation",
+      "completed": false
+    },
+    {
+      "id": "obj-2",
+      "title": "Document learnings and capture victories",
+      "priority": 2,
+      "parentAlignment": "Knowledge retention and confidence building",
+      "completed": false
+    },
+    {
+      "id": "obj-3",
+      "title": "Maintain momentum with ADD-friendly structure",
+      "priority": 3,
+      "parentAlignment": "Sustainable daily practice",
+      "completed": false
+    },
     {
       "id": "obj-1",
       "title": "Complete meaningful technical progress",
@@ -66,6 +87,50 @@
     },
     {
       "id": "block-4",
+      "start": "16:00",
+      "duration": 60,
+      "title": "Research, documentation, or skill practice",
+      "activity": "Research, documentation, or skill practice",
+      "alignment": "Continuous learning and skill gap closure",
+      "type": "learning",
+      "completed": false,
+      "notes": ""
+    },
+    {
+      "id": "block-5",
+      "start": "09:00",
+      "duration": 90,
+      "title": "AI/ML skill development",
+      "activity": "AI/ML skill development - Boot.dev or project work",
+      "alignment": "2026 AI engineer transformation goal",
+      "type": "deep-work",
+      "completed": false,
+      "notes": ""
+    },
+    {
+      "id": "block-6",
+      "start": "11:00",
+      "duration": 60,
+      "title": "Communication, admin, and planning tasks",
+      "activity": "Communication, admin, and planning tasks",
+      "alignment": "Sustainable daily practice and organization",
+      "type": "admin",
+      "completed": false,
+      "notes": ""
+    },
+    {
+      "id": "block-7",
+      "start": "14:00",
+      "duration": 90,
+      "title": "Technical project work or advanced learning",
+      "activity": "Technical project work or advanced learning",
+      "alignment": "Portfolio building and technical mastery",
+      "type": "deep-work",
+      "completed": false,
+      "notes": ""
+    },
+    {
+      "id": "block-8",
       "start": "16:00",
       "duration": 60,
       "title": "Research, documentation, or skill practice",

@@ -1,0 +1,170 @@
+#!/usr/bin/env node
+
+/**
+ * Google Calendar Sync for Daily Planning
+ * Purpose: Convert daily time blocks into Google Calendar events
+ * Usage: node scripts/calendar-sync.js [date]
+ * Dependencies: planning system data, Google Calendar MCP integration
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+// Configuration
+const PLANNING_DIR = path.join(__dirname, '..', 'planning');
+const DATA_DIR = path.join(PLANNING_DIR, 'data');
+
+function getSydneyDate(date = new Date()) {
+    return new Date(date.toLocaleString('en-US', { timeZone: 'Australia/Sydney' }));
+}
+
+function formatSydneyDateString(date = new Date()) {
+    const sydneyDate = new Date(date.toLocaleString('en-US', { timeZone: 'Australia/Sydney' }));
+    return sydneyDate.toISOString().split('T')[0];
+}
+
+function getBlockTypeColor(type) {
+    const colors = {
+        'deep-work': 'blue',
+        'learning': 'green', 
+        'admin': 'orange',
+        'review': 'purple'
+    };
+    return colors[type] || 'default';
+}
+
+function formatTimeForCalendar(date, timeStr) {
+    return `${date}T${timeStr}:00`;
+}
+
+function generateCalendarEvents(date) {
+    const planFile = path.join(DATA_DIR, `day-${date}.json`);
+    
+    if (!fs.existsSync(planFile)) {
+        console.log(`❌ No daily plan found for ${date}`);
+        console.log(`   Create plan first with: node scripts/fractal-planner.cjs plan-day ${date}`);
+        return;
+    }
+
+    const plan = JSON.parse(fs.readFileSync(planFile, 'utf8'));
+    const timeBlocks = plan.timeBlocks || [];
+    
+    if (timeBlocks.length === 0) {
+        console.log(`❌ No time blocks found in plan for ${date}`);
+        return;
+    }
+
+    console.log(`📅 Calendar Sync for ${date}`);
+    console.log(`🕐 Timezone: Australia/Sydney`);
+    console.log(`📋 Time Blocks: ${timeBlocks.length}\n`);
+
+    // Remove duplicates based on start time and activity
+    const uniqueBlocks = timeBlocks.reduce((acc, block) => {
+        const key = `${block.start}-${block.activity}`;
+        if (!acc.some(b => `${b.start}-${b.activity}` === key)) {
+            acc.push(block);
+        }
+        return acc;
+    }, []);
+
+    console.log(`🔄 MCP Commands for Google Calendar Integration:`);
+    console.log(`   (Copy and paste these commands one by one)\n`);
+
+    uniqueBlocks.forEach((block, index) => {
+        const startTime = formatTimeForCalendar(date, block.start);
+        const endTime = formatTimeForCalendar(date, addMinutes(block.start, block.duration));
+        const color = getBlockTypeColor(block.type);
+        
+        console.log(`# Event ${index + 1}: ${block.activity}`);
+        console.log(`mcp call google-calendar create_event '{
+  "calendarId": "primary",
+  "summary": "${block.activity}",
+  "description": "🎯 ${block.alignment}\\n⚡ Type: ${block.type}\\n📋 Daily Plan Block",
+  "start": {
+    "dateTime": "${startTime}",
+    "timeZone": "Australia/Sydney"
+  },
+  "end": {
+    "dateTime": "${endTime}", 
+    "timeZone": "Australia/Sydney"
+  },
+  "reminders": {
+    "useDefault": false,
+    "overrides": [
+      {"method": "popup", "minutes": 10},
+      {"method": "popup", "minutes": 2}
+    ]
+  },
+  "colorId": "${getColorId(color)}"
+}'`);
+        console.log(''); // Empty line between events
+    });
+
+    console.log(`\n📋 Manual Calendar Entry Alternative:`);
+    console.log(`   Use these details if MCP integration isn't available:\n`);
+    
+    uniqueBlocks.forEach((block, index) => {
+        const startTime = formatTimeForCalendar(date, block.start);
+        const endTime = formatTimeForCalendar(date, addMinutes(block.start, block.duration));
+        
+        console.log(`${index + 1}. ${block.activity}`);
+        console.log(`   📅 Date: ${date}`);
+        console.log(`   ⏰ Time: ${block.start} - ${addMinutes(block.start, block.duration)} (Sydney)`);
+        console.log(`   🎯 Purpose: ${block.alignment}`);
+        console.log(`   📋 Type: ${block.type}`);
+        console.log(`   🔔 Reminders: 10min & 2min before`);
+        console.log('');
+    });
+
+    // Save sync data
+    const syncData = {
+        date,
+        synced: new Date().toISOString(),
+        blocks: uniqueBlocks.map(b => ({
+            start: b.start,
+            duration: b.duration,
+            activity: b.activity,
+            type: b.type,
+            calendarStart: formatTimeForCalendar(date, b.start),
+            calendarEnd: formatTimeForCalendar(date, addMinutes(b.start, b.duration))
+        }))
+    };
+    
+    const syncFile = path.join(PLANNING_DIR, 'analytics', `calendar-sync-${date}.json`);
+    fs.mkdirSync(path.dirname(syncFile), { recursive: true });
+    fs.writeFileSync(syncFile, JSON.stringify(syncData, null, 2));
+    
+    console.log(`💾 Sync data saved to: ${syncFile}`);
+    console.log(`\n🎯 Next Steps:`);
+    console.log(`   1. Execute MCP commands above (if MCP configured)`);
+    console.log(`   2. OR manually add events using the details provided`);
+    console.log(`   3. Run '/taskmaster-start' to begin daily execution`);
+}
+
+function addMinutes(timeStr, minutes) {
+    const [hours, mins] = timeStr.split(':').map(Number);
+    const totalMins = hours * 60 + mins + minutes;
+    const newHours = Math.floor(totalMins / 60);
+    const newMins = totalMins % 60;
+    return `${newHours.toString().padStart(2, '0')}:${newMins.toString().padStart(2, '0')}`;
+}
+
+function getColorId(color) {
+    const colorMap = {
+        'blue': '1',      // Deep work - blue
+        'green': '2',     // Learning - green
+        'orange': '6',    // Admin - orange
+        'purple': '3',    // Review - purple
+        'default': '7'    // Default - grey
+    };
+    return colorMap[color] || colorMap['default'];
+}
+
+// Main execution
+const args = process.argv.slice(2);
+const date = args[0] || formatSydneyDateString(getSydneyDate());
+
+console.log(`🗓️  Calendar Sync - ${date}`);
+console.log(`🌏 Timezone: Australia/Sydney\n`);
+
+generateCalendarEvents(date);
