@@ -1,0 +1,162 @@
+{
+  "id": "2025-W35",
+  "type": "week",
+  "startDate": "2025-08-25",
+  "endDate": "2025-08-31",
+  "created": "2025-08-30T08:15:00+10:00",
+  "updated": "2025-08-30T08:15:00+10:00",
+  "context": "Focus on rebuilding AI development confidence through consistent practice",
+  "theme": "Momentum Building Through Daily Practice",
+  "priorities": [
+    "Maintain boot.dev daily practice streak",
+    "Rebuild AI development confidence with structured approach",
+    "Master tmux/neovim development environment",
+    "Complete AI code challenge with proper guardrails"
+  ],
+  "objectives": [
+    {
+      "id": "boot-dev-daily",
+      "description": "Complete 1 hour of boot.dev practice daily",
+      "target": 7,
+      "completed": 3,
+      "metric": "days",
+      "priority": "critical"
+    },
+    {
+      "id": "ai-code-challenge",
+      "description": "Complete one AI coding project with proper standards",
+      "target": 1,
+      "completed": 0,
+      "metric": "projects",
+      "priority": "high"
+    },
+    {
+      "id": "tmux-practice",
+      "description": "Daily tmux/sessionX practice sessions",
+      "target": 7,
+      "completed": 0,
+      "metric": "sessions",
+      "priority": "medium"
+    },
+    {
+      "id": "vim-research",
+      "description": "Research ThePrimeagen's advanced Vim methodologies",
+      "target": 2,
+      "completed": 0,
+      "metric": "videos/resources",
+      "priority": "medium"
+    }
+  ],
+  "kpis": {
+    "bootDevStreak": {
+      "name": "Boot.dev Streak",
+      "current": 3,
+      "target": 7,
+      "unit": "days",
+      "trend": "increasing",
+      "lastUpdated": "2025-08-30"
+    },
+    "dailyPracticeHours": {
+      "name": "Daily Practice Hours",
+      "current": 1,
+      "target": 1,
+      "unit": "hours/day",
+      "trend": "stable"
+    },
+    "weeklyCommits": {
+      "name": "AI Code Commits",
+      "current": 0,
+      "target": 5,
+      "unit": "commits",
+      "trend": "pending"
+    },
+    "toolMasteryProgress": {
+      "name": "Tool Mastery Sessions",
+      "current": 0,
+      "target": 7,
+      "unit": "sessions",
+      "trend": "pending"
+    }
+  },
+  "dailyTracking": {
+    "monday": {
+      "date": "2025-08-25",
+      "bootDev": false,
+      "tmuxPractice": false,
+      "notes": ""
+    },
+    "tuesday": {
+      "date": "2025-08-26",
+      "bootDev": false,
+      "tmuxPractice": false,
+      "notes": ""
+    },
+    "wednesday": {
+      "date": "2025-08-27",
+      "bootDev": true,
+      "tmuxPractice": false,
+      "notes": "Started streak"
+    },
+    "thursday": {
+      "date": "2025-08-28",
+      "bootDev": true,
+      "tmuxPractice": false,
+      "notes": "Streak day 2"
+    },
+    "friday": {
+      "date": "2025-08-29",
+      "bootDev": true,
+      "tmuxPractice": false,
+      "notes": "Streak day 3"
+    },
+    "saturday": {
+      "date": "2025-08-30",
+      "bootDev": false,
+      "tmuxPractice": false,
+      "notes": "Need to complete today"
+    },
+    "sunday": {
+      "date": "2025-08-31",
+      "bootDev": false,
+      "tmuxPractice": false,
+      "notes": ""
+    }
+  },
+  "streakTracking": {
+    "bootDev": {
+      "currentStreak": 3,
+      "longestStreak": 3,
+      "totalDays": 3,
+      "lastCompleted": "2025-08-29",
+      "streakHistory": [
+        {
+          "start": "2025-08-27",
+          "end": "2025-08-29",
+          "days": 3
+        }
+      ]
+    }
+  },
+  "weeklyReflection": {
+    "wins": [],
+    "challenges": [
+      "Confidence in AI development has been shaken",
+      "Need to establish consistent daily practice routine"
+    ],
+    "learnings": [
+      "1 hour daily practice is sustainable",
+      "Gamification elements help maintain motivation",
+      "Need 'rail guards' and standards before diving into AI code"
+    ],
+    "nextWeekFocus": [
+      "Maintain and extend boot.dev streak",
+      "Complete first AI project with proper standards",
+      "Establish tmux/neovim as primary development environment"
+    ]
+  },
+  "parentAlignment": {
+    "monthId": "2025-08",
+    "quarterId": "2025-Q3",
+    "yearId": "2025"
+  }
+}
