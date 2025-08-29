@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Boot.dev Quick Commands
+# Easy access to boot.dev tracking functionality
+
+case "$1" in
+  "done" | "complete")
+    echo "🎯 Marking boot.dev practice as complete..."
+    node scripts/boot-dev-tracker.cjs complete
+    ;;
+  "status" | "streak")
+    node scripts/boot-dev-tracker.cjs status
+    ;;
+  "week" | "progress")
+    node scripts/boot-dev-tracker.cjs week
+    ;;
+  *)
+    echo "🚀 Boot.dev Practice Tracker"
+    echo ""
+    echo "Usage:"
+    echo "  ./scripts/bootdev done      # Mark today's practice complete"
+    echo "  ./scripts/bootdev status    # Show current streak"
+    echo "  ./scripts/bootdev week      # Show weekly progress"
+    echo ""
+    echo "Full usage:"
+    echo "  node scripts/boot-dev-tracker.cjs [complete|status|week]"
+    ;;
+esac
