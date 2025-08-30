@@ -495,14 +495,83 @@ ${victories.slice(0, 5).map(v =>
     `- **${v.date}** [${v.category}]: ${v.description}`
 ).join('\n')}` : 'No automatic victories detected'}
 
-## 🔮 Adjustments for Next Week
-Based on this week's data:
-${metrics.energyAverage < 6 ? '- Focus on energy management and rest\n' : ''}${completionRate < 50 ? '- Set more realistic objectives or increase focus time\n' : ''}${allChallenges.length > 3 ? '- Address recurring blockers and challenges\n' : ''}${victories.length > 5 ? '- Maintain current momentum and practices\n' : '- Increase daily accomplishment tracking'}
+## 🎯 Strategic Feedback for Goal Alignment
 
-## 📝 Next Week Preparation
-- **Carry forward priorities:** ${weekPlan?.objectives?.filter(o => !o.completed || o.completed < o.target).slice(0, 3).map(o => o.description).join(', ') || 'None identified'}
-- **Suggested focus areas:** Based on energy patterns and completion rates
-- **Process improvements:** ${dailyDataArray.filter(d => d).length < 5 ? 'Improve daily check-in consistency' : 'Maintain current tracking habits'}
+### What's Working Well
+${victories.length >= 5 ? `- Strong momentum with ${victories.length} victories detected\n` : ''}${metrics.energyAverage >= 6 ? '- Good energy management maintaining ' + metrics.energyAverage.toFixed(1) + '/10 average\n' : ''}${dailyDataArray.filter(d => d).length >= 5 ? '- Excellent daily check-in consistency\n' : ''}${completedObjectives.length > 0 ? '- Successfully completed: ' + completedObjectives.map(o => o.description).join(', ') + '\n' : ''}
+
+### Areas Needing Attention
+${partialObjectives.filter(o => o.priority === 'critical').length > 0 ? 
+`🚨 **Critical objectives incomplete:**
+${partialObjectives.filter(o => o.priority === 'critical').map(o => 
+  `  - ${o.description}: Only ${o.actualCompleted}/${o.target} completed`
+).join('\n')}
+` : ''}${notStartedObjectives.filter(o => o.priority === 'high' || o.priority === 'critical').length > 0 ?
+`⚠️ **High priority objectives not started:**
+${notStartedObjectives.filter(o => o.priority === 'high' || o.priority === 'critical').map(o =>
+  `  - ${o.description} (${o.priority})`
+).join('\n')}
+` : ''}${metrics.energyAverage < 6 ? '- Low energy average (' + metrics.energyAverage.toFixed(1) + '/10) impacting productivity\n' : ''}${allChallenges.filter(c => c.includes('tunnel vision') || c.includes('distract')).length > 0 ? '- Focus challenges detected: tunnel vision and distractions\n' : ''}
+
+### 🔮 Specific Recommendations for Next Week
+
+#### Priority Adjustments
+${partialObjectives.filter(o => o.priority === 'critical').length > 0 ? 
+`1. **Complete critical objectives first:**
+${partialObjectives.filter(o => o.priority === 'critical').map(o => 
+  `   - ${o.description}: Needs ${o.target - o.actualCompleted} more ${o.metric} to complete`
+).join('\n')}` : 
+completionRate < 50 ? 
+'1. **Reduce objective count:** Focus on 2-3 high-impact objectives instead of ' + totalObjectives :
+'1. **Maintain current objective load:** ' + totalObjectives + ' objectives seems appropriate'}
+
+#### Time Allocation
+${objectives?.filter(o => o.actualCompleted < o.target && o.priority === 'critical').length > 0 ?
+`2. **Reallocate time to critical priorities:**
+   - Morning energy peaks: Focus on ${objectives.filter(o => o.priority === 'critical')[0]?.description}
+   - Use time-boxing: 90-minute focused sessions` :
+'2. **Continue current time allocation** with minor adjustments based on energy patterns'}
+
+#### Energy Optimization
+${metrics.energyAverage < 6 ?
+`3. **Energy recovery plan:**
+   - Best performance days were: ${metrics.bestDays.join(', ') || 'varied'}
+   - Schedule demanding work for high-energy times
+   - Add restorative activities between intense sessions` :
+`3. **Leverage high energy:** Your ${metrics.energyAverage.toFixed(1)}/10 average is good
+   - Peak days: ${metrics.bestDays.join(', ') || 'consistent'}
+   - Maintain current rhythm`}
+
+#### Obstacle Mitigation
+${allChallenges.length > 0 ?
+`4. **Address recurring challenges:**
+${allChallenges.slice(0, 3).map((c, i) => `   - ${c}`).join('\n')}
+   **Solutions:** ${allChallenges.some(c => c.includes('children') || c.includes('distract')) ? 
+   'Set clear boundaries, use noise-canceling headphones, work in focused blocks' :
+   'Time-box tasks, take regular breaks, use Pomodoro technique'}` :
+'4. **No major obstacles detected** - maintain current strategies'}
+
+## 📝 Next Week Planning Guidance
+
+### Objectives to Carry Forward
+${partialObjectives.length > 0 ? 
+`**Continue these partially completed objectives:**
+${partialObjectives.slice(0, 3).map(o => 
+  `- ${o.description}: ${o.target - o.actualCompleted} ${o.metric} remaining (${100 - o.completionRate.toFixed(0)}% to go)`
+).join('\n')}` :
+'No objectives to carry forward - start fresh with new goals'}
+
+### Suggested Weekly Theme
+${completionRate < 30 ? `"Foundation Building - Establishing Consistent Practices"` :
+completionRate < 70 ? `"Momentum Acceleration - Completing What's Started"` :
+`"Excellence Expansion - Building on Strong Foundation"`}
+
+### Recommended Priority Distribution
+- **Critical (1-2):** ${partialObjectives.filter(o => o.priority === 'critical').map(o => o.description).join(', ') || 
+  'Choose your highest-impact objective'}
+- **High (2-3):** Supporting objectives that enable critical priorities
+- **Medium (1-2):** Growth and learning objectives
+${totalObjectives > 5 ? '\n⚠️ **Reduce total objectives** from ' + totalObjectives + ' to 4-5 maximum for better focus' : ''}
 
 ---
 *Review generated: ${new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })}*`;
