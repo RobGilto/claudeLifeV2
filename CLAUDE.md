@@ -864,3 +864,4 @@ Target roles:
 AI Application Engineer
 Full-Stack AI Developer
 AI Solutions Engineer
+- when something goes wrong, and the user points it out, please fix the systems slash commands/scripts and try not just give the solution, because the user is more concerned about the system behaviour for the future

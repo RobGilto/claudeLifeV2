@@ -1,24 +1,27 @@
 # Weekly Review
 
-Conduct comprehensive weekly performance review with insights and adjustments for next week.
+Automatically generates comprehensive weekly performance review from daily check-ins and planning data.
 
 ## Process:
 
-1. Read CLAUDE.md and weekly planning context to understand goals and priorities.
+1. Determine which week to review (current, last, or specific week ID).
 
-2. Show weekly review context:
-   ```
-   📊 Reviewing Week: YYYY-WXX
-   📅 Date Range: [Monday] - [Sunday]
-   📋 Weekly Plan Reference: [show if exists]
-   ```
+2. Execute automated weekly review that gathers data from:
+   - Daily journal entries in `/journal/daily/`
+   - Weekly planning objectives in `/planning/data/`
+   - Victory patterns from accomplishments
+   - Energy and mood metrics from check-ins
 
-3. Execute interactive weekly review:
+3. Run the automated review script:
    ```bash
-   node scripts/fractal-planner.cjs review-week [week]
+   node scripts/automated-weekly-review.cjs [week]
    ```
+   Where [week] can be:
+   - `current` - Review current week
+   - `last` - Review previous week  
+   - `2025-W35` - Review specific week
 
-4. After completing the interactive review, generate comprehensive weekly review report in `journal/planning/weekly-reviews/review-YYYY-WXX.md`:
+4. The script automatically generates comprehensive weekly review report in `journal/planning/weekly-reviews/review-YYYY-WXX.md`:
 
    ```markdown
    ---
