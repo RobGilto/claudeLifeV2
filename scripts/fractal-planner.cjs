@@ -337,37 +337,49 @@ class FractalPlanner {
         const args = process.argv.slice(2);
         const command = args[0] || 'status';
         
+        // Parse JSON data from --data argument or stdin
+        let planData = null;
+        const dataIndex = args.indexOf('--data');
+        if (dataIndex !== -1 && args[dataIndex + 1]) {
+            try {
+                planData = JSON.parse(args[dataIndex + 1]);
+            } catch (e) {
+                console.error('Invalid JSON data provided');
+                return;
+            }
+        }
+        
         try {
             switch (command) {
                 case 'plan-day':
-                    await this.planDay(args[1]);
+                    await this.planDay(args[1], planData);
                     break;
                 case 'plan-week':
-                    await this.planWeek(args[1]);
+                    await this.planWeek(args[1], planData);
                     break;
                 case 'plan-month':
-                    await this.planMonth(args[1]);
+                    await this.planMonth(args[1], planData);
                     break;
                 case 'plan-quarter':
-                    await this.planQuarter(args[1]);
+                    await this.planQuarter(args[1], planData);
                     break;
                 case 'plan-year':
-                    await this.planYear(args[1]);
+                    await this.planYear(args[1], planData);
                     break;
                 case 'review-day':
-                    await this.reviewDay(args[1]);
+                    await this.reviewDay(args[1], planData);
                     break;
                 case 'review-week':
-                    await this.reviewWeek(args[1]);
+                    await this.reviewWeek(args[1], planData);
                     break;
                 case 'review-month':
-                    await this.reviewMonth(args[1]);
+                    await this.reviewMonth(args[1], planData);
                     break;
                 case 'review-quarter':
-                    await this.reviewQuarter(args[1]);
+                    await this.reviewQuarter(args[1], planData);
                     break;
                 case 'review-year':
-                    await this.reviewYear(args[1]);
+                    await this.reviewYear(args[1], planData);
                     break;
                 case 'status':
                     await this.showStatus(args[1]);
@@ -379,7 +391,9 @@ class FractalPlanner {
             console.error('Error:', error.message);
             PlanStorage.log(`Error: ${error.message}`);
         } finally {
-            this.rl.close();
+            if (this.rl) {
+                this.rl.close();
+            }
         }
     }
 
