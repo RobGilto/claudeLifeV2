@@ -732,6 +732,24 @@ Extended review commands for comprehensive reflection across all time scales.
 - Year-over-year growth analysis
 - Next year planning foundation
 
+#### Technical Implementation Notes
+
+**Planning Script Integration:**
+- All planning commands use `scripts/fractal-planner.cjs` in non-interactive mode
+- Context and human input are gathered by Claude, then passed as JSON data
+- Example: `NON_INTERACTIVE=1 node scripts/fractal-planner.cjs plan-day 2025-08-31 --data '{...}'`
+- Plans build incrementally through `scripts/plan-data-builder.cjs` during check-ins
+
+**TaskWarrior Integration:**
+- Query pending tasks: `task status:pending project:ai limit:10`
+- Check priorities: `task status:pending priority:H`
+- Update task alignment after planning
+
+**Google Calendar MCP:**
+- Use `mcp__google-calendar__listEvents` for constraint checking
+- Time blocks respect existing calendar events
+- Buffer time automatically added around meetings
+
 ### Automation Protocols
 
 #### Available Scripts and Commands
