@@ -1,0 +1,518 @@
+#!/usr/bin/env node
+
+/**
+ * Automated Weekly Review System
+ * Purpose: Automatically generates weekly review from daily check-ins, victories, and planning data
+ * Usage: node scripts/automated-weekly-review.cjs [week-id]
+ * Dependencies: fs, path
+ * 
+ * This script automatically:
+ * - Gathers data from daily journal entries
+ * - Analyzes weekly planning objectives
+ * - Detects victories from accomplishments
+ * - Calculates energy/mood patterns
+ * - Generates comprehensive review report
+ * - No user interaction required
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+// Configuration
+const JOURNAL_DIR = path.join(__dirname, '..', 'journal', 'daily');
+const PLANNING_DIR = path.join(__dirname, '..', 'planning', 'data');
+const REVIEW_DIR = path.join(__dirname, '..', 'journal', 'planning', 'weekly-reviews');
+const VICTORIES_DIR = path.join(__dirname, '..', 'victories');
+const LOGS_DIR = path.join(__dirname, '..', 'logs');
+
+// Ensure directories exist
+[REVIEW_DIR, LOGS_DIR].forEach(dir => {
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+    }
+});
+
+// Sydney timezone utilities
+function getSydneyDate(date = new Date()) {
+    return new Date(date.toLocaleString('en-US', { timeZone: 'Australia/Sydney' }));
+}
+
+function formatSydneyDateString(date = new Date()) {
+    const sydneyDate = new Date(date.toLocaleString('en-US', { timeZone: 'Australia/Sydney' }));
+    return sydneyDate.toISOString().split('T')[0];
+}
+
+// Get week number and dates
+function getWeekInfo(date = new Date()) {
+    const sydneyDate = getSydneyDate(date);
+    const year = sydneyDate.getFullYear();
+    const firstDayOfYear = new Date(year, 0, 1);
+    const pastDaysOfYear = (sydneyDate - firstDayOfYear) / 86400000;
+    const weekNumber = Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+    
+    // Get Monday (start) and Sunday (end) of the week
+    const dayOfWeek = sydneyDate.getDay();
+    const diff = sydneyDate.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+    const monday = new Date(sydneyDate.setDate(diff));
+    const sunday = new Date(monday);
+    sunday.setDate(sunday.getDate() + 6);
+    
+    return {
+        weekId: `${year}-W${weekNumber.toString().padStart(2, '0')}`,
+        weekNumber,
+        year,
+        startDate: formatSydneyDateString(monday),
+        endDate: formatSydneyDateString(sunday),
+        dates: Array.from({length: 7}, (_, i) => {
+            const date = new Date(monday);
+            date.setDate(date.getDate() + i);
+            return formatSydneyDateString(date);
+        })
+    };
+}
+
+// Parse week ID (e.g., "2025-W35" or "current" or "last")
+function parseWeekId(weekStr) {
+    if (!weekStr || weekStr === 'current') {
+        return getWeekInfo();
+    }
+    
+    if (weekStr === 'last') {
+        const lastWeek = new Date();
+        lastWeek.setDate(lastWeek.getDate() - 7);
+        return getWeekInfo(lastWeek);
+    }
+    
+    // Parse format like "2025-W35"
+    const match = weekStr.match(/^(\d{4})-W(\d{2})$/);
+    if (match) {
+        const year = parseInt(match[1]);
+        const weekNum = parseInt(match[2]);
+        
+        // Calculate date from week number
+        const jan1 = new Date(year, 0, 1);
+        const daysToAdd = (weekNum - 1) * 7;
+        const targetDate = new Date(jan1);
+        targetDate.setDate(jan1.getDate() + daysToAdd);
+        
+        return getWeekInfo(targetDate);
+    }
+    
+    throw new Error(`Invalid week format: ${weekStr}. Use YYYY-WXX, 'current', or 'last'`);
+}
+
+// Load and parse daily journal entry
+function loadDailyJournal(date) {
+    const filePath = path.join(JOURNAL_DIR, `daily-${date}.md`);
+    if (!fs.existsSync(filePath)) {
+        return null;
+    }
+    
+    const content = fs.readFileSync(filePath, 'utf-8');
+    const lines = content.split('\n');
+    
+    const data = {
+        date,
+        exists: true,
+        sessions: [],
+        overallFeeling: null,
+        energy: { morning: null, noon: null, evening: null },
+        accomplishments: [],
+        challenges: [],
+        gratitude: [],
+        priorities: [],
+        reflections: []
+    };
+    
+    // Parse frontmatter
+    const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+    if (frontmatterMatch) {
+        const frontmatter = frontmatterMatch[1];
+        const sessionsMatch = frontmatter.match(/sessions:\s*\[(.*?)\]/);
+        if (sessionsMatch) {
+            data.sessions = sessionsMatch[1].split(',').map(s => s.trim());
+        }
+    }
+    
+    // Parse content sections
+    let currentSection = '';
+    for (const line of lines) {
+        // Section headers
+        if (line.includes('Morning Check-in')) currentSection = 'morning';
+        else if (line.includes('Noon Check-in')) currentSection = 'noon';
+        else if (line.includes('Evening Check-in')) currentSection = 'evening';
+        
+        // Extract data based on patterns
+        if (line.includes('Overall Day Feeling:')) {
+            const match = line.match(/(\d+)\/10/);
+            if (match) data.overallFeeling = parseInt(match[1]);
+        }
+        
+        if (line.includes('Energy') && line.includes(':')) {
+            const match = line.match(/(\d+)\/10/);
+            if (match) {
+                if (currentSection === 'morning') data.energy.morning = parseInt(match[1]);
+                else if (currentSection === 'noon') data.energy.noon = parseInt(match[1]);
+                else if (currentSection === 'evening') data.energy.evening = parseInt(match[1]);
+            }
+        }
+        
+        // Accomplishments (numbered list after "Accomplishments:")
+        if (line.match(/^\d+\.\s+(.+)/) && currentSection) {
+            const accomplishment = line.replace(/^\d+\.\s+/, '').trim();
+            if (accomplishment && !data.accomplishments.includes(accomplishment)) {
+                data.accomplishments.push(accomplishment);
+            }
+        }
+        
+        if (line.includes('Challenges/Blockers:')) {
+            const challenge = line.replace(/.*Challenges\/Blockers:\s*/, '').trim();
+            if (challenge) data.challenges.push(challenge);
+        }
+        
+        if (line.includes('Gratitude:')) {
+            const gratitude = line.replace(/.*Gratitude:\s*/, '').trim();
+            if (gratitude) data.gratitude.push(gratitude);
+        }
+        
+        if (line.includes('Priority:')) {
+            const priority = line.replace(/.*Priority:\s*/, '').trim();
+            if (priority) data.priorities.push(priority);
+        }
+        
+        if (line.includes('Reflections:')) {
+            const reflection = line.replace(/.*Reflections:\s*/, '').trim();
+            if (reflection) data.reflections.push(reflection);
+        }
+    }
+    
+    return data;
+}
+
+// Load weekly plan data
+function loadWeeklyPlan(weekId) {
+    const filePath = path.join(PLANNING_DIR, `week-${weekId}.json`);
+    if (!fs.existsSync(filePath)) {
+        return null;
+    }
+    
+    try {
+        return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    } catch (error) {
+        console.error(`Error loading weekly plan: ${error.message}`);
+        return null;
+    }
+}
+
+// Analyze objectives completion from daily data
+function analyzeObjectiveCompletion(weekPlan, dailyData) {
+    if (!weekPlan || !weekPlan.objectives) return [];
+    
+    const objectives = weekPlan.objectives.map(obj => {
+        const completed = obj.completed || 0;
+        const target = obj.target || 1;
+        const percentage = target > 0 ? (completed / target) * 100 : 0;
+        
+        return {
+            ...obj,
+            completionRate: percentage,
+            status: percentage >= 100 ? '✅' : percentage > 0 ? '⏳' : '❌'
+        };
+    });
+    
+    return objectives;
+}
+
+// Calculate well-being metrics from daily data
+function calculateWellbeingMetrics(dailyDataArray) {
+    const metrics = {
+        energyAverage: 0,
+        focusAverage: 0,
+        satisfactionAverage: 0,
+        energyTrend: [],
+        bestDays: [],
+        challengingDays: []
+    };
+    
+    const energyValues = [];
+    const feelingValues = [];
+    
+    dailyDataArray.forEach(day => {
+        if (!day) return;
+        
+        // Collect energy values
+        const dayEnergy = [day.energy.morning, day.energy.noon, day.energy.evening]
+            .filter(e => e !== null);
+        if (dayEnergy.length > 0) {
+            const avgEnergy = dayEnergy.reduce((a, b) => a + b, 0) / dayEnergy.length;
+            energyValues.push(avgEnergy);
+            metrics.energyTrend.push({ date: day.date, energy: avgEnergy });
+            
+            if (avgEnergy >= 7) {
+                metrics.bestDays.push(day.date);
+            } else if (avgEnergy <= 4) {
+                metrics.challengingDays.push({ date: day.date, reason: 'Low energy' });
+            }
+        }
+        
+        // Collect overall feeling
+        if (day.overallFeeling) {
+            feelingValues.push(day.overallFeeling);
+        }
+    });
+    
+    // Calculate averages
+    if (energyValues.length > 0) {
+        metrics.energyAverage = energyValues.reduce((a, b) => a + b, 0) / energyValues.length;
+    }
+    
+    if (feelingValues.length > 0) {
+        metrics.satisfactionAverage = feelingValues.reduce((a, b) => a + b, 0) / feelingValues.length;
+    }
+    
+    // Focus is approximated from energy for now (can be enhanced)
+    metrics.focusAverage = metrics.energyAverage;
+    
+    return metrics;
+}
+
+// Detect victories from accomplishments
+function detectVictories(dailyDataArray) {
+    const victories = [];
+    const victoryPatterns = [
+        { pattern: /built|created|implemented|developed/i, category: 'technical' },
+        { pattern: /completed|finished|achieved|delivered/i, category: 'discipline' },
+        { pattern: /learned|understood|figured out|discovered/i, category: 'learning' },
+        { pattern: /improved|optimized|fixed|resolved/i, category: 'problem-solving' },
+        { pattern: /organized|planned|structured|documented/i, category: 'organization' },
+        { pattern: /streak|consistent|maintained|continued/i, category: 'persistence' },
+        { pattern: /recognized|realized|awareness/i, category: 'self-awareness' }
+    ];
+    
+    dailyDataArray.forEach(day => {
+        if (!day || !day.accomplishments) return;
+        
+        day.accomplishments.forEach(accomplishment => {
+            victoryPatterns.forEach(({ pattern, category }) => {
+                if (pattern.test(accomplishment)) {
+                    victories.push({
+                        date: day.date,
+                        description: accomplishment,
+                        category,
+                        detected: true
+                    });
+                }
+            });
+        });
+    });
+    
+    return victories;
+}
+
+// Generate weekly review report
+function generateWeeklyReview(weekInfo, weekPlan, dailyDataArray, metrics, victories) {
+    const today = formatSydneyDateString();
+    const completedObjectives = weekPlan?.objectives?.filter(o => o.completed >= o.target) || [];
+    const totalObjectives = weekPlan?.objectives?.length || 0;
+    const completionRate = totalObjectives > 0 
+        ? (completedObjectives.length / totalObjectives) * 100 
+        : 0;
+    
+    // Gather all accomplishments
+    const allAccomplishments = dailyDataArray
+        .filter(d => d && d.accomplishments)
+        .flatMap(d => d.accomplishments);
+    
+    // Gather all challenges
+    const allChallenges = dailyDataArray
+        .filter(d => d && d.challenges)
+        .flatMap(d => d.challenges);
+    
+    // Gather insights from reflections
+    const insights = dailyDataArray
+        .filter(d => d && d.reflections)
+        .flatMap(d => d.reflections)
+        .filter(r => r.length > 0);
+    
+    const report = `---
+date: ${today}
+week: ${weekInfo.weekId}
+type: weekly-review
+completion_rate: ${completionRate.toFixed(1)}
+satisfaction: ${metrics.satisfactionAverage.toFixed(1)}/10
+energy_average: ${metrics.energyAverage.toFixed(1)}/10
+focus_average: ${metrics.focusAverage.toFixed(1)}/10
+---
+
+# Weekly Review: Week ${weekInfo.weekNumber}, ${weekInfo.year}
+
+## 📊 Performance Summary
+- **Week Range:** ${weekInfo.startDate} to ${weekInfo.endDate}
+- **Objectives completed:** ${completedObjectives.length}/${totalObjectives} (${completionRate.toFixed(1)}%)
+- **Overall satisfaction:** ${metrics.satisfactionAverage.toFixed(1)}/10
+- **Days with journal entries:** ${dailyDataArray.filter(d => d).length}/7
+
+## 🎯 Objective Review
+
+### ✅ Completed Objectives
+${completedObjectives.length > 0 ? completedObjectives.map(obj => 
+    `- **${obj.description}**: ${obj.completed}/${obj.target} ${obj.metric || 'completed'}`
+).join('\n') : '- No objectives fully completed this week'}
+
+### ⏳ Partially Completed
+${weekPlan?.objectives?.filter(o => o.completed > 0 && o.completed < o.target).map(obj =>
+    `- **${obj.description}**: ${obj.completed}/${obj.target} ${obj.metric || 'completed'} (${((obj.completed/obj.target)*100).toFixed(0)}%)`
+).join('\n') || '- No partially completed objectives'}
+
+### ❌ Not Started
+${weekPlan?.objectives?.filter(o => !o.completed || o.completed === 0).map(obj =>
+    `- **${obj.description}**: Not started`
+).join('\n') || '- All objectives had some progress'}
+
+## 💪 Well-being Metrics
+- **Average energy level:** ${metrics.energyAverage.toFixed(1)}/10
+- **Average focus quality:** ${metrics.focusAverage.toFixed(1)}/10
+- **Week satisfaction:** ${metrics.satisfactionAverage.toFixed(1)}/10
+- **Best performance days:** ${metrics.bestDays.length > 0 ? metrics.bestDays.join(', ') : 'No standout high-energy days'}
+- **Challenging days:** ${metrics.challengingDays.length > 0 ? 
+    metrics.challengingDays.map(d => `${d.date} (${d.reason})`).join(', ') : 
+    'No particularly challenging days'}
+
+## 📈 Energy Trend
+${metrics.energyTrend.map(d => 
+    `- ${d.date}: ${d.energy.toFixed(1)}/10`
+).join('\n') || 'No energy data available'}
+
+## 🔍 Weekly Insights
+${insights.length > 0 ? insights.map((insight, i) => 
+    `${i + 1}. ${insight}`
+).join('\n') : 'No specific insights captured this week'}
+
+## 🏆 Accomplishments & Wins
+${allAccomplishments.length > 0 ? allAccomplishments.slice(0, 10).map((acc, i) => 
+    `${i + 1}. ${acc}`
+).join('\n') : 'No accomplishments recorded'}
+
+${allAccomplishments.length > 10 ? `\n*Plus ${allAccomplishments.length - 10} more accomplishments...*` : ''}
+
+## 🚧 Challenges & Obstacles
+${allChallenges.length > 0 ? allChallenges.map((challenge, i) => 
+    `${i + 1}. ${challenge}`
+).join('\n') : 'No major challenges recorded'}
+
+## 🎯 Parent Plan Alignment
+### Monthly Goal Contribution
+${weekPlan?.parentAlignment?.monthId ? 
+    `This week contributed to monthly objectives for ${weekPlan.parentAlignment.monthId}` :
+    'No monthly plan alignment configured'}
+
+### Quarterly Strategic Progress
+${weekPlan?.parentAlignment?.quarterId ?
+    `Aligned with quarterly priorities for ${weekPlan.parentAlignment.quarterId}` :
+    'No quarterly alignment configured'}
+
+## 🔄 Performance Patterns
+- **Most productive days:** ${metrics.bestDays.join(', ') || 'No clear pattern'}
+- **Energy optimization:** ${metrics.energyAverage >= 6 ? 'Good energy management' : 'Room for energy improvement'}
+- **Consistency:** ${dailyDataArray.filter(d => d).length >= 5 ? 'Strong daily check-in habit' : 'Improve daily check-in consistency'}
+
+## 🎉 Victory Detection
+${victories.length > 0 ? `Detected ${victories.length} victories from accomplishments:
+${victories.slice(0, 5).map(v => 
+    `- **${v.date}** [${v.category}]: ${v.description}`
+).join('\n')}` : 'No automatic victories detected'}
+
+## 🔮 Adjustments for Next Week
+Based on this week's data:
+${metrics.energyAverage < 6 ? '- Focus on energy management and rest\n' : ''}${completionRate < 50 ? '- Set more realistic objectives or increase focus time\n' : ''}${allChallenges.length > 3 ? '- Address recurring blockers and challenges\n' : ''}${victories.length > 5 ? '- Maintain current momentum and practices\n' : '- Increase daily accomplishment tracking'}
+
+## 📝 Next Week Preparation
+- **Carry forward priorities:** ${weekPlan?.objectives?.filter(o => !o.completed || o.completed < o.target).slice(0, 3).map(o => o.description).join(', ') || 'None identified'}
+- **Suggested focus areas:** Based on energy patterns and completion rates
+- **Process improvements:** ${dailyDataArray.filter(d => d).length < 5 ? 'Improve daily check-in consistency' : 'Maintain current tracking habits'}
+
+---
+*Review generated: ${new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })}*`;
+
+    return report;
+}
+
+// Main execution
+async function main() {
+    const weekStr = process.argv[2];
+    
+    try {
+        console.log('🔄 Starting automated weekly review...\n');
+        
+        // Parse week information
+        const weekInfo = parseWeekId(weekStr);
+        console.log(`📅 Reviewing Week: ${weekInfo.weekId}`);
+        console.log(`📆 Date Range: ${weekInfo.startDate} to ${weekInfo.endDate}\n`);
+        
+        // Load weekly plan
+        console.log('📋 Loading weekly plan...');
+        const weekPlan = loadWeeklyPlan(weekInfo.weekId);
+        if (weekPlan) {
+            console.log(`✓ Found plan: "${weekPlan.theme || 'No theme'}"`);
+        } else {
+            console.log('⚠️  No weekly plan found');
+        }
+        
+        // Load daily journals
+        console.log('\n📖 Loading daily journals...');
+        const dailyDataArray = weekInfo.dates.map(date => {
+            const data = loadDailyJournal(date);
+            if (data) {
+                console.log(`✓ Found journal for ${date}`);
+            }
+            return data;
+        });
+        
+        const journalCount = dailyDataArray.filter(d => d).length;
+        console.log(`📊 Loaded ${journalCount}/7 daily journals`);
+        
+        // Calculate metrics
+        console.log('\n📈 Calculating well-being metrics...');
+        const metrics = calculateWellbeingMetrics(dailyDataArray);
+        console.log(`✓ Energy average: ${metrics.energyAverage.toFixed(1)}/10`);
+        console.log(`✓ Satisfaction average: ${metrics.satisfactionAverage.toFixed(1)}/10`);
+        
+        // Detect victories
+        console.log('\n🏆 Detecting victories...');
+        const victories = detectVictories(dailyDataArray);
+        console.log(`✓ Found ${victories.length} potential victories`);
+        
+        // Generate review report
+        console.log('\n📝 Generating review report...');
+        const report = generateWeeklyReview(weekInfo, weekPlan, dailyDataArray, metrics, victories);
+        
+        // Save report
+        const reviewPath = path.join(REVIEW_DIR, `review-${weekInfo.weekId}.md`);
+        fs.writeFileSync(reviewPath, report);
+        console.log(`✓ Review saved to: ${reviewPath}`);
+        
+        // Log completion
+        const logPath = path.join(LOGS_DIR, `weekly-review-${formatSydneyDateString()}.log`);
+        const logEntry = `${new Date().toISOString()} - Generated weekly review for ${weekInfo.weekId}\n`;
+        fs.appendFileSync(logPath, logEntry);
+        
+        console.log('\n✅ Weekly review completed successfully!');
+        console.log(`\n📄 Review Summary:`);
+        console.log(`- Week: ${weekInfo.weekId}`);
+        console.log(`- Journal entries: ${journalCount}/7`);
+        console.log(`- Average energy: ${metrics.energyAverage.toFixed(1)}/10`);
+        console.log(`- Victories detected: ${victories.length}`);
+        console.log(`\nView full review at: ${reviewPath}`);
+        
+    } catch (error) {
+        console.error('❌ Error generating weekly review:', error.message);
+        process.exit(1);
+    }
+}
+
+// Run if called directly
+if (require.main === module) {
+    main();
+}
+
+module.exports = { getWeekInfo, parseWeekId, loadDailyJournal, generateWeeklyReview };
