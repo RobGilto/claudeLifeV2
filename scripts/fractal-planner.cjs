@@ -1731,11 +1731,19 @@ Review Commands:
 Status Commands:
   status [period]      - Show current planning status and next actions
 
+Non-Interactive Mode:
+  --non-interactive    - Run without prompts (skip empty inputs)
+  --data 'JSON'        - Provide plan data as JSON string
+
 Examples:
-  node scripts/fractal-planner.js plan-day 2024-01-15
-  node scripts/fractal-planner.js plan-week 2024-W03  
-  node scripts/fractal-planner.js review-month 2024-01
-  node scripts/fractal-planner.js status week
+  # Interactive mode
+  node scripts/fractal-planner.js plan-month 2024-01
+
+  # Non-interactive mode  
+  NON_INTERACTIVE=1 node scripts/fractal-planner.js plan-month 2024-01
+  
+  # With JSON data
+  node scripts/fractal-planner.js plan-month 2024-01 --non-interactive --data '{"objectives":["Obj1","Obj2"],"milestones":["M1","M2"],"context":"Theme"}'
         `);
     }
 }
