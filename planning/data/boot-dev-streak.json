@@ -1,0 +1,19 @@
+{
+  "currentStreak": 4,
+  "longestStreak": 4,
+  "totalDays": 4,
+  "lastCompleted": "2025-08-30",
+  "completedDates": [
+    "2025-08-27",
+    "2025-08-28",
+    "2025-08-29",
+    "2025-08-30"
+  ],
+  "streakHistory": [
+    {
+      "start": "2025-08-27",
+      "end": "2025-08-29",
+      "days": 3
+    }
+  ]
+}
