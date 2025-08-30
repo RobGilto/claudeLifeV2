@@ -557,9 +557,17 @@ ${allChallenges.slice(0, 3).map((c, i) => `   - ${c}`).join('\n')}
 ### Objectives to Carry Forward
 ${partialObjectives.length > 0 ? 
 `**Continue these partially completed objectives:**
-${partialObjectives.slice(0, 3).map(o => 
-  `- ${o.description}: ${o.target - o.actualCompleted} ${o.metric} remaining (${100 - o.completionRate.toFixed(0)}% to go)`
-).join('\n')}` :
+${partialObjectives
+  .filter(o => !o.description.toLowerCase().includes('tmux') && !o.description.toLowerCase().includes('vim'))
+  .slice(0, 3).map(o => 
+    `- ${o.description}: ${o.target - o.actualCompleted} ${o.metric} remaining (${100 - o.completionRate.toFixed(0)}% to go)`
+).join('\n')}
+
+**Setup tasks (lower priority):**
+${partialObjectives
+  .filter(o => o.description.toLowerCase().includes('tmux') || o.description.toLowerCase().includes('vim'))
+  .map(o => `- ${o.description}: Consider this complete if environment is functional`)
+  .join('\n') || 'None'}` :
 'No objectives to carry forward - start fresh with new goals'}
 
 ### Suggested Weekly Theme
@@ -567,11 +575,22 @@ ${completionRate < 30 ? `"Foundation Building - Establishing Consistent Practice
 completionRate < 70 ? `"Momentum Acceleration - Completing What's Started"` :
 `"Excellence Expansion - Building on Strong Foundation"`}
 
+### Core AI Development Focus
+Based on your accomplishments and 2026 AI engineering goal:
+${allAccomplishments.some(a => a.includes('cli') || a.includes('project')) ? 
+`- **Continue AI project development** - You've shown strong progress with CLI/project work
+- **Maintain boot.dev streak** - Foundation skill building
+- **Apply learning immediately** - Use new concepts in actual projects` :
+`- **Start an AI project** - Apply your learning to real code
+- **Focus on implementation** - Less setup, more building
+- **Document your progress** - Build portfolio evidence`}
+
 ### Recommended Priority Distribution
-- **Critical (1-2):** ${partialObjectives.filter(o => o.priority === 'critical').map(o => o.description).join(', ') || 
-  'Choose your highest-impact objective'}
-- **High (2-3):** Supporting objectives that enable critical priorities
-- **Medium (1-2):** Growth and learning objectives
+- **Critical (1-2):** ${partialObjectives
+  .filter(o => o.priority === 'critical' && !o.description.toLowerCase().includes('tmux') && !o.description.toLowerCase().includes('vim'))
+  .map(o => o.description).join(', ') || 'AI project development and boot.dev practice'}
+- **High (2-3):** Supporting objectives that enable AI development
+- **Low/Complete:** Environment setup (tmux/vim) - mark as done if functional
 ${totalObjectives > 5 ? '\n⚠️ **Reduce total objectives** from ' + totalObjectives + ' to 4-5 maximum for better focus' : ''}
 
 ---
