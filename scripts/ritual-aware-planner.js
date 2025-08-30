@@ -202,6 +202,7 @@ class RitualAwarePlanner {
         console.log('\\n💡 Integration Options:');
         console.log('   • Add to Google Calendar: node scripts/calendar-sync.cjs');
         console.log('   • Create TaskWarrior tasks: node scripts/fractal-planner-taskwarrior.js');
+        console.log('   • Sync rituals to TaskWarrior: node scripts/taskwarrior-ritual-sync.js sync-daily');
         console.log('   • Start execution: node scripts/taskmaster.js (when created)');
     }
     
