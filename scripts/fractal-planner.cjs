@@ -916,14 +916,19 @@ class FractalPlanner {
         console.log(`\n✅ Week plan saved for ${identifiers.week}`);
     }
 
-    async planMonth(monthStr) {
+    async planMonth(monthStr, planData = null) {
         const dateIndex = monthStr ? this.parsePeriod(monthStr, 'month') : new DateIndex();
         const identifiers = dateIndex.getIdentifiers();
         
         console.log(`\n📆 Planning Month: ${identifiers.month}`);
         console.log(`📊 Context: Quarter ${identifiers.quarter}, Year ${identifiers.year}`);
 
-        let plan = PlanStorage.load('month', identifiers.month) || new Plan('month', identifiers.month);
+        // Check if plan already exists and load it, otherwise create new
+        let plan = PlanStorage.load('month', identifiers.month);
+        const isNewPlan = !plan;
+        if (!plan) {
+            plan = new Plan('month', identifiers.month);
+        }
         
         const quarterPlan = PlanStorage.load('quarter', identifiers.quarter);
         const yearPlan = PlanStorage.load('year', identifiers.year);
@@ -935,35 +940,63 @@ class FractalPlanner {
             console.log(`🌟 Year Vision: ${yearPlan.context}`);
         }
 
-        console.log(`\n🎯 Monthly Objectives (5-8 key outcomes):`);
-        for (let i = 1; i <= 8; i++) {
-            const objective = await this.ask(`Objective ${i}: `);
-            if (objective.trim()) {
-                plan.addObjective(objective);
+        // Non-interactive mode with provided data
+        if (planData && (process.env.NON_INTERACTIVE || process.argv.includes('--non-interactive'))) {
+            console.log(`\n📋 Using provided plan data (non-interactive mode)`);
+            
+            if (planData.objectives) {
+                plan.objectives = []; // Clear existing
+                planData.objectives.forEach(obj => plan.addObjective(obj));
             }
-        }
-
-        console.log(`\n🏆 Monthly Milestones:`);
-        for (let i = 1; i <= 4; i++) {
-            const milestone = await this.ask(`Milestone ${i}: `);
-            if (milestone.trim()) {
-                plan.milestones.push({
-                    id: Date.now().toString() + i,
-                    text: milestone,
-                    targetDate: null,
-                    completed: false
+            
+            if (planData.milestones) {
+                plan.milestones = []; // Clear existing
+                planData.milestones.forEach(milestone => {
+                    plan.milestones.push({
+                        id: Date.now().toString() + Math.random(),
+                        text: milestone,
+                        targetDate: null,
+                        completed: false
+                    });
                 });
             }
-        }
+            
+            if (planData.context) {
+                plan.context = planData.context;
+            }
+        } else {
+            // Interactive mode
+            console.log(`\n🎯 Monthly Objectives (5-8 key outcomes):`);
+            for (let i = 1; i <= 8; i++) {
+                const objective = await this.ask(`Objective ${i}: `);
+                if (objective.trim()) {
+                    plan.addObjective(objective);
+                }
+            }
 
-        const theme = await this.ask(`\n📝 Monthly Theme: `);
-        plan.context = theme;
+            console.log(`\n🏆 Monthly Milestones:`);
+            for (let i = 1; i <= 4; i++) {
+                const milestone = await this.ask(`Milestone ${i}: `);
+                if (milestone.trim()) {
+                    plan.milestones.push({
+                        id: Date.now().toString() + i,
+                        text: milestone,
+                        targetDate: null,
+                        completed: false
+                    });
+                }
+            }
+
+            const theme = await this.ask(`\n📝 Monthly Theme: `);
+            plan.context = theme;
+        }
 
         plan.parentPlans = [quarterPlan ? identifiers.quarter : null, yearPlan ? identifiers.year : null].filter(Boolean);
         plan.status = 'active';
         PlanStorage.save(plan);
         
-        console.log(`\n✅ Month plan saved for ${identifiers.month}`);
+        console.log(`\n✅ Month plan ${isNewPlan ? 'created' : 'updated'} for ${identifiers.month}`);
+        return plan;
     }
 
     async planQuarter(quarterStr) {
