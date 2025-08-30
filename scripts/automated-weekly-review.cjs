@@ -361,10 +361,12 @@ function detectVictories(dailyDataArray) {
 }
 
 // Generate weekly review report
-function generateWeeklyReview(weekInfo, weekPlan, dailyDataArray, metrics, victories) {
+function generateWeeklyReview(weekInfo, weekPlan, dailyDataArray, metrics, victories, objectives) {
     const today = formatSydneyDateString();
-    const completedObjectives = weekPlan?.objectives?.filter(o => o.completed >= o.target) || [];
-    const totalObjectives = weekPlan?.objectives?.length || 0;
+    const completedObjectives = objectives?.filter(o => o.actualCompleted >= o.target) || [];
+    const partialObjectives = objectives?.filter(o => o.actualCompleted > 0 && o.actualCompleted < o.target) || [];
+    const notStartedObjectives = objectives?.filter(o => o.actualCompleted === 0) || [];
+    const totalObjectives = objectives?.length || 0;
     const completionRate = totalObjectives > 0 
         ? (completedObjectives.length / totalObjectives) * 100 
         : 0;
@@ -403,22 +405,42 @@ focus_average: ${metrics.focusAverage.toFixed(1)}/10
 - **Overall satisfaction:** ${metrics.satisfactionAverage.toFixed(1)}/10
 - **Days with journal entries:** ${dailyDataArray.filter(d => d).length}/7
 
-## 🎯 Objective Review
+## 🎯 Planned vs Actual Analysis
+
+### Weekly Theme & Priorities
+${weekPlan ? `
+**Theme:** ${weekPlan.theme || 'No theme set'}
+**Context:** ${weekPlan.context || 'No context provided'}
+
+**Priorities Set:**
+${weekPlan.priorities?.map((p, i) => `${i + 1}. ${p}`).join('\n') || 'No priorities defined'}
+` : '⚠️ No weekly plan was created - working without clear objectives'}
 
 ### ✅ Completed Objectives
 ${completedObjectives.length > 0 ? completedObjectives.map(obj => 
-    `- **${obj.description}**: ${obj.completed}/${obj.target} ${obj.metric || 'completed'}`
+    `- **${obj.description}**: ${obj.actualCompleted}/${obj.target} ${obj.metric || 'completed'} ✓
+  Evidence found on: ${obj.evidenceDates.join(', ')}`
 ).join('\n') : '- No objectives fully completed this week'}
 
 ### ⏳ Partially Completed
-${weekPlan?.objectives?.filter(o => o.completed > 0 && o.completed < o.target).map(obj =>
-    `- **${obj.description}**: ${obj.completed}/${obj.target} ${obj.metric || 'completed'} (${((obj.completed/obj.target)*100).toFixed(0)}%)`
-).join('\n') || '- No partially completed objectives'}
+${partialObjectives.length > 0 ? partialObjectives.map(obj =>
+    `- **${obj.description}**: ${obj.actualCompleted}/${obj.target} ${obj.metric || 'completed'} (${obj.completionRate.toFixed(0)}%)
+  ${obj.priority === 'critical' ? '⚠️ CRITICAL PRIORITY - needs immediate attention' : ''}
+  Evidence found on: ${obj.evidenceDates.join(', ') || 'No direct evidence found'}`
+).join('\n') : '- No partially completed objectives'}
 
 ### ❌ Not Started
-${weekPlan?.objectives?.filter(o => !o.completed || o.completed === 0).map(obj =>
-    `- **${obj.description}**: Not started`
-).join('\n') || '- All objectives had some progress'}
+${notStartedObjectives.length > 0 ? notStartedObjectives.map(obj =>
+    `- **${obj.description}**: Not started ${obj.priority === 'critical' ? '🚨 CRITICAL' : obj.priority === 'high' ? '⚠️ HIGH PRIORITY' : ''}`
+).join('\n') : '- All objectives had some progress'}
+
+### 📊 Objective Completion Analysis
+- **Overall completion:** ${completionRate.toFixed(0)}% of objectives fully completed
+- **Critical priorities:** ${objectives?.filter(o => o.priority === 'critical').map(o => 
+    `${o.description} (${o.actualCompleted}/${o.target})`).join(', ') || 'None set'}
+- **Success pattern:** ${completedObjectives.length > 0 ? 'Strong execution on: ' + completedObjectives.map(o => o.description).join(', ') : 
+    partialObjectives.length > 0 ? 'Progress made but needs focus to complete objectives' : 
+    'Objectives need clearer definition or different approach'}
 
 ## 💪 Well-being Metrics
 - **Average energy level:** ${metrics.energyAverage.toFixed(1)}/10
