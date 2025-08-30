@@ -93,11 +93,37 @@ Automatically generates comprehensive weekly performance review from daily check
    [Automatically detected victories from accomplishments]
    ```
 
-5. Update weekly performance data and check for victory patterns to add to `/victories/victories-YYYY-MM.md`.
+5. The review automatically includes:
+   - **Performance metrics** from daily check-ins
+   - **Victory detection** from accomplishments  
+   - **Energy trends** across the week
+   - **Objective completion** rates (if planned)
+   - **Challenges and insights** from reflections
+   - **Parent plan alignment** (monthly/quarterly)
 
-6. Provide strategic recommendations:
+6. Display review summary and location of full report.
+
+7. Provide strategic recommendations:
    - Plan next week: `/plan-week`
    - Check monthly progress: `/performance-dashboard`
    - Compare to previous weeks: `/performance-compare week [this-week] [previous-week]`
 
-Remember: Weekly reviews are crucial for continuous improvement and maintaining alignment with longer-term strategic goals.
+## Key Features:
+- **No user interaction required** - Fully automated data gathering
+- **Intelligent victory detection** - Finds wins from accomplishments
+- **Energy pattern analysis** - Tracks trends from daily check-ins
+- **Comprehensive insights** - Aggregates all weekly data automatically
+
+## Example Usage:
+```bash
+# Review current week
+./scripts/review-week.sh current
+
+# Review last week
+./scripts/review-week.sh last
+
+# Review specific week
+./scripts/review-week.sh 2025-W35
+```
+
+Remember: This automated review eliminates the need for manual data entry by leveraging your existing daily check-ins.
