@@ -54,28 +54,28 @@
       "target": 7,
       "unit": "days",
       "trend": "increasing",
-      "lastUpdated": "2025-08-30"
+      "lastUpdated": "2025-08-31"
     },
     "dailyPracticeHours": {
       "name": "Daily Practice Hours",
-      "current": 1,
+      "current": 0.43,
       "target": 1,
       "unit": "hours/day",
-      "trend": "stable"
+      "trend": "partial"
     },
     "weeklyCommits": {
       "name": "AI Code Commits",
-      "current": 0,
+      "current": 2,
       "target": 5,
       "unit": "commits",
-      "trend": "pending"
+      "trend": "partial"
     },
     "toolMasteryProgress": {
       "name": "Tool Mastery Sessions",
-      "current": 0,
+      "current": 3,
       "target": 7,
       "unit": "sessions",
-      "trend": "pending"
+      "trend": "partial"
     }
   },
   "dailyTracking": {

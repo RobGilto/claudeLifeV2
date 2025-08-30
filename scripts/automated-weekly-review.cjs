@@ -243,7 +243,7 @@ function analyzeObjectiveCompletion(weekPlan, dailyDataArray) {
             );
             // Count setup as complete if any meaningful setup was done
             if (tmuxSetup.length > 0) {
-                actualCompleted = Math.min(tmuxSetup.length, target);
+                actualCompleted = Math.min(tmuxSetup.length, obj.target || 1);
                 evidenceFound.push(...tmuxSetup.map(d => d.date));
             }
         }
