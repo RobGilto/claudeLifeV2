@@ -233,17 +233,18 @@ function analyzeObjectiveCompletion(weekPlan, dailyDataArray) {
             }
         }
         
-        // Check for tmux/neovim practice
+        // Check for tmux/neovim setup (but recognize this as setup, not a primary goal)
         if (description.includes('tmux') || description.includes('vim')) {
-            const tmuxDays = allAccomplishments.filter(a => 
+            const tmuxSetup = allAccomplishments.filter(a => 
                 a.text.includes('tmux') || 
                 a.text.includes('nvim') || 
                 a.text.includes('neovim') ||
                 a.text.includes('sessionx')
             );
-            if (tmuxDays.length > actualCompleted) {
-                actualCompleted = tmuxDays.length;
-                evidenceFound.push(...tmuxDays.map(d => d.date));
+            // Count setup as complete if any meaningful setup was done
+            if (tmuxSetup.length > 0) {
+                actualCompleted = Math.min(tmuxSetup.length, target);
+                evidenceFound.push(...tmuxSetup.map(d => d.date));
             }
         }
         
@@ -613,6 +614,15 @@ async function main() {
         const journalCount = dailyDataArray.filter(d => d).length;
         console.log(`📊 Loaded ${journalCount}/7 daily journals`);
         
+        // Analyze objective completion
+        console.log('\n🎯 Analyzing objective completion...');
+        const objectives = analyzeObjectiveCompletion(weekPlan, dailyDataArray);
+        if (objectives.length > 0) {
+            objectives.forEach(obj => {
+                console.log(`  ${obj.status} ${obj.description}: ${obj.actualCompleted}/${obj.target}`);
+            });
+        }
+        
         // Calculate metrics
         console.log('\n📈 Calculating well-being metrics...');
         const metrics = calculateWellbeingMetrics(dailyDataArray);
@@ -626,7 +636,7 @@ async function main() {
         
         // Generate review report
         console.log('\n📝 Generating review report...');
-        const report = generateWeeklyReview(weekInfo, weekPlan, dailyDataArray, metrics, victories);
+        const report = generateWeeklyReview(weekInfo, weekPlan, dailyDataArray, metrics, victories, objectives);
         
         // Save report
         const reviewPath = path.join(REVIEW_DIR, `review-${weekInfo.weekId}.md`);
