@@ -58,7 +58,7 @@ focus_average: 6.1/10
 6. Keep momentum up with AI engineering by building/testing
 7. Continue technical growth and learning
 8. Focus on income-generating skills development
-9. Applied ADR (Architecture Decision Records) to implement Git feature - major technical milestone!
+9. Applied ADR ([[1756563891-architecture-decision-records|Architecture Decision Records]]) to implement Git feature - major technical milestone!
 10. Spent quality time with kids before bedtime
 
 

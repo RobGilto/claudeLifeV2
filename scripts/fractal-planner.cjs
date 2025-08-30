@@ -833,9 +833,46 @@ class FractalPlanner {
     }
 
     async ask(question) {
+        // Non-interactive mode - return empty string to skip
+        if (process.env.NON_INTERACTIVE || process.argv.includes('--non-interactive')) {
+            return '';
+        }
         return new Promise(resolve => {
             this.rl.question(question, resolve);
         });
+    }
+
+    // Method to accept JSON data for non-interactive planning
+    createPlanFromData(type, id, data) {
+        const plan = new Plan(type, id);
+        
+        if (data.priorities) {
+            plan.priorities = data.priorities;
+        }
+        
+        if (data.objectives) {
+            data.objectives.forEach(obj => {
+                plan.addObjective(obj);
+            });
+        }
+        
+        if (data.milestones) {
+            data.milestones.forEach(milestone => {
+                plan.milestones.push({
+                    id: Date.now().toString() + Math.random(),
+                    text: milestone,
+                    targetDate: null,
+                    completed: false
+                });
+            });
+        }
+        
+        if (data.context) {
+            plan.context = data.context;
+        }
+        
+        plan.status = 'active';
+        return plan;
     }
 
     async planWeek(weekStr) {

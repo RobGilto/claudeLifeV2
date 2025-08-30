@@ -138,20 +138,34 @@
     }
   },
   "weeklyReflection": {
-    "wins": [],
+    "wins": [
+      "Discovered terminal-first workflow as major ADD optimization",
+      "Successfully integrated nvim with Obsidian and Syncthing",
+      "Maintained 3-day boot.dev streak despite family stress",
+      "Recognized tunnel vision pattern - executive function improvement",
+      "Completed PARA system implementation for knowledge management"
+    ],
     "challenges": [
       "Confidence in AI development has been shaken",
-      "Need to establish consistent daily practice routine"
+      "Need to establish consistent daily practice routine",
+      "Family interruptions and children stress affecting focus",
+      "Got stuck in configuration rabbit holes (nvim setup)",
+      "Low energy days (4-6/10) impacted ambitious objectives"
     ],
     "learnings": [
       "1 hour daily practice is sustainable",
       "Gamification elements help maintain motivation",
-      "Need 'rail guards' and standards before diving into AI code"
+      "Need 'rail guards' and standards before diving into AI code",
+      "Living in terminal is best distraction-free work environment for ADD",
+      "Infrastructure building feels unproductive but enables future acceleration",
+      "Small progress during low energy is still valuable progress"
     ],
     "nextWeekFocus": [
-      "Maintain and extend boot.dev streak",
-      "Complete first AI project with proper standards",
-      "Establish tmux/neovim as primary development environment"
+      "Maintain and extend boot.dev streak to 7+ days",
+      "Complete first AI project with proper standards using new environment",
+      "Time-box configuration tasks to prevent rabbit holes",
+      "Apply tunnel vision awareness with pomodoro timers",
+      "Balance infrastructure (30%) with actual coding (70%)"
     ]
   },
   "parentAlignment": {
