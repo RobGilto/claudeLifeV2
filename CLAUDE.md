@@ -374,6 +374,34 @@ A comprehensive multi-scale planning system that creates aligned plans from dail
 - **Fractal Alignment**: Plans cascade from year → quarter → month → week → day
 - **Performance Tracking**: Each period has completion rates, wellbeing metrics, and insights
 - **Continuous Adjustment**: Reviews feed back into planning for iterative improvement
+- **Human-in-the-Loop**: All plans are collaborative - AI gathers context, human provides critical input, AI generates optimized plan
+- **Context-Aware**: Plans incorporate previous reviews, TaskWarrior tasks, calendar constraints, and user feedback
+
+#### Planning Workflow Implementation
+
+**Standard Planning Process for All Levels:**
+1. **Context Gathering Phase**
+   - Read relevant previous review (yesterday for day, last week for week, etc.)
+   - Extract key insights, patterns, and carryover items
+   - Check parent plan alignment (weekly → monthly → quarterly)
+   - Query TaskWarrior for pending high-priority tasks
+   - For daily plans: Check Google Calendar via MCP for time constraints
+
+2. **Human Collaboration Phase**
+   - Present gathered context in clear, organized format
+   - Highlight any conflicts or constraints discovered
+   - Ask specific, targeted questions for user input:
+     - "Given [context], what's your most important focus for [period]?"
+     - "Are there any factors I should know about that will affect this plan?"
+     - "Your energy/capacity assessment for this period?"
+   - Wait for and incorporate user feedback
+
+3. **Plan Generation Phase**
+   - Synthesize all context and human input
+   - Generate realistic, achievable plan
+   - Ensure alignment with higher-level objectives
+   - Save to non-interactive planning system
+   - Present plan for final confirmation
 
 #### Planning Commands
 
@@ -390,7 +418,16 @@ A comprehensive multi-scale planning system that creates aligned plans from dail
 - Quarterly theme/focus area
 - Inherits alignment from yearly plan
 
-##### `/plan-month` Command  
+##### `/plan-month` Command
+**Enhanced Context-Aware Planning Process:**
+1. **Review Analysis**: Read previous month's review for patterns and carryforward items
+2. **Quarterly Alignment**: Check quarterly plan for strategic priorities
+3. **Human Input Request**: Present context and ask user for:
+   - Key focus areas for the month
+   - Major deadlines or milestones
+   - Resource constraints or opportunities
+   - Personal/professional balance needs
+4. **Plan Generation**: Create month plan with:
 - 5-8 monthly objectives and 4 milestones
 - Monthly theme connected to quarterly priorities
 - Tactical execution of strategic initiatives
