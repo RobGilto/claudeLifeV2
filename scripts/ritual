@@ -1,0 +1,3 @@
+#!/bin/bash
+# Quick access wrapper for ritual management commands
+node "$(dirname "$0")/ritual-manager.js" "$@"

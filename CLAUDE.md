@@ -12,21 +12,43 @@ This is Robert's personal AI engineering journey and life transformation reposit
 - **No root-level .md files** except CLAUDE.md
 - **Update existing files** rather than creating duplicates
 - All automated commands should reference scripts from `/scripts/` folder
+- Scripts are primarily JavaScript (.js/.cjs) with some shell scripts (.sh) and Python utilities (.py)
 
 ### Directory Structure
 ```
-/daily/          # Daily checkins and journals
-/weekly/         # Weekly reviews and summaries  
-/victories/      # Victory tracking and pattern analysis
-/journal/
+/daily-briefs/   # Daily news and career briefings
+/docs/           # Documentation, templates, and schemas
+  /templates/    # Component, project, workflow templates
+  /schemas/      # Data schemas
+/journal/        # All journal entries and reflections
   /brain/        # Raw brain dumps (text and transcribed)
   /brain/analysis/ # AI-generated brain dump analyses
-/research/       # Competitor newsletter research
-/scripts/        # Automation and processing scripts
-/templates/      # Reusable formats for consistent entries
-/archive/        # Older entries (organized by year/quarter)
-/logs/           # Script execution logs
-/docs/           # Background documentation and guidelines
+  /daily/        # Daily checkins and reflections
+  /planning/     # Planning reviews and comparisons
+    /daily-reviews/
+    /weekly-reviews/
+    /monthly-reviews/
+    /quarterly-reviews/
+/lessons/        # Lessons learned tracking
+/logs/           # Script execution logs and test results
+  /test-results/ # Test reports and results
+/metrics/        # Metrics tracking and history
+/newsletter/     # Newsletter content and competitor analysis
+/planning/       # Planning data and execution tracking
+  /analytics/    # Calendar sync and analytics
+  /calendar-sync/ # Calendar synchronization records
+  /data/         # Planning data (day, week, month, quarter, year)
+  /execution/    # Task execution tracking
+/research/       # Research materials and analysis
+  /job-market/   # Job market analysis and skills gaps
+/rituals/        # Ritual definitions and tracking (if enabled)
+/scripts/        # 43+ automation scripts (JS, Shell, Python)
+/skills/         # Skill tracking and development
+  /reviews/      # Skill review records
+  /skill-history/ # Historical skill progression
+/todos.backup/   # Todo system backups and archives
+/victories/      # Victory tracking and pattern analysis
+/worktrees/      # Git worktrees (if used)
 ```
 
 ## File Management Standards
@@ -653,15 +675,67 @@ Extended review commands for comprehensive reflection across all time scales.
 
 ### Automation Protocols
 
-#### Auto Git Push Script
-The `scripts/auto-git-push.sh` script provides automated git operations:
-- Stages all changes with intelligent grouping
-- Generates descriptive commit messages
-- Automatic push to remote repository
-- Conflict detection and resolution prompts
-- Activity logging to `/logs/auto-git-push-YYYY-MM-DD.log`
+#### Available Scripts and Commands
 
-Usage: Can be scheduled via cron for regular automated commits or triggered manually for batch operations.
+#### Ritual Management System
+- **`scripts/ritual`** - Quick wrapper for ritual management
+- **`scripts/ritual-manager.js`** - Full ritual management system for recurring commitments
+- **`scripts/ritual-aware-planner.js`** - Planning that respects ritual commitments
+- **`scripts/tw-ritual`** - TaskWarrior ritual synchronization wrapper
+- **`scripts/taskwarrior-ritual-sync.js`** - Sync rituals with TaskWarrior
+
+#### Boot.dev Integration
+- **`scripts/boot-dev-tracker.cjs`** - Track boot.dev practice sessions, maintain streaks
+  - `complete` - Mark today as complete
+  - `status` - Show current streak and stats
+  - `week` - Show weekly progress
+- **`scripts/bootdev-done.sh`** - Quick completion script for boot.dev sessions
+
+#### Calendar Integration
+- **`scripts/calendar-sync.cjs`** - Sync planning data with Google Calendar
+- **`scripts/calendar-block.js`** - Create calendar blocks for time management
+- **`scripts/day-plan-calendar.cjs`** - Convert daily plans to calendar events
+- **`scripts/calendar-mcp-helper.cjs`** - MCP integration helper for calendar
+- **`scripts/automated-calendar-sync.cjs`** - Automated calendar synchronization
+- **`scripts/sydney-time.js`** - Sydney timezone utilities
+
+#### Planning Tools
+- **`scripts/fractal-planner.cjs`** - Multi-scale planning system
+- **`scripts/fractal-planner-llm.cjs`** - LLM-enhanced fractal planning
+- **`scripts/collaborative-planner.cjs`** - Collaborative planning features
+- **`scripts/performance-analyzer.cjs`** - Analyze planning performance
+- **`scripts/taskmaster.cjs`** - Task execution and tracking
+- **`scripts/day-clear.js`**, **`scripts/week-clear.js`**, **`scripts/month-clear.js`**, **`scripts/quarter-clear.js`** - Clear planning data for periods
+
+#### Skill Development
+- **`scripts/update-skills.js`** - Update skill matrix and track progress
+- **`scripts/skills-gap.sh`** - Quick skills gap analysis
+- **`scripts/github-mcp-skill-analyzer.js`** - Analyze GitHub activity for skill evidence
+
+#### Job Market Analysis
+- **`scripts/job-analysis.sh`** - Comprehensive job market analysis
+- **`scripts/job-market-analyzer.js`** - Analyze job listings and requirements
+
+#### Daily Workflows
+- **`scripts/morning-checkin.js`** - Morning check-in routine
+- **`scripts/daily-brief.js`** - Generate daily news and career briefing
+- **`scripts/executive-function.js`** - Executive function support tools
+
+#### Content Management
+- **`scripts/brain-dump.sh`** - Create brain dump entries
+- **`scripts/brain-dump-analysis.sh`** - Analyze brain dump content
+- **`scripts/transcribe_brain_dump.py`**, **`scripts/transcribe_wav.py`** - Audio transcription
+- **`scripts/lessons-learned.js`** - Track and analyze lessons learned
+- **`scripts/add-newsletter.js`** - Add newsletter content
+
+#### Git and Development
+- **`scripts/auto-git-push.sh`** - Automated git operations with intelligent commits
+- **`scripts/enhanced-git-analysis.js`** - Analyze git history for insights
+
+#### Utilities
+- **`scripts/enhanced-web-search.js`** - Enhanced web search capabilities
+- **`scripts/task-quick-reference.sh`** - Quick task reference guide
+- **`scripts/run-planner-tests.cjs`** - Run planner system tests
 
 ## MCP Integration and Setup
 
