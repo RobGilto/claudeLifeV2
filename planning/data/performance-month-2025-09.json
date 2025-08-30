@@ -1,0 +1,27 @@
+{
+  "period": "month",
+  "identifier": "2025-09",
+  "recorded": "2025-08-30T14:42:23.000Z",
+  "completionRate": 0,
+  "objectiveStats": {
+    "completed": 0,
+    "total": 8,
+    "completionRate": 0,
+    "priorityBreakdown": {
+      "medium": {
+        "total": 8,
+        "completed": 0
+      }
+    }
+  },
+  "timeBlockStats": {},
+  "wellbeingMetrics": {
+    "satisfaction": 5
+  },
+  "insights": [
+    ""
+  ],
+  "adjustments": [
+    ""
+  ]
+}

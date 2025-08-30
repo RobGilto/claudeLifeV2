@@ -397,13 +397,35 @@ A comprehensive multi-scale planning system that creates aligned plans from dail
 - Bridge between strategic quarters and tactical weeks
 
 ##### `/plan-week` Command
+**Enhanced Context-Aware Planning Process:**
+1. **Gather Context**: Automatically read previous week's review to extract insights and patterns
+2. **TaskWarrior Check**: Query pending tasks and priorities from TaskWarrior
+3. **Human Input Request**: Present context and ask user for:
+   - Any important priorities not captured
+   - External factors affecting the week
+   - Energy/capacity considerations
+   - Specific focus areas or concerns
+4. **Plan Generation**: Create week plan incorporating all context
 - 3-5 weekly priorities and 8 weekly objectives
 - Weekly context/theme
 - Operational planning aligned with monthly goals
 - Sets up daily time block allocation
 
 ##### `/plan-day` Command
-- 4-5 time blocks optimized for ADD workflow
+**Enhanced Context-Aware Planning Process:**
+1. **Previous Day Review**: Read yesterday's review for carryover tasks and insights
+2. **Calendar Integration**: Check Google Calendar (via MCP) for:
+   - Existing meetings/appointments (time constraints)
+   - Available time blocks for deep work
+   - Buffer time requirements
+3. **TaskWarrior Context**: Pull high-priority pending tasks
+4. **Human Input Request**: Present findings and ask user for:
+   - Most important outcome for the day
+   - Energy level and capacity assessment
+   - Any blockers or concerns
+   - Preferred time for deep work blocks
+5. **Plan Generation**: Create realistic day plan with:
+- 4-5 time blocks optimized for ADD workflow (respecting calendar constraints)
 - Each block aligned with higher-level objectives
 - Daily objectives (max 3 for focus)
 - Automatic integration with Taskmaster execution
