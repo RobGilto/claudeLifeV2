@@ -205,18 +205,69 @@ function loadWeeklyPlan(weekId) {
 }
 
 // Analyze objectives completion from daily data
-function analyzeObjectiveCompletion(weekPlan, dailyData) {
+function analyzeObjectiveCompletion(weekPlan, dailyDataArray) {
     if (!weekPlan || !weekPlan.objectives) return [];
     
+    // Look for evidence of objective completion in daily accomplishments
+    const allAccomplishments = dailyDataArray
+        .filter(d => d && d.accomplishments)
+        .flatMap(d => d.accomplishments.map(a => ({ text: a.toLowerCase(), date: d.date })));
+    
     const objectives = weekPlan.objectives.map(obj => {
-        const completed = obj.completed || 0;
+        // Start with what was tracked in the plan
+        let actualCompleted = obj.completed || 0;
+        
+        // Try to detect actual completion from accomplishments
+        const description = obj.description.toLowerCase();
+        const evidenceFound = [];
+        
+        // Check for boot.dev practice
+        if (description.includes('boot.dev')) {
+            const bootDevDays = allAccomplishments.filter(a => 
+                a.text.includes('boot.dev') || 
+                a.text.includes('python') && a.text.includes('hour')
+            );
+            if (bootDevDays.length > actualCompleted) {
+                actualCompleted = bootDevDays.length;
+                evidenceFound.push(...bootDevDays.map(d => d.date));
+            }
+        }
+        
+        // Check for tmux/neovim practice
+        if (description.includes('tmux') || description.includes('vim')) {
+            const tmuxDays = allAccomplishments.filter(a => 
+                a.text.includes('tmux') || 
+                a.text.includes('nvim') || 
+                a.text.includes('neovim') ||
+                a.text.includes('sessionx')
+            );
+            if (tmuxDays.length > actualCompleted) {
+                actualCompleted = tmuxDays.length;
+                evidenceFound.push(...tmuxDays.map(d => d.date));
+            }
+        }
+        
+        // Check for AI projects
+        if (description.includes('ai') && description.includes('project')) {
+            const aiProjects = allAccomplishments.filter(a => 
+                (a.text.includes('ai') || a.text.includes('cli')) && 
+                (a.text.includes('built') || a.text.includes('created') || a.text.includes('implemented'))
+            );
+            if (aiProjects.length > actualCompleted) {
+                actualCompleted = aiProjects.length;
+                evidenceFound.push(...aiProjects.map(d => d.date));
+            }
+        }
+        
         const target = obj.target || 1;
-        const percentage = target > 0 ? (completed / target) * 100 : 0;
+        const percentage = target > 0 ? (actualCompleted / target) * 100 : 0;
         
         return {
             ...obj,
+            actualCompleted,
             completionRate: percentage,
-            status: percentage >= 100 ? '✅' : percentage > 0 ? '⏳' : '❌'
+            status: percentage >= 100 ? '✅' : percentage > 0 ? '⏳' : '❌',
+            evidenceDates: [...new Set(evidenceFound)]
         };
     });
     
