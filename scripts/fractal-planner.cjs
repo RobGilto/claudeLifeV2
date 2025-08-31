@@ -375,6 +375,15 @@ class FractalPlanner {
                 case 'status':
                     await this.showStatus(args[1]);
                     break;
+                case 'gap-time':
+                    await this.gapTime(args[1]);
+                    break;
+                case 'available-work':
+                    await this.availableWork();
+                    break;
+                case 'catch-up':
+                    await this.catchUp();
+                    break;
                 default:
                     this.showHelp();
             }
