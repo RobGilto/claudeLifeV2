@@ -111,9 +111,32 @@ Conduct a daily reflection and performance review of completed time blocks and o
    If YES: Execute `/review-week current`
    ```
 
-9. **Regular Day Completion** (Monday-Saturday):
-   Provide standard next day planning suggestions:
-   - Create tomorrow's plan: `/plan-day`
-   - Check weekly progress: `/performance-dashboard`
+9. **Sunday Month-End Intelligence** (Additional Check):
+   After the weekly review suggestion, check if the upcoming week crosses into a new month:
+   - Look at tomorrow's date (Monday) and compare months
+   - If Monday is in a new month, add this additional message:
+   
+   ```
+   🗓️ **Month Transition Detected!**
+   
+   📈 Tomorrow (Monday) begins a new month, which means you now have a complete month of data ready for strategic monthly review.
+   
+   🎯 **Additional Recommended Action**: 
+   Consider running `/review-month` for your just-completed month to capture:
+   - Monthly objective and milestone completion analysis
+   - Victory pattern analysis across the entire month
+   - Strategic insights for quarterly goal alignment
+   - Performance trends and breakthrough identification
+   - Financial and career progress assessment toward 2026 goals
+   
+   **Strategic Value**: Monthly reviews provide the big-picture strategic context that weekly reviews support, essential for your AI engineering transition planning.
+   
+   **Optimal Flow**: Daily → Weekly → Monthly reviews create comprehensive reflection cascade
+   ```
 
-Remember: Daily reviews feed insights into weekly reviews. Sunday daily reviews trigger intelligent weekly review suggestions to maximize the value of accumulated weekly data.
+10. **Regular Day Completion** (Monday-Saturday):
+    Provide standard next day planning suggestions:
+    - Create tomorrow's plan: `/plan-day`
+    - Check weekly progress: `/performance-dashboard`
+
+Remember: Daily reviews feed insights into weekly and monthly reviews. Sunday daily reviews trigger intelligent weekly review suggestions, and month-end Sundays also suggest monthly reviews to maximize the value of accumulated data across all time scales.
