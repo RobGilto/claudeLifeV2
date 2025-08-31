@@ -1639,6 +1639,18 @@ Generated from daily review session on ${formatSydneyDateString()}
         }
     }
 
+    async checkCalendarEvents(dateStr) {
+        const events = [];
+        try {
+            // This would be called through Claude's MCP system in a real implementation
+            // For now, return empty array as a fallback
+            return events;
+        } catch (error) {
+            console.log('⚠️ Calendar check failed:', error.message);
+            return events;
+        }
+    }
+
     showHelp() {
         console.log(`
 🌀 Fractal Planning System
