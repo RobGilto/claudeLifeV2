@@ -263,7 +263,7 @@ class CalendarAwarePlanner {
         console.log(`📅 Found ${calendarEvents.length} existing calendar events`);
 
         // Check for existing daily plan
-        let dayPlan = this.storage.getDayPlan(dateStr);
+        let dayPlan = PlanStorage.load('day', dateStr);
         
         if (!dayPlan) {
             console.log('📝 No existing daily plan found. Please create one first with fractal-planner.cjs');

@@ -389,39 +389,17 @@ class FractalPlanner {
         const currentTime = getSydneyDate(new Date());
         const isToday = identifiers.day === formatSydneyDateString(currentTime);
         
-        // First check for calendar conflicts and use calendar-aware planning
+        // Check for existing calendar events and warn about conflicts
         console.log('🔍 Checking existing calendar events...');
-        try {
-            const { spawn } = require('child_process');
-            const calendarAwareResult = await new Promise((resolve, reject) => {
-                const child = spawn('node', [
-                    path.join(__dirname, 'calendar-aware-planner.cjs'), 
-                    'plan-with-calendar', 
-                    identifiers.day
-                ], { stdio: 'inherit' });
-                
-                child.on('close', (code) => {
-                    if (code === 0) {
-                        console.log('✅ Calendar-aware planning completed');
-                        resolve(true);
-                    } else {
-                        console.log('⚠️ Calendar-aware planning failed, falling back to basic planning');
-                        resolve(false);
-                    }
-                });
-                
-                child.on('error', (error) => {
-                    console.log('⚠️ Calendar-aware planner not available, using basic planning');
-                    resolve(false);
-                });
+        const existingEvents = await this.checkCalendarEvents(identifiers.day);
+        if (existingEvents.length > 0) {
+            console.log(`⚠️ Found ${existingEvents.length} existing calendar events that may conflict with planned time blocks:`);
+            existingEvents.forEach((event, idx) => {
+                console.log(`  ${idx + 1}. ${event.summary} (${event.start} - ${event.end})`);
             });
-            
-            // If calendar-aware planning succeeded, we're done
-            if (calendarAwareResult) {
-                return;
-            }
-        } catch (error) {
-            console.log('⚠️ Calendar integration error, proceeding with basic planning:', error.message);
+            console.log('💡 Consider these conflicts when scheduling your time blocks or use /calendar-sync to avoid overlaps.\n');
+        } else {
+            console.log('✅ No calendar conflicts detected\n');
         }
         
         console.log(`\n🗓️  Planning Day: ${identifiers.day}`);

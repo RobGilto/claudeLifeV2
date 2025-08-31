@@ -312,7 +312,7 @@ class CalendarAwareTaskmaster {
         console.log(`\n🌅 Starting calendar-aware task execution for ${dateStr}`);
 
         // Get daily plan
-        const dayPlan = this.storage.getDayPlan(dateStr);
+        const dayPlan = PlanStorage.load('day', dateStr);
         if (!dayPlan) {
             console.log(`❌ No daily plan found for ${dateStr}. Create one first with fractal-planner.cjs`);
             return null;
@@ -350,7 +350,7 @@ class CalendarAwareTaskmaster {
     // Execute specific block with calendar awareness
     async executeBlockWithCalendar(blockId, date) {
         const dateStr = date || new DateIndex().toString();
-        const dayPlan = this.storage.getDayPlan(dateStr);
+        const dayPlan = PlanStorage.load('day', dateStr);
         
         if (!dayPlan) {
             console.log(`❌ No daily plan found for ${dateStr}`);
