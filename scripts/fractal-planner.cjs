@@ -869,8 +869,32 @@ class FractalPlanner {
         
         this.showParentContext(null, monthPlan, quarterPlan);
 
+        // Check if previous week review exists for intelligent planning
+        const previousWeekNumber = identifiers.week - 1;
+        const year = identifiers.year;
+        const reviewFile = path.join(__dirname, '..', 'journal', 'planning', 'weekly-reviews', `review-${year}-W${previousWeekNumber.toString().padStart(2, '0')}.md`);
+        const hasReview = fs.existsSync(reviewFile);
+        
+        if (monthPlan && hasReview) {
+            console.log('\n🤖 CLAUDE ANALYSIS REQUIRED:');
+            console.log('━'.repeat(60));
+            console.log('📋 Intelligent weekly planning needed - Claude should analyze:');
+            console.log(`📅 Monthly Plan: ${identifiers.month} (${monthPlan.objectives?.length || 0} objectives)`);
+            console.log(`📈 Previous Week Review: W${previousWeekNumber} (available for carry-forward analysis)`);
+            console.log(`📊 Current Week Position: W${identifiers.week} (week ${identifiers.week - 35} of September)`);
+            console.log('');
+            console.log('🎯 Claude should generate:');
+            console.log('   • Intelligent priorities based on monthly objective deadlines');
+            console.log('   • Weekly objectives that break down monthly goals into manageable parts');
+            console.log('   • Carry-forward items from previous week review');
+            console.log('   • Week-appropriate focus based on timing and deadlines');
+            console.log('━'.repeat(60));
+            console.log('');
+            console.log('⚠️  Using fallback generic planning - recommend using /plan-week slash command for intelligent planning');
+        }
+
         console.log(`\n🎯 Weekly Priorities (3-5 key focus areas):`);
-        // Default weekly priorities aligned with monthly goals
+        // Fallback priorities - intelligent planning should use /plan-week slash command
         const defaultPriorities = [
             'Advance portfolio project development',
             'Maintain consistent technical learning practice', 
@@ -885,7 +909,7 @@ class FractalPlanner {
         });
 
         console.log(`\n📋 Weekly Objectives:`);
-        // Default weekly objectives supporting monthly goals
+        // Fallback objectives - intelligent planning should use /plan-week slash command
         const defaultObjectives = [
             'Complete meaningful portfolio project progress',
             'Maintain 7/7 daily Boot.dev practice sessions',

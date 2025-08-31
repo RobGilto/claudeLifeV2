@@ -6,9 +6,12 @@ Conduct a daily reflection and performance review of completed time blocks and o
 
 1. Read CLAUDE.md and current daily execution context.
 
-2. **Check if today is Sunday** (day of week = 0):
-   - If Sunday: Note that this is the last day of the week
-   - Prepare to suggest weekly review after daily review completion
+2. **Detect Period Boundaries** (Multi-Scale Intelligence):
+   - **Check if today is Sunday** (day of week = 0): Week-end reached
+   - **Check if today is month-end**: Last day of current month
+   - **Check if today is quarter-end**: March 31, June 30, Sept 30, or Dec 31  
+   - **Check if today is year-end**: December 31
+   - **Prepare cascade suggestions** based on all detected boundaries
 
 3. Show daily execution summary:
    ```
