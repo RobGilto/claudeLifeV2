@@ -53,11 +53,11 @@ Automatically generates comprehensive weekly performance review from daily check
    [Objectives not addressed and reasons]
 
    ## Well-being Metrics
-   - Average energy level: X/10
-   - Average focus quality: X/10
-   - Week satisfaction: X/10
-   - Best performance days: [days]
-   - Challenging days: [days and reasons]
+   - Average energy level: X/10 (from daily check-ins + day reviews)
+   - Average focus quality: X/10 (from day review effectiveness scores)
+   - Week satisfaction: X/10 (aggregated daily satisfaction)
+   - Best performance days: [days] (based on both mood and objective performance)
+   - Challenging days: [days and reasons] (from both subjective challenges and objective low completion rates)
 
    ## Weekly Insights
    [Key insights from the week - patterns, learnings, discoveries]
@@ -76,10 +76,10 @@ Automatically generates comprehensive weekly performance review from daily check
    [Connection to quarterly priorities and initiatives]
 
    ## Performance Patterns
-   - Most productive time/day: [when]
-   - Energy optimization: [what worked]
-   - Focus challenges: [what hindered concentration]
-   - Workflow insights: [process improvements discovered]
+   - Most productive time/day: [when] (from objective time block effectiveness + subjective energy reports)
+   - Energy optimization: [what worked] (correlated from both check-in energy and day review performance)
+   - Focus challenges: [what hindered concentration] (from both subjective challenges and objective low effectiveness scores)
+   - Workflow insights: [process improvements discovered] (from both reflection insights and execution analysis)
 
    ## Adjustments for Next Week
    [Specific changes to implement based on this week's learnings]
@@ -95,12 +95,12 @@ Automatically generates comprehensive weekly performance review from daily check
    ```
 
 5. The review automatically includes:
-   - **Performance metrics** from daily check-ins
-   - **Victory detection** from accomplishments  
-   - **Energy trends** across the week
-   - **Objective completion** rates (if planned)
-   - **Challenges and insights** from reflections
-   - **Parent plan alignment** (monthly/quarterly)
+   - **Subjective Performance metrics** from daily check-ins (mood, accomplishments, gratitude, challenges)
+   - **Objective Performance metrics** from daily reviews (time block completion, effectiveness scores, objective completion rates)
+   - **Integrated Victory detection** from both accomplishments (subjective) and completed objectives (objective)
+   - **Comprehensive Energy trends** from both daily check-in energy ratings and day review focus scores
+   - **Holistic Challenge analysis** combining subjective challenges with objective performance gaps
+   - **Parent plan alignment** (monthly/quarterly) with both planned and actual execution data
 
 6. Display review summary and location of full report.
 
