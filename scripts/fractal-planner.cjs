@@ -899,6 +899,13 @@ class FractalPlanner {
         console.log(`\n📆 Planning Month: ${identifiers.month}`);
         console.log(`📊 Context: Quarter ${identifiers.quarter}, Year ${identifiers.year}`);
 
+        // Load recent review insights for context
+        const reviewContext = await this.loadRecentReviews(identifiers);
+        if (reviewContext) {
+            console.log(`\n📋 Recent Performance Context:`);
+            this.displayReviewContext(reviewContext);
+        }
+
         let plan = PlanStorage.load('month', identifiers.month) || new Plan('month', identifiers.month);
         
         const quarterPlan = PlanStorage.load('quarter', identifiers.quarter);
@@ -939,6 +946,17 @@ class FractalPlanner {
         plan.status = 'active';
         PlanStorage.save(plan);
         
+        // Incorporate review insights into planning
+        if (reviewContext) {
+            plan.reviewInsights = {
+                previousMonth: reviewContext.previousMonth,
+                lastWeek: reviewContext.lastWeek,
+                lastDay: reviewContext.lastDay,
+                keyPatterns: reviewContext.keyPatterns,
+                adjustments: reviewContext.adjustments
+            };
+        }
+
         console.log(`\n✅ Month plan saved for ${identifiers.month}`);
     }
 
@@ -1648,6 +1666,64 @@ Generated from daily review session on ${formatSydneyDateString()}
         } catch (error) {
             console.log('⚠️ Calendar check failed:', error.message);
             return events;
+        }
+    }
+
+    async loadRecentReviews(identifiers) {
+        try {
+            const reviewContext = {
+                previousMonth: null,
+                lastWeek: null,
+                lastDay: null,
+                keyPatterns: [],
+                adjustments: []
+            };
+
+            // Get previous month review
+            const prevMonth = this.getPreviousMonth();
+            const prevMonthId = prevMonth.getIdentifiers().month;
+            reviewContext.previousMonth = PlanStorage.loadPerformance('month', prevMonthId);
+
+            // Get last week review
+            const prevWeek = this.getPreviousWeek();
+            const prevWeekId = prevWeek.getIdentifiers().week;
+            reviewContext.lastWeek = PlanStorage.loadPerformance('week', prevWeekId);
+
+            // Get most recent day review
+            const prevDay = this.getPreviousDay();
+            const prevDayId = prevDay.toString();
+            reviewContext.lastDay = PlanStorage.loadPerformance('day', prevDayId);
+
+            // Extract patterns and adjustments
+            [reviewContext.previousMonth, reviewContext.lastWeek, reviewContext.lastDay]
+                .filter(Boolean)
+                .forEach(review => {
+                    if (review.insights) reviewContext.keyPatterns.push(...review.insights);
+                    if (review.adjustments) reviewContext.adjustments.push(...review.adjustments);
+                });
+
+            return reviewContext;
+        } catch (error) {
+            console.log('⚠️ Could not load recent reviews:', error.message);
+            return null;
+        }
+    }
+
+    displayReviewContext(reviewContext) {
+        if (reviewContext.previousMonth) {
+            console.log(`  📅 Previous Month: ${reviewContext.previousMonth.completionRate.toFixed(1)}% completion, ${reviewContext.previousMonth.wellbeingMetrics.satisfaction || 'N/A'}/10 satisfaction`);
+        }
+        if (reviewContext.lastWeek) {
+            console.log(`  📊 Last Week: ${reviewContext.lastWeek.completionRate.toFixed(1)}% completion, ${reviewContext.lastWeek.wellbeingMetrics.satisfaction || 'N/A'}/10 satisfaction`);
+        }
+        if (reviewContext.lastDay) {
+            console.log(`  📋 Recent Day: ${reviewContext.lastDay.completionRate.toFixed(1)}% completion, energy ${reviewContext.lastDay.wellbeingMetrics.energy || 'N/A'}/10`);
+        }
+        if (reviewContext.keyPatterns.length > 0) {
+            console.log(`  💡 Key Insights: ${reviewContext.keyPatterns.slice(0, 2).join('; ')}`);
+        }
+        if (reviewContext.adjustments.length > 0) {
+            console.log(`  🔧 Recent Adjustments: ${reviewContext.adjustments.slice(0, 2).join('; ')}`);
         }
     }
 
