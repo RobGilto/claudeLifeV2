@@ -488,8 +488,8 @@ function calculateIntegratedMetrics(dailyDataArray, dailyReviewsArray) {
     return metrics;
 }
 
-// Detect victories from accomplishments
-function detectVictories(dailyDataArray) {
+// Detect victories from both subjective accomplishments and objective achievements
+function detectIntegratedVictories(dailyDataArray, dailyReviewsArray) {
     const victories = [];
     const victoryPatterns = [
         { pattern: /built|created|implemented|developed/i, category: 'technical' },
@@ -501,6 +501,7 @@ function detectVictories(dailyDataArray) {
         { pattern: /recognized|realized|awareness/i, category: 'self-awareness' }
     ];
     
+    // Process subjective accomplishments from daily journals
     dailyDataArray.forEach(day => {
         if (!day || !day.accomplishments) return;
         
@@ -511,11 +512,56 @@ function detectVictories(dailyDataArray) {
                         date: day.date,
                         description: accomplishment,
                         category,
+                        source: 'subjective',
                         detected: true
                     });
                 }
             });
         });
+    });
+    
+    // Process objective achievements from daily reviews
+    dailyReviewsArray.forEach(review => {
+        if (!review) return;
+        
+        // Add high completion rate as victory
+        if (review.completionRate !== null && review.completionRate >= 80) {
+            victories.push({
+                date: review.date,
+                description: `High completion rate: ${review.completionRate}% of objectives`,
+                category: 'discipline',
+                source: 'objective',
+                detected: true
+            });
+        }
+        
+        // Add high focus/effectiveness as victory
+        if (review.focusAverage !== null && review.focusAverage >= 7) {
+            victories.push({
+                date: review.date,
+                description: `Strong focus and effectiveness: ${review.focusAverage}/10`,
+                category: 'performance',
+                source: 'objective',
+                detected: true
+            });
+        }
+        
+        // Process accomplishments from review content
+        if (review.accomplishments) {
+            review.accomplishments.forEach(accomplishment => {
+                victoryPatterns.forEach(({ pattern, category }) => {
+                    if (pattern.test(accomplishment)) {
+                        victories.push({
+                            date: review.date,
+                            description: accomplishment,
+                            category,
+                            source: 'objective',
+                            detected: true
+                        });
+                    }
+                });
+            });
+        }
     });
     
     return victories;
@@ -822,9 +868,9 @@ async function main() {
         console.log(`✓ Focus average: ${metrics.focusAverage.toFixed(1)}/10 (from objective reviews)`);
         console.log(`✓ Satisfaction average: ${metrics.satisfactionAverage.toFixed(1)}/10`);
         
-        // Detect victories
-        console.log('\n🏆 Detecting victories...');
-        const victories = detectVictories(dailyDataArray);
+        // Detect victories from both subjective and objective data
+        console.log('\n🏆 Detecting victories from both subjective and objective data...');
+        const victories = detectIntegratedVictories(dailyDataArray, dailyReviewsArray);
         console.log(`✓ Found ${victories.length} potential victories`);
         
         // Generate review report
