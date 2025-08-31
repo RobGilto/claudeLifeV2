@@ -1948,6 +1948,437 @@ Generated from daily review session on ${formatSydneyDateString()}
         }
     }
 
+    // Gap Time Commands - Dynamic work suggestions based on current context
+    
+    async gapTime(minutesStr) {
+        const minutes = parseInt(minutesStr) || 60;
+        console.log(`\n⚡ Gap Time Analysis: ${minutes} minutes available`);
+        
+        const currentDate = new DateIndex();
+        const identifiers = currentDate.getIdentifiers();
+        
+        // Load current plans
+        const dayPlan = PlanStorage.load('day', identifiers.day);
+        const weekPlan = PlanStorage.load('week', identifiers.week);
+        
+        // Get TaskWarrior and calendar status
+        const availability = await this.analyzeCurrentAvailability(identifiers.day);
+        
+        console.log(`\n📊 Current Status:`);
+        console.log(`  🗓️  Today: ${identifiers.day} (${identifiers.dayName})`);
+        console.log(`  📅 Calendar events: ${availability.calendarEvents.length} scheduled`);
+        console.log(`  ✅ Completed tasks: ${availability.completedTasks.length}`);
+        console.log(`  ⏰ Available time window: ${minutes} minutes`);
+        
+        // Generate suggestions based on time available
+        const suggestions = await this.generateGapTimeSuggestions(minutes, dayPlan, weekPlan, availability);
+        
+        console.log(`\n💡 Smart Suggestions for ${minutes}-minute window:`);
+        suggestions.forEach((suggestion, index) => {
+            const icon = this.getSuggestionIcon(suggestion.category);
+            const priority = suggestion.priority === 'high' ? '🔥' : suggestion.priority === 'medium' ? '🟡' : '🟢';
+            console.log(`  ${index + 1}. ${icon} ${priority} ${suggestion.title}`);
+            console.log(`     ⏱️  ${suggestion.estimatedTime}min | ${suggestion.reason}`);
+            if (suggestion.alignment) console.log(`     🎯 ${suggestion.alignment}`);
+        });
+        
+        if (suggestions.length === 0) {
+            console.log(`  🎉 No urgent items! Consider taking a break or doing maintenance tasks.`);
+        }
+    }
+    
+    async availableWork() {
+        console.log(`\n🔍 Available Work - Interactive Assessment`);
+        
+        const currentDate = new DateIndex();
+        const identifiers = currentDate.getIdentifiers();
+        
+        // Interactive assessment
+        const timeAvailable = await this.ask(`⏰ How much time do you have (minutes)?: `);
+        const energyLevel = await this.ask(`⚡ Energy level (1-10, where 10=peak focus)?: `);
+        const contextInfo = await this.ask(`🎯 Current context (at desk/mobile/meeting break/etc)?: `);
+        
+        const minutes = parseInt(timeAvailable) || 30;
+        const energy = parseInt(energyLevel) || 5;
+        
+        console.log(`\n📋 Assessment Summary:`);
+        console.log(`  ⏰ Time: ${minutes} minutes`);
+        console.log(`  ⚡ Energy: ${energy}/10`);
+        console.log(`  📍 Context: ${contextInfo}`);
+        
+        // Load current plans
+        const dayPlan = PlanStorage.load('day', identifiers.day);
+        const weekPlan = PlanStorage.load('week', identifiers.week);
+        const availability = await this.analyzeCurrentAvailability(identifiers.day);
+        
+        // Generate context-aware suggestions
+        const suggestions = await this.generateContextAwareSuggestions(minutes, energy, contextInfo, dayPlan, weekPlan, availability);
+        
+        console.log(`\n🎯 Personalized Recommendations:`);
+        suggestions.forEach((suggestion, index) => {
+            const icon = this.getSuggestionIcon(suggestion.category);
+            const match = suggestion.energyMatch >= 8 ? '🔥' : suggestion.energyMatch >= 6 ? '🟡' : '🟢';
+            console.log(`  ${index + 1}. ${icon} ${match} ${suggestion.title}`);
+            console.log(`     ⏱️  ${suggestion.estimatedTime}min | Energy match: ${suggestion.energyMatch}/10`);
+            console.log(`     💡 ${suggestion.reason}`);
+            if (suggestion.quickStart) console.log(`     🚀 ${suggestion.quickStart}`);
+        });
+        
+        // Offer to create TaskWarrior task for chosen item
+        if (suggestions.length > 0) {
+            const choice = await this.ask(`\n🚀 Choose an item to work on (1-${suggestions.length}) or press Enter to skip: `);
+            if (choice && !isNaN(choice) && choice >= 1 && choice <= suggestions.length) {
+                await this.createTaskFromSuggestion(suggestions[choice - 1]);
+            }
+        }
+    }
+    
+    async catchUp() {
+        console.log(`\n🏃 Catch-Up Mode - Focus on Missed & Incomplete Items`);
+        
+        const currentDate = new DateIndex();
+        const identifiers = currentDate.getIdentifiers();
+        
+        // Load current plans
+        const dayPlan = PlanStorage.load('day', identifiers.day);
+        const weekPlan = PlanStorage.load('week', identifiers.week);
+        const monthPlan = PlanStorage.load('month', identifiers.month);
+        
+        console.log(`\n📊 Scanning for incomplete items...`);
+        
+        const catchUpItems = await this.identifyCatchUpItems(dayPlan, weekPlan, monthPlan, identifiers);
+        
+        if (catchUpItems.length === 0) {
+            console.log(`\n🎉 Amazing! You're caught up on all current commitments.`);
+            console.log(`💡 Consider working on strategic initiatives or taking a well-deserved break.`);
+            return;
+        }
+        
+        console.log(`\n🎯 Found ${catchUpItems.length} items needing attention:`);
+        
+        // Group by urgency and type
+        const urgent = catchUpItems.filter(item => item.urgency === 'urgent');
+        const important = catchUpItems.filter(item => item.urgency === 'important');
+        const routine = catchUpItems.filter(item => item.urgency === 'routine');
+        
+        if (urgent.length > 0) {
+            console.log(`\n🔥 URGENT (${urgent.length} items):`);
+            urgent.forEach((item, index) => {
+                console.log(`  ${index + 1}. ${item.icon} ${item.title}`);
+                console.log(`     ⏰ ${item.timeInfo} | ${item.reason}`);
+            });
+        }
+        
+        if (important.length > 0) {
+            console.log(`\n🟡 IMPORTANT (${important.length} items):`);
+            important.forEach((item, index) => {
+                console.log(`  ${index + 1}. ${item.icon} ${item.title}`);
+                console.log(`     ⏰ ${item.timeInfo} | ${item.reason}`);
+            });
+        }
+        
+        if (routine.length > 0) {
+            console.log(`\n🟢 ROUTINE MAINTENANCE (${routine.length} items):`);
+            routine.forEach((item, index) => {
+                console.log(`  ${index + 1}. ${item.icon} ${item.title}`);
+                console.log(`     ⏰ ${item.timeInfo} | ${item.reason}`);
+            });
+        }
+        
+        // Interactive prioritization
+        const focus = await this.ask(`\n🎯 Focus area (urgent/important/routine/all): `);
+        let targetItems = catchUpItems;
+        
+        if (focus.toLowerCase().startsWith('u')) targetItems = urgent;
+        else if (focus.toLowerCase().startsWith('i')) targetItems = important;
+        else if (focus.toLowerCase().startsWith('r')) targetItems = routine;
+        
+        console.log(`\n📋 Priority Queue (${targetItems.length} items):`);
+        targetItems.forEach((item, index) => {
+            console.log(`  ${index + 1}. ${item.title} (${item.estimatedTime}min)`);
+        });
+        
+        // Offer batch task creation
+        const createTasks = await this.ask(`\n🚀 Create TaskWarrior tasks for these items? (y/n): `);
+        if (createTasks.toLowerCase() === 'y') {
+            await this.createTasksFromCatchUp(targetItems);
+        }
+    }
+    
+    // Helper methods for gap-time functionality
+    
+    async analyzeCurrentAvailability(date) {
+        const availability = {
+            calendarEvents: [],
+            completedTasks: [],
+            pendingTasks: [],
+            dayPlanProgress: null
+        };
+        
+        try {
+            // Get TaskWarrior status (synchronous for now)
+            const { execSync } = require('child_process');
+            const taskOutput = execSync('task +timeblock status:pending export', { encoding: 'utf8', stdio: 'pipe' });
+            availability.pendingTasks = taskOutput ? JSON.parse(taskOutput) : [];
+            
+            const completedOutput = execSync(`task +timeblock status:completed end.after:${date} export`, { encoding: 'utf8', stdio: 'pipe' });
+            availability.completedTasks = completedOutput ? JSON.parse(completedOutput) : [];
+        } catch (error) {
+            console.log(`  ⚠️ TaskWarrior query failed: ${error.message}`);
+        }
+        
+        // TODO: Add calendar integration when available
+        // This would query Google Calendar MCP for today's events
+        
+        return availability;
+    }
+    
+    async generateGapTimeSuggestions(minutes, dayPlan, weekPlan, availability) {
+        const suggestions = [];
+        
+        // Quick wins (15-30 min)
+        if (minutes >= 15 && minutes <= 30) {
+            suggestions.push({
+                category: 'admin',
+                title: 'Process inbox and quick communications',
+                estimatedTime: 20,
+                priority: 'medium',
+                reason: 'Good fit for short focused window',
+                alignment: 'Daily maintenance and organization'
+            });
+            
+            if (weekPlan && weekPlan.objectives.some(obj => !obj.completed)) {
+                suggestions.push({
+                    category: 'planning',
+                    title: 'Review and update weekly objectives',
+                    estimatedTime: 25,
+                    priority: 'high',
+                    reason: 'Strategic check-in on weekly progress',
+                    alignment: 'Weekly goal alignment'
+                });
+            }
+        }
+        
+        // Medium sessions (30-60 min)
+        if (minutes >= 30 && minutes <= 60) {
+            suggestions.push({
+                category: 'learning',
+                title: 'Boot.dev coding practice session',
+                estimatedTime: 45,
+                priority: 'high',
+                reason: 'Perfect for skill development momentum',
+                alignment: '2026 AI engineer transformation goal'
+            });
+            
+            if (dayPlan && dayPlan.timeBlocks.some(block => !block.completed)) {
+                const incompleteBlocks = dayPlan.timeBlocks.filter(block => !block.completed);
+                if (incompleteBlocks.length > 0) {
+                    const nextBlock = incompleteBlocks[0];
+                    suggestions.push({
+                        category: 'catch-up',
+                        title: `Catch up on: ${nextBlock.activity}`,
+                        estimatedTime: Math.min(nextBlock.duration, minutes),
+                        priority: 'high',
+                        reason: 'Scheduled time block from today\'s plan',
+                        alignment: nextBlock.alignment
+                    });
+                }
+            }
+        }
+        
+        // Deep work (60+ min)
+        if (minutes >= 60) {
+            suggestions.push({
+                category: 'deep-work',
+                title: 'AI/ML portfolio project development',
+                estimatedTime: Math.min(90, minutes),
+                priority: 'high',
+                reason: 'Extended focus session for technical growth',
+                alignment: 'Portfolio building and technical mastery'
+            });
+            
+            suggestions.push({
+                category: 'deep-work',
+                title: 'Financial automation project work',
+                estimatedTime: Math.min(120, minutes),
+                priority: 'high',
+                reason: 'High-impact project for career transition',
+                alignment: 'Financial pressure motivation and practical skills'
+            });
+        }
+        
+        // Sort by priority and time fit
+        return suggestions.sort((a, b) => {
+            const priorityOrder = { high: 3, medium: 2, low: 1 };
+            return priorityOrder[b.priority] - priorityOrder[a.priority];
+        });
+    }
+    
+    async generateContextAwareSuggestions(minutes, energy, context, dayPlan, weekPlan, availability) {
+        const suggestions = [];
+        
+        // High energy suggestions
+        if (energy >= 8) {
+            suggestions.push({
+                category: 'deep-work',
+                title: 'Tackle hardest technical challenge',
+                estimatedTime: Math.min(90, minutes),
+                energyMatch: 10,
+                reason: 'Peak focus - perfect for challenging work',
+                quickStart: 'Open your most complex project file and dive in'
+            });
+        }
+        
+        // Medium energy suggestions  
+        if (energy >= 5 && energy <= 7) {
+            suggestions.push({
+                category: 'learning',
+                title: 'Structured learning with Boot.dev',
+                estimatedTime: Math.min(60, minutes),
+                energyMatch: 8,
+                reason: 'Good focus for guided learning',
+                quickStart: 'Continue your current course or start next lesson'
+            });
+        }
+        
+        // Low energy suggestions
+        if (energy <= 4) {
+            suggestions.push({
+                category: 'admin',
+                title: 'Organize files and update documentation',
+                estimatedTime: Math.min(30, minutes),
+                energyMatch: 7,
+                reason: 'Low cognitive load, still productive',
+                quickStart: 'Start with your Downloads folder or project README'
+            });
+        }
+        
+        // Context-aware filtering
+        if (context.toLowerCase().includes('mobile') || context.toLowerCase().includes('phone')) {
+            suggestions.push({
+                category: 'learning',
+                title: 'Read AI/ML articles or documentation',
+                estimatedTime: minutes,
+                energyMatch: 6,
+                reason: 'Good mobile activity',
+                quickStart: 'Check saved articles in your reading list'
+            });
+        }
+        
+        return suggestions.sort((a, b) => b.energyMatch - a.energyMatch);
+    }
+    
+    async identifyCatchUpItems(dayPlan, weekPlan, monthPlan, identifiers) {
+        const catchUpItems = [];
+        
+        // Check overdue time blocks from today
+        if (dayPlan && dayPlan.timeBlocks) {
+            const incompleteBlocks = dayPlan.timeBlocks.filter(block => !block.completed);
+            incompleteBlocks.forEach(block => {
+                catchUpItems.push({
+                    source: 'day-plan',
+                    title: `Time block: ${block.activity}`,
+                    estimatedTime: block.duration,
+                    urgency: 'urgent',
+                    icon: '⏰',
+                    timeInfo: `${block.start} (${block.duration}min)`,
+                    reason: 'Scheduled for today but not completed'
+                });
+            });
+        }
+        
+        // Check incomplete weekly objectives
+        if (weekPlan && weekPlan.objectives) {
+            const incompleteObjectives = weekPlan.objectives.filter(obj => !obj.completed);
+            incompleteObjectives.forEach(obj => {
+                catchUpItems.push({
+                    source: 'week-plan',
+                    title: `Weekly objective: ${obj.text}`,
+                    estimatedTime: 60, // Default estimate
+                    urgency: 'important',
+                    icon: '🎯',
+                    timeInfo: 'This week',
+                    reason: 'Weekly commitment falling behind'
+                });
+            });
+        }
+        
+        // Check TaskWarrior overdue tasks
+        try {
+            const { execSync } = require('child_process');
+            const overdueOutput = execSync('task +OVERDUE export', { encoding: 'utf8', stdio: 'pipe' });
+            const overdueTasks = overdueOutput ? JSON.parse(overdueOutput) : [];
+            
+            overdueTasks.forEach(task => {
+                catchUpItems.push({
+                    source: 'taskwarrior',
+                    title: `Overdue task: ${task.description}`,
+                    estimatedTime: 30, // Default estimate
+                    urgency: 'urgent',
+                    icon: '🚨',
+                    timeInfo: `Due ${task.due}`,
+                    reason: 'Overdue TaskWarrior item'
+                });
+            });
+        } catch (error) {
+            // TaskWarrior query failed, skip this section
+        }
+        
+        return catchUpItems;
+    }
+    
+    getSuggestionIcon(category) {
+        const icons = {
+            'deep-work': '🔥',
+            'learning': '📚',
+            'admin': '📋',
+            'planning': '🎯',
+            'review': '📊',
+            'catch-up': '⚡',
+            'maintenance': '🔧'
+        };
+        return icons[category] || '💡';
+    }
+    
+    async createTaskFromSuggestion(suggestion) {
+        try {
+            const { execSync } = require('child_process');
+            const project = this.getProjectForBlockType(suggestion.category);
+            const priority = suggestion.priority === 'high' ? 'H' : suggestion.priority === 'medium' ? 'M' : 'L';
+            
+            let taskCmd = `task add "${suggestion.title}"`;
+            if (project) taskCmd += ` project:${project}`;
+            if (priority) taskCmd += ` priority:${priority}`;
+            taskCmd += ` +gap-time +${suggestion.category}`;
+            
+            execSync(taskCmd, { stdio: 'pipe' });
+            console.log(`\n✅ Created TaskWarrior task: ${suggestion.title}`);
+            console.log(`   📋 Use /task list to see it, /task-done [id] when complete`);
+        } catch (error) {
+            console.log(`\n❌ Failed to create task: ${error.message}`);
+        }
+    }
+    
+    async createTasksFromCatchUp(items) {
+        let successCount = 0;
+        
+        for (const item of items) {
+            try {
+                const { execSync } = require('child_process');
+                let taskCmd = `task add "${item.title}"`;
+                taskCmd += ` priority:H +catch-up +${item.urgency}`;
+                
+                execSync(taskCmd, { stdio: 'pipe' });
+                successCount++;
+            } catch (error) {
+                console.log(`  ❌ Failed to create: ${item.title}`);
+            }
+        }
+        
+        console.log(`\n✅ Created ${successCount}/${items.length} catch-up tasks`);
+        console.log(`   📋 Use /task list to see them, /task-done [id] when complete`);
+    }
+
     showHelp() {
         console.log(`
 🌀 Fractal Planning System
@@ -1968,6 +2399,11 @@ Review Commands:
 
 Status Commands:
   status [period]      - Show current planning status and next actions
+
+Gap Time Commands:
+  gap-time [minutes]   - Show available work for specific time window
+  available-work       - Interactive assessment and work suggestions  
+  catch-up             - Focus on missed/incomplete items from current plans
 
 Examples:
   node scripts/fractal-planner.js plan-day 2024-01-15
