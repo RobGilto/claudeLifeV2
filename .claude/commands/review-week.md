@@ -7,10 +7,11 @@ Automatically generates comprehensive weekly performance review from daily check
 1. Determine which week to review (current, last, or specific week ID).
 
 2. Execute automated weekly review that gathers data from:
-   - Daily journal entries in `/journal/daily/`
-   - Weekly planning objectives in `/planning/data/`
-   - Victory patterns from accomplishments
-   - Energy and mood metrics from check-ins
+   - **Subjective Data**: Daily journal entries in `/journal/daily/` (evening check-ins, accomplishments, gratitude, challenges)
+   - **Objective Data**: Daily performance reviews in `/journal/planning/daily-reviews/` (time blocks, objectives, effectiveness scores)
+   - **Planning Data**: Weekly planning objectives in `/planning/data/`
+   - **Victory patterns** from accomplishments across both subjective and objective sources
+   - **Energy and mood metrics** from daily check-ins and day reviews
 
 3. Run the automated review script:
    ```bash
