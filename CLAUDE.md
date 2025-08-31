@@ -421,6 +421,13 @@ A comprehensive multi-scale planning system that creates aligned plans from dail
 - Multi-index positioning display (day X/365, week Y/52, etc.)
 - Parent plan alignment assessment (weekly/monthly/quarterly goals)
 - Automatic data gathering from daily journals and victory tracking
+- **Intelligent period-boundary detection and cascading review suggestions**
+- **Smart review cascade prompting**: When reviewing on period boundaries, suggests completing reviews in logical order:
+  - **Sunday**: Suggests `/review-week` completion first
+  - **Month-end**: Suggests `/review-month` after weekly review
+  - **Quarter-end**: Suggests `/review-quarter` after monthly review
+  - **Year-end**: Suggests `/review-year` after quarterly review
+- **Strategic transition guidance**: Explains why higher-level reviews matter for upcoming period planning
 - Supports relative dates: `today`, `yesterday` 
 - Outputs structured review to `journal/planning/daily-reviews/`
 
