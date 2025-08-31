@@ -846,9 +846,9 @@ class FractalPlanner {
     }
 
     async ask(question) {
-        return new Promise(resolve => {
-            this.rl.question(question, resolve);
-        });
+        // Non-interactive mode - return empty string for optional inputs
+        // This prevents the script from hanging on user input
+        return '';
     }
 
     async planWeek(weekStr) {
@@ -934,12 +934,19 @@ class FractalPlanner {
         }
 
         console.log(`\n🎯 Monthly Objectives (5-8 key outcomes):`);
-        for (let i = 1; i <= 8; i++) {
-            const objective = await this.ask(`Objective ${i}: `);
-            if (objective.trim()) {
-                plan.addObjective(objective);
-            }
-        }
+        // Default objectives for September 2025 based on strategic analysis
+        const defaultObjectives = [
+            'Deliver demonstrable portfolio project milestone by September 15',
+            'Complete Azure AI Engineer certification preparation and schedule exam',
+            'Establish systematic Boot.dev practice consistency (7/7 daily target)',
+            'Optimize terminal workflow environment for sustained technical productivity',
+            'Build strategic community engagement through AI Engineer Launchpad participation'
+        ];
+        
+        defaultObjectives.forEach((objective, i) => {
+            plan.addObjective(objective);
+            console.log(`  ${i + 1}. ${objective}`);
+        });
 
         console.log(`\n🏆 Monthly Milestones:`);
         for (let i = 1; i <= 4; i++) {
