@@ -1676,31 +1676,47 @@ Generated from daily review session on ${formatSydneyDateString()}
                 lastWeek: null,
                 lastDay: null,
                 keyPatterns: [],
-                adjustments: []
+                adjustments: [],
+                rawReviews: []
             };
+
+            const journalDir = path.join(__dirname, '..', 'journal', 'planning');
 
             // Get previous month review
             const prevMonth = this.getPreviousMonth();
             const prevMonthId = prevMonth.getIdentifiers().month;
-            reviewContext.previousMonth = PlanStorage.loadPerformance('month', prevMonthId);
+            const monthReviewPath = path.join(journalDir, 'monthly-reviews', `review-${prevMonthId}.md`);
+            if (fs.existsSync(monthReviewPath)) {
+                const monthReview = fs.readFileSync(monthReviewPath, 'utf8');
+                reviewContext.rawReviews.push({ type: 'month', id: prevMonthId, content: monthReview });
+                console.log(`📅 Found previous month review: ${prevMonthId}`);
+            }
 
             // Get last week review
             const prevWeek = this.getPreviousWeek();
             const prevWeekId = prevWeek.getIdentifiers().week;
-            reviewContext.lastWeek = PlanStorage.loadPerformance('week', prevWeekId);
+            const weekReviewPath = path.join(journalDir, 'weekly-reviews', `review-${prevWeekId}.md`);
+            if (fs.existsSync(weekReviewPath)) {
+                const weekReview = fs.readFileSync(weekReviewPath, 'utf8');
+                reviewContext.rawReviews.push({ type: 'week', id: prevWeekId, content: weekReview });
+                console.log(`📊 Found previous week review: ${prevWeekId}`);
+            }
 
             // Get most recent day review
             const prevDay = this.getPreviousDay();
             const prevDayId = prevDay.toString();
-            reviewContext.lastDay = PlanStorage.loadPerformance('day', prevDayId);
+            const dayReviewPath = path.join(journalDir, 'daily-reviews', `review-${prevDayId}.md`);
+            if (fs.existsSync(dayReviewPath)) {
+                const dayReview = fs.readFileSync(dayReviewPath, 'utf8');
+                reviewContext.rawReviews.push({ type: 'day', id: prevDayId, content: dayReview });
+                console.log(`📋 Found previous day review: ${prevDayId}`);
+            }
 
-            // Extract patterns and adjustments
-            [reviewContext.previousMonth, reviewContext.lastWeek, reviewContext.lastDay]
-                .filter(Boolean)
-                .forEach(review => {
-                    if (review.insights) reviewContext.keyPatterns.push(...review.insights);
-                    if (review.adjustments) reviewContext.adjustments.push(...review.adjustments);
-                });
+            // Note: LLM will extract insights from rawReviews during planning
+            if (reviewContext.rawReviews.length > 0) {
+                console.log(`\n🔍 Found ${reviewContext.rawReviews.length} review files for LLM analysis`);
+                console.log('📝 Reviews will be analyzed by Claude for key insights and patterns');
+            }
 
             return reviewContext;
         } catch (error) {
@@ -1710,13 +1726,22 @@ Generated from daily review session on ${formatSydneyDateString()}
     }
 
     displayReviewContext(reviewContext) {
-        if (reviewContext.previousMonth) {
-            console.log(`  📅 Previous Month: ${reviewContext.previousMonth.completionRate.toFixed(1)}% completion, ${reviewContext.previousMonth.wellbeingMetrics.satisfaction || 'N/A'}/10 satisfaction`);
+        if (reviewContext.rawReviews && reviewContext.rawReviews.length > 0) {
+            console.log('\n📊 Available Review Data for LLM Analysis:');
+            reviewContext.rawReviews.forEach(review => {
+                const typeIcon = review.type === 'month' ? '📅' : review.type === 'week' ? '📊' : '📋';
+                console.log(`  ${typeIcon} ${review.type.charAt(0).toUpperCase() + review.type.slice(1)} Review: ${review.id}`);
+            });
+            console.log('\n🎯 Claude will analyze these reviews to extract:');
+            console.log('  • Key performance patterns and trends');
+            console.log('  • Strategic insights and lessons learned');
+            console.log('  • Recommended adjustments for upcoming month');
+            console.log('  • Success factors to replicate');
+            console.log('  • Areas for improvement and focus');
+        } else {
+            console.log('\n⚠️ No recent review data found for analysis');
         }
-        if (reviewContext.lastWeek) {
-            console.log(`  📊 Last Week: ${reviewContext.lastWeek.completionRate.toFixed(1)}% completion, ${reviewContext.lastWeek.wellbeingMetrics.satisfaction || 'N/A'}/10 satisfaction`);
-        }
-        if (reviewContext.lastDay) {
+    }
             console.log(`  📋 Recent Day: ${reviewContext.lastDay.completionRate.toFixed(1)}% completion, energy ${reviewContext.lastDay.wellbeingMetrics.energy || 'N/A'}/10`);
         }
         if (reviewContext.keyPatterns.length > 0) {
