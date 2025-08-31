@@ -167,9 +167,44 @@ Conduct a daily reflection and performance review of completed time blocks and o
    **Year Transition**: Annual reviews set the foundation for next year's strategic vision and planning
    ```
 
+9. **Complete Cascade Example** (September 30, 2025 - Sunday + Month-End + Quarter-End):
+   If today is Sunday + Month-End + Quarter-End, provide the complete sequence:
+   
+   ```
+   🌟 **Triple Boundary Confluence Detected!**
+   
+   🎯 Today is Sunday (week-end) + Month-end + Quarter-end - the perfect strategic review opportunity!
+   
+   **Complete Review Cascade Sequence**:
+   
+   **Step 1**: `/review-week current` (2025-W39)
+   - Complete weekly execution analysis first
+   - 7 days of tactical performance data
+   
+   **Step 2**: `/review-month current` (2025-09)  
+   - Build on weekly insights for monthly strategic assessment
+   - September's "Professional Demonstration and Market Positioning" theme evaluation
+   
+   **Step 3**: `/review-quarter current` (2025-Q3)
+   - Synthesize 3 months of strategic progress
+   - Critical Q3 → Q4 transition analysis for career timeline
+   
+   **Step 4**: `/plan-quarter 2025-Q4`
+   - Use all review insights to plan October-December strategic execution
+   - Position for final quarter of AI engineering preparation before 2026
+   
+   **Why This Sequence Matters**:
+   Your AI engineering transition by mid-2026 depends on systematic reflection and strategic planning. This triple confluence gives you unprecedented insight into:
+   - What execution patterns drive breakthrough results
+   - Which strategic approaches accelerate your technical competency development  
+   - How to optimize Q4 for maximum career transition momentum
+   
+   **Time Investment**: ~2-3 hours total, but provides foundation for Q4 success
+   ```
+
 10. **Regular Day Completion** (Monday-Saturday):
     Provide standard next day planning suggestions:
     - Create tomorrow's plan: `/plan-day`
     - Check weekly progress: `/performance-dashboard`
 
-Remember: Daily reviews feed insights into weekly and monthly reviews. Sunday daily reviews trigger intelligent weekly review suggestions, and month-end Sundays also suggest monthly reviews to maximize the value of accumulated data across all time scales.
+Remember: Daily reviews create the foundation data. Period boundary detection triggers intelligent cascading review suggestions (daily → weekly → monthly → quarterly → yearly) to maximize strategic insight and planning effectiveness across all time scales.
