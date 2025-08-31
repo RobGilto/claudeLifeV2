@@ -428,23 +428,62 @@ function calculateIntegratedMetrics(dailyDataArray, dailyReviewsArray) {
             }
         }
         
-        // Collect overall feeling
+        // Collect overall feeling for satisfaction
         if (day.overallFeeling) {
             feelingValues.push(day.overallFeeling);
         }
     });
     
-    // Calculate averages
+    // Process objective data (daily reviews)
+    let totalCompletionRate = 0, totalObjectives = 0, completionCount = 0;
+    
+    dailyReviewsArray.forEach(review => {
+        if (!review) return;
+        
+        // Collect focus/effectiveness data
+        if (review.focusAverage !== null) {
+            focusValues.push(review.focusAverage);
+        }
+        
+        // Collect satisfaction from objective reviews
+        if (review.satisfaction !== null) {
+            satisfactionValues.push(review.satisfaction);
+        }
+        
+        // Aggregate objective performance metrics
+        if (review.completionRate !== null) {
+            totalCompletionRate += review.completionRate;
+            completionCount++;
+        }
+        
+        totalObjectives += review.objectivesTotal;
+        metrics.objectivePerformance.totalObjectivesCompleted += review.objectivesCompleted;
+    });
+    
+    // Calculate integrated averages
     if (energyValues.length > 0) {
         metrics.energyAverage = energyValues.reduce((a, b) => a + b, 0) / energyValues.length;
     }
     
-    if (feelingValues.length > 0) {
-        metrics.satisfactionAverage = feelingValues.reduce((a, b) => a + b, 0) / feelingValues.length;
+    // Focus from objective reviews (more accurate than energy approximation)
+    if (focusValues.length > 0) {
+        metrics.focusAverage = focusValues.reduce((a, b) => a + b, 0) / focusValues.length;
+    } else {
+        // Fallback to energy approximation
+        metrics.focusAverage = metrics.energyAverage;
     }
     
-    // Focus is approximated from energy for now (can be enhanced)
-    metrics.focusAverage = metrics.energyAverage;
+    // Satisfaction from both subjective feelings and objective satisfaction
+    const allSatisfactionValues = [...feelingValues, ...satisfactionValues];
+    if (allSatisfactionValues.length > 0) {
+        metrics.satisfactionAverage = allSatisfactionValues.reduce((a, b) => a + b, 0) / allSatisfactionValues.length;
+    }
+    
+    // Calculate objective performance metrics
+    if (completionCount > 0) {
+        metrics.objectivePerformance.avgCompletionRate = totalCompletionRate / completionCount;
+    }
+    metrics.objectivePerformance.totalObjectivesPlanned = totalObjectives;
     
     return metrics;
 }
