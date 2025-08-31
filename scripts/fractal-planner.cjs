@@ -664,6 +664,9 @@ class FractalPlanner {
         // Always prepare calendar events via MCP
         await this.createGoogleCalendarEvents(blocks, date);
         
+        // Create TaskWarrior tasks for time blocks
+        await this.createTaskWarriorTasks(blocks, date);
+        
         console.log(`\n  📋 Manual calendar entries for ${date} (if MCP unavailable):`);
         blocks.forEach(block => {
             const startTime = `${date}T${block.start}:00`;
@@ -804,6 +807,125 @@ class FractalPlanner {
         };
         
         const recordFile = path.join(syncDir, `sync-record-${date}.json`);
+        fs.writeFileSync(recordFile, JSON.stringify(record, null, 2));
+    }
+    
+    async createTaskWarriorTasks(blocks, date) {
+        console.log(`  📝 Creating ${blocks.length} TaskWarrior tasks for time blocks...`);
+        
+        try {
+            let successCount = 0;
+            const { execSync } = require('child_process');
+            
+            for (const block of blocks) {
+                const timeInfo = `${block.start}-${this.addMinutes(block.start, block.duration)}`;
+                const taskDescription = `${timeInfo}: ${block.activity}`;
+                
+                // Determine project and tags based on block type and alignment
+                const project = this.getProjectForBlockType(block.type);
+                const tags = this.getTagsForBlock(block);
+                const priority = this.getPriorityForBlockType(block.type);
+                
+                // Build task command
+                let taskCmd = `task add "${taskDescription}"`;
+                if (project) taskCmd += ` project:${project}`;
+                if (priority) taskCmd += ` priority:${priority}`;
+                if (tags.length > 0) taskCmd += ` +${tags.join(' +')}`;
+                
+                // Add due date (blocks are scheduled for today)
+                taskCmd += ` due:${date}`;
+                
+                // Add metadata as annotations
+                taskCmd += ` -- "Time block: ${block.type} | Alignment: ${block.alignment}"`;
+                
+                try {
+                    execSync(taskCmd, { stdio: 'pipe' });
+                    console.log(`  ✅ Task created: ${taskDescription}`);
+                    successCount++;
+                } catch (error) {
+                    console.log(`  ⚠️  Failed to create task: ${taskDescription} (${error.message})`);
+                }
+            }
+            
+            console.log(`  📊 TaskWarrior sync: ${successCount}/${blocks.length} tasks created`);
+            
+            // Save task sync record
+            this.saveTaskSyncRecord(date, blocks.length, successCount);
+            
+            if (successCount > 0) {
+                console.log(`\n  📋 TaskWarrior Integration:`);
+                console.log(`     • ${successCount} time block tasks created`);
+                console.log(`     • Use /task list to see pending tasks`);
+                console.log(`     • Mark complete with /task-done [task-id]`);
+                console.log(`     • Tasks due today: ${date}`);
+            }
+            
+            return successCount;
+            
+        } catch (error) {
+            console.log(`  ❌ TaskWarrior integration failed: ${error.message}`);
+            PlanStorage.log(`TaskWarrior error: ${error.message}`);
+            return 0;
+        }
+    }
+    
+    getProjectForBlockType(type) {
+        const projectMap = {
+            'deep-work': 'development',
+            'learning': 'learning',
+            'admin': 'admin',
+            'review': 'planning',
+            'general': 'general'
+        };
+        return projectMap[type] || 'general';
+    }
+    
+    getTagsForBlock(block) {
+        const tags = ['timeblock'];
+        
+        // Add type-based tags
+        if (block.type) tags.push(block.type);
+        
+        // Add alignment-based tags
+        if (block.alignment && block.alignment.includes('weekly')) tags.push('weekly');
+        if (block.alignment && block.alignment.includes('monthly')) tags.push('monthly');
+        if (block.alignment && block.alignment.includes('quarterly')) tags.push('quarterly');
+        
+        // Add duration-based tags
+        if (block.duration >= 120) tags.push('long-block');
+        else if (block.duration >= 60) tags.push('medium-block');
+        else tags.push('short-block');
+        
+        return tags;
+    }
+    
+    getPriorityForBlockType(type) {
+        const priorityMap = {
+            'deep-work': 'H',
+            'learning': 'M', 
+            'review': 'M',
+            'admin': 'L',
+            'general': 'L'
+        };
+        return priorityMap[type] || 'M';
+    }
+    
+    saveTaskSyncRecord(date, totalBlocks, successCount) {
+        const syncDir = path.join(PLANNING_DIR, 'taskwarrior-sync');
+        if (!fs.existsSync(syncDir)) {
+            fs.mkdirSync(syncDir, { recursive: true });
+        }
+        
+        const record = {
+            date: date,
+            timestamp: getSydneyDate().toISOString(),
+            totalBlocks: totalBlocks,
+            successCount: successCount,
+            failedCount: totalBlocks - successCount,
+            status: 'completed'
+        };
+        
+        const recordFile = path.join(syncDir, `task-sync-${date}.json`);
         fs.writeFileSync(recordFile, JSON.stringify(record, null, 2));
     }
     

@@ -685,6 +685,14 @@ Task management integration with TaskWarrior for comprehensive task tracking and
 - Automatic victory detection for completed tasks
 - Progress tracking and completion analytics
 
+#### `/task-abandon` Command
+- Interactive task abandonment with insight capture
+- Prompts for abandonment reason and learning opportunities
+- Records abandonment insights for daily review integration
+- Helps identify patterns in task abandonment for process improvement
+- Saves insights to `planning/execution/task-abandonment-YYYY-MM-DD.json`
+- Non-judgmental approach focused on system optimization
+
 ### Additional Review Commands
 Extended review commands for comprehensive reflection across all time scales.
 
