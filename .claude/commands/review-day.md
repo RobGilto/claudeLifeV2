@@ -83,55 +83,88 @@ Conduct a daily reflection and performance review of completed time blocks and o
 
 7. Integrate with victory detection - scan accomplishments for victories and append to `/victories/victories-YYYY-MM.md`.
 
-8. **Sunday Week-End Intelligence**:
-   If today is Sunday, provide this enhanced completion message:
+8. **Period-Boundary Intelligence** (Multi-Scale Detection):
+   Check for all applicable period boundaries and suggest reviews in logical cascade order:
+   
+   **A. Sunday (Week-End) Detection**:
+   If today is Sunday, provide this message:
    
    ```
    🎉 Daily Review Complete - Week End Reached!
    
    📊 Since today is Sunday (the last day of the week), you now have a full collection of daily data points ready for strategic analysis.
    
-   🏆 **Recommended Next Action**: 
-   Run `/review-week` to conduct your weekly performance review and strategic planning session.
+   🏆 **Step 1 - Weekly Review**: 
+   Run `/review-week current` to conduct your weekly performance review and strategic planning session.
    
-   **Why This Matters**: 
+   **Why Weekly Reviews Matter**: 
    - Weekly reviews synthesize 7 days of execution data into actionable insights
    - Pattern recognition across the week reveals optimization opportunities  
    - Strategic adjustments for next week based on completed week's learning
    - Momentum maintenance through systematic reflection and planning
-   
-   **Your Weekly Review Will Include**:
-   - Objective completion analysis across all daily reviews
-   - Energy and focus pattern recognition
-   - Victory synthesis and pattern analysis  
-   - Strategic insights for next week's planning
-   - Performance trends and improvement areas
-   
-   Would you like to run your weekly review now? (y/n)
-   If YES: Execute `/review-week current`
    ```
-
-9. **Sunday Month-End Intelligence** (Additional Check):
-   After the weekly review suggestion, check if the upcoming week crosses into a new month:
-   - Look at tomorrow's date (Monday) and compare months
-   - If Monday is in a new month, add this additional message:
+   
+   **B. Month-End Detection**:
+   If today is the last day of the month, add this message:
    
    ```
-   🗓️ **Month Transition Detected!**
+   🗓️ **Month-End Reached!**
    
-   📈 Tomorrow (Monday) begins a new month, which means you now have a complete month of data ready for strategic monthly review.
+   📈 You've completed a full month of data collection. After your weekly review, complete your monthly strategic assessment.
    
-   🎯 **Additional Recommended Action**: 
-   Consider running `/review-month` for your just-completed month to capture:
+   🎯 **Step 2 - Monthly Review**: 
+   After weekly review, run `/review-month current` to capture:
    - Monthly objective and milestone completion analysis
    - Victory pattern analysis across the entire month
    - Strategic insights for quarterly goal alignment
    - Performance trends and breakthrough identification
    - Financial and career progress assessment toward 2026 goals
    
-   **Strategic Value**: Monthly reviews provide the big-picture strategic context that weekly reviews support, essential for your AI engineering transition planning.
+   **Strategic Value**: Monthly reviews provide the big-picture context that enables effective quarterly planning.
+   ```
    
-   **Optimal Flow**: Daily → Weekly → Monthly reviews create comprehensive reflection cascade
+   **C. Quarter-End Detection**:
+   If today is the last day of the quarter (March 31, June 30, Sept 30, Dec 31), add this message:
+   
+   ```
+   🎯 **Quarter-End Reached!**
+   
+   🚀 You've completed a full quarter of strategic execution. This is your most important review opportunity.
+   
+   🏆 **Step 3 - Quarterly Review**: 
+   After weekly and monthly reviews, run `/review-quarter current` to assess:
+   - Quarterly strategic priority achievement and impact
+   - Major milestone completion and strategic progress
+   - Long-term trend identification and pattern recognition
+   - Vision alignment evaluation and strategic pivot opportunities
+   - Comprehensive achievement synthesis across 3 months of work
+   
+   **Critical Importance**: Quarterly reviews enable you to:
+   - Plan the next quarter with deep strategic insight
+   - Adjust your 2026 AI engineering transition timeline
+   - Optimize resource allocation based on proven performance patterns
+   - Identify breakthrough opportunities for accelerated progress
+   
+   **Next Quarter Planning**: After quarterly review, use `/plan-quarter [next-quarter]` for strategic Q4 planning
+   ```
+   
+   **D. Year-End Detection**:
+   If today is December 31, add this message:
+   
+   ```
+   🌟 **Year-End Reached!**
+   
+   🎉 You've completed a full year of strategic transformation work!
+   
+   🏆 **Step 4 - Annual Review**: 
+   After all other reviews, run `/review-year current` for comprehensive assessment:
+   - Annual transformation goal achievement evaluation
+   - Strategic vision alignment and mission fulfillment assessment
+   - Year-over-year growth analysis and breakthrough identification
+   - Career transition progress toward 2026 AI engineering goals
+   - Personal development and financial progress evaluation
+   
+   **Year Transition**: Annual reviews set the foundation for next year's strategic vision and planning
    ```
 
 10. **Regular Day Completion** (Monday-Saturday):

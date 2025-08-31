@@ -428,6 +428,11 @@ A comprehensive multi-scale planning system that creates aligned plans from dail
   - **Quarter-end**: Suggests `/review-quarter` after monthly review
   - **Year-end**: Suggests `/review-year` after quarterly review
 - **Strategic transition guidance**: Explains why higher-level reviews matter for upcoming period planning
+- **Example cascade**: September 30 (Sunday + Month-end + Quarter-end) would suggest:
+  1. Complete weekly review first: `/review-week 2025-W39`
+  2. Then monthly review: `/review-month 2025-09` 
+  3. Finally quarterly review: `/review-quarter 2025-Q3`
+  4. Ready for Q4 planning: `/plan-quarter 2025-Q4`
 - Supports relative dates: `today`, `yesterday` 
 - Outputs structured review to `journal/planning/daily-reviews/`
 
