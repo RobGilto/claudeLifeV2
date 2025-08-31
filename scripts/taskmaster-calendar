@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+
+/**
+ * Enhanced Taskmaster with Calendar Integration
+ * Wrapper script that automatically uses calendar-aware version
+ */
+
+const { spawn } = require('child_process');
+const path = require('path');
+
+const calendarTaskmaster = path.join(__dirname, 'calendar-aware-taskmaster.cjs');
+const args = process.argv.slice(2);
+
+// Pass all arguments to calendar-aware taskmaster
+const child = spawn('node', [calendarTaskmaster, ...args], {
+    stdio: 'inherit',
+    cwd: process.cwd()
+});
+
+child.on('exit', (code) => {
+    process.exit(code);
+});

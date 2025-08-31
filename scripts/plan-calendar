@@ -1,0 +1,46 @@
+#!/usr/bin/env node
+
+/**
+ * Enhanced Fractal Planner with Calendar Integration
+ * Wrapper script that adds calendar awareness to planning
+ */
+
+const { spawn } = require('child_process');
+const path = require('path');
+
+const calendarPlanner = path.join(__dirname, 'calendar-aware-planner.cjs');
+const args = process.argv.slice(2);
+
+const command = args[0];
+
+if (command === 'help' || !command) {
+    console.log(`
+📅 Calendar-Aware Planning Commands
+
+Planning with Calendar Check:
+  plan-calendar check-conflicts [date]     - Check daily plan for conflicts
+  plan-calendar plan-with-calendar [date]  - Create conflict-aware daily plan  
+  plan-calendar suggest-blocks [date]      - Show available time slots
+  plan-calendar sync-check                 - Verify Google Calendar integration
+
+Standard Fractal Planning:
+  Scripts/fractal-planner.cjs plan-day     - Create daily plan
+  Scripts/fractal-planner.cjs plan-week    - Create weekly plan
+  Scripts/fractal-planner.cjs plan-month   - Create monthly plan
+
+Calendar-Aware Execution:
+  scripts/taskmaster-calendar start        - Start blocks with conflict detection
+  scripts/taskmaster-calendar block <id>   - Execute block with calendar check
+    `);
+    process.exit(0);
+}
+
+// Pass all arguments to calendar-aware planner
+const child = spawn('node', [calendarPlanner, ...args], {
+    stdio: 'inherit',
+    cwd: process.cwd()
+});
+
+child.on('exit', (code) => {
+    process.exit(code);
+});
