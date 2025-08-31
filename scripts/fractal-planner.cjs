@@ -949,20 +949,27 @@ class FractalPlanner {
         });
 
         console.log(`\n🏆 Monthly Milestones:`);
-        for (let i = 1; i <= 4; i++) {
-            const milestone = await this.ask(`Milestone ${i}: `);
-            if (milestone.trim()) {
-                plan.milestones.push({
-                    id: Date.now().toString() + i,
-                    text: milestone,
-                    targetDate: null,
-                    completed: false
-                });
-            }
-        }
+        // Default milestones for September 2025 based on strategic analysis
+        const defaultMilestones = [
+            'Launch Azure certification study plan with October exam target',
+            'Complete public portfolio demonstration with GitHub showcase',
+            'Establish consistent weekly community engagement schedule',
+            'Document and systematize August breakthrough patterns'
+        ];
+        
+        defaultMilestones.forEach((milestone, i) => {
+            plan.milestones.push({
+                id: Date.now().toString() + i,
+                text: milestone,
+                targetDate: null,
+                completed: false
+            });
+            console.log(`  ${i + 1}. ${milestone}`);
+        });
 
-        const theme = await this.ask(`\n📝 Monthly Theme: `);
+        const theme = 'Professional Demonstration and Market Positioning';
         plan.context = theme;
+        console.log(`\n📝 Monthly Theme: ${theme}`);
 
         plan.parentPlans = [quarterPlan ? identifiers.quarter : null, yearPlan ? identifiers.year : null].filter(Boolean);
         plan.status = 'active';
