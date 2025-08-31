@@ -11,6 +11,10 @@
     "Maintain Boot.dev consistency momentum (6/7 → 7/7)",
     "Begin August breakthrough documentation for replication"
   ],
+  "milestones": [],
+  "metrics": {},
+  "challenges": [],
+  "resources": [],
   "planningMode": "adaptive",
   "dailyContext": "September Launch Day - Critical Azure Milestone Kickoff",
   "objectives": [
@@ -56,6 +60,7 @@
       "id": "TB0901-1",
       "type": "deep-work", 
       "title": "Azure Certification Launch",
+      "activity": "Azure Certification Launch",
       "description": "Launch Azure certification study plan and schedule October exam",
       "start": "09:00",
       "end": "10:30",
@@ -72,7 +77,9 @@
     {
       "id": "TB0901-2",
       "type": "learning",
-      "title": "Boot.dev Practice", 
+      "title": "Boot.dev Practice",
+      "activity": "Boot.dev Practice",
+      "description": "Maintain Boot.dev streak momentum (Day 6/7 target)", 
       "start": "11:00",
       "end": "11:30",
       "duration": 30,
@@ -89,6 +96,8 @@
       "id": "TB0901-3", 
       "type": "documentation",
       "title": "August Patterns Documentation",
+      "activity": "August Patterns Documentation",
+      "description": "Begin August breakthrough documentation (patterns extraction)",
       "start": "15:30",
       "end": "16:30", 
       "duration": 60,

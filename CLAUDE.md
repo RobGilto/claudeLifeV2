@@ -664,6 +664,27 @@ Audio transcription support for brain dumps and voice notes.
 - Maintains audio metadata (duration, file reference)
 - Saves to `journal/brain/` with transcription markers
 
+### TaskWarrior Integration Protocol
+Task management integration with TaskWarrior for comprehensive task tracking and execution.
+
+#### `/tasks` or `/task-list` Command
+- Lists all pending tasks with priority and project information
+- Shows due dates, tags, and task status
+- Filters available by project and tags
+- Quick overview of current task load
+
+#### `/task-add` Command
+- Interactive task creation with guided prompts
+- Project assignment and tag management
+- Priority setting and due date scheduling
+- Automatic integration with planning system
+
+#### `/task-done` Command
+- Mark tasks as completed with task identifier
+- Updates task status in TaskWarrior database
+- Automatic victory detection for completed tasks
+- Progress tracking and completion analytics
+
 ### Additional Review Commands
 Extended review commands for comprehensive reflection across all time scales.
 
