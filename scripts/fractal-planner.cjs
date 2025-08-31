@@ -901,9 +901,24 @@ class FractalPlanner {
 
         // Load recent review insights for context
         const reviewContext = await this.loadRecentReviews(identifiers);
-        if (reviewContext) {
+        if (reviewContext && reviewContext.rawReviews.length > 0) {
             console.log(`\n📋 Recent Performance Context:`);
             this.displayReviewContext(reviewContext);
+            
+            console.log('\n🤖 CLAUDE ANALYSIS REQUIRED:');
+            console.log('━'.repeat(60));
+            console.log('📋 Before proceeding with monthly planning, Claude should analyze the review data above.');
+            console.log('🎯 Please extract key insights, patterns, and recommendations for the upcoming month.');
+            console.log('🔄 Analysis should focus on:');
+            console.log('   • What worked well and should be continued/amplified');
+            console.log('   • What challenges need addressing or different approaches'); 
+            console.log('   • Energy/momentum patterns to optimize');
+            console.log('   • Strategic priorities that emerged or shifted');
+            console.log('   • Realistic capacity and goal-setting based on past performance');
+            console.log('━'.repeat(60));
+            
+            // Wait for user to confirm Claude analysis is complete
+            await this.ask('\\n⏸️  Press ENTER after Claude completes the review analysis: ');
         }
 
         let plan = PlanStorage.load('month', identifiers.month) || new Plan('month', identifiers.month);
@@ -1740,15 +1755,6 @@ Generated from daily review session on ${formatSydneyDateString()}
             console.log('  • Areas for improvement and focus');
         } else {
             console.log('\n⚠️ No recent review data found for analysis');
-        }
-    }
-            console.log(`  📋 Recent Day: ${reviewContext.lastDay.completionRate.toFixed(1)}% completion, energy ${reviewContext.lastDay.wellbeingMetrics.energy || 'N/A'}/10`);
-        }
-        if (reviewContext.keyPatterns.length > 0) {
-            console.log(`  💡 Key Insights: ${reviewContext.keyPatterns.slice(0, 2).join('; ')}`);
-        }
-        if (reviewContext.adjustments.length > 0) {
-            console.log(`  🔧 Recent Adjustments: ${reviewContext.adjustments.slice(0, 2).join('; ')}`);
         }
     }
 
