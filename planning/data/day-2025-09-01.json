@@ -6,6 +6,11 @@
   "status": "active",
   "parentPlans": ["2025-W36", "2025-09"],
   "childPlans": [],
+  "priorities": [
+    "Launch Azure certification study plan (critical Sept 7 deadline)",
+    "Maintain Boot.dev consistency momentum (6/7 → 7/7)",
+    "Begin August breakthrough documentation for replication"
+  ],
   "planningMode": "adaptive",
   "dailyContext": "September Launch Day - Critical Azure Milestone Kickoff",
   "objectives": [
@@ -49,45 +54,52 @@
   "timeBlocks": [
     {
       "id": "TB0901-1",
-      "type": "deep-work",
+      "type": "deep-work", 
       "title": "Azure Certification Launch",
-      "startTime": "09:00",
-      "endTime": "10:30",
+      "description": "Launch Azure certification study plan and schedule October exam",
+      "start": "09:00",
+      "end": "10:30",
       "duration": 90,
       "objective": "D0901-1",
       "alignment": "Critical Sept 7 deadline",
       "energyLevel": "high",
       "status": "planned",
+      "completed": false,
       "calendarSynced": true,
-      "eventId": "61pj305utb1vnogep7re3ffilg"
+      "eventId": "61pj305utb1vnogep7re3ffilg",
+      "notes": ""
     },
     {
       "id": "TB0901-2",
       "type": "learning",
       "title": "Boot.dev Practice", 
-      "startTime": "11:00",
-      "endTime": "11:30",
+      "start": "11:00",
+      "end": "11:30",
       "duration": 30,
       "objective": "D0901-2",
       "alignment": "Daily consistency target",
       "energyLevel": "medium",
       "status": "planned",
+      "completed": false,
       "calendarSynced": true,
-      "eventId": "pura1uen06mm0m5imrd1g80doo"
+      "eventId": "pura1uen06mm0m5imrd1g80doo",
+      "notes": ""
     },
     {
       "id": "TB0901-3", 
       "type": "documentation",
       "title": "August Patterns Documentation",
-      "startTime": "15:30",
-      "endTime": "16:30", 
+      "start": "15:30",
+      "end": "16:30", 
       "duration": 60,
       "objective": "D0901-3",
       "alignment": "Critical Sept 7 deadline",
       "energyLevel": "medium",
       "status": "planned",
+      "completed": false,
       "calendarSynced": true,
-      "eventId": "43idabfk4ftc9goekka733hh2g"
+      "eventId": "43idabfk4ftc9goekka733hh2g",
+      "notes": ""
     }
   ],
   "adaptiveFlexibility": {
