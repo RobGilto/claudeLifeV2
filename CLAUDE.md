@@ -881,3 +881,4 @@ AI Application Engineer
 Full-Stack AI Developer
 AI Solutions Engineer
 - when something goes wrong, and the user points it out, please fix the systems slash commands/scripts and try not just give the solution, because the user is more concerned about the system behaviour for the future
+- remember when updating the system please first consider updating the slash commands to improve it verses creating or modify a script, due to the high insights the llm will gather from the context. later down the track if the user detect a pattern that needs to be in a script maybe we can bake into scripts
