@@ -1,0 +1,53 @@
+{
+  "created": "2025-08-30T08:15:00+10:00",
+  "modified": "2025-08-31T14:32:43.000Z",
+  "status": "active",
+  "parentPlans": [],
+  "childPlans": [],
+  "objectives": [
+    {
+      "id": "boot-dev-daily",
+      "description": "Complete 1 hour of boot.dev practice daily",
+      "target": 7,
+      "completed": 3,
+      "metric": "days",
+      "priority": "critical"
+    },
+    {
+      "id": "ai-code-challenge",
+      "description": "Complete one AI coding project with proper standards",
+      "target": 1,
+      "completed": 0,
+      "metric": "projects",
+      "priority": "high"
+    },
+    {
+      "id": "tmux-practice",
+      "description": "Daily tmux/sessionX practice sessions",
+      "target": 7,
+      "completed": 0,
+      "metric": "sessions",
+      "priority": "medium"
+    },
+    {
+      "id": "vim-research",
+      "description": "Research ThePrimeagen's advanced Vim methodologies",
+      "target": 2,
+      "completed": 0,
+      "metric": "videos/resources",
+      "priority": "medium"
+    }
+  ],
+  "priorities": [
+    "Maintain boot.dev daily practice streak",
+    "Rebuild AI development confidence with structured approach",
+    "Master tmux/neovim development environment",
+    "Complete AI code challenge with proper guardrails"
+  ],
+  "timeBlocks": [],
+  "milestones": [],
+  "metrics": {},
+  "context": "",
+  "challenges": [],
+  "resources": []
+}

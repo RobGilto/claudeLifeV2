@@ -5,6 +5,7 @@
  * Purpose: Multi-scale planning and performance tracking (day/week/month/quarter/year)
  * Usage: node scripts/fractal-planner.js [command] [args]
  * Dependencies: fs, path, readline
+ * Mode: Non-interactive (uses default values to prevent hanging on user input)
  * 
  * Commands:
  * - plan-day [date]      - Plan daily time blocks aligned with higher-level plans
@@ -18,6 +19,8 @@
  * - review-quarter [Q]   - Review previous quarter's progress
  * - review-year [year]   - Review previous year's transformation
  * - status [period]      - Show current planning status and next actions
+ * 
+ * Note: Script runs non-interactively with sensible defaults to prevent hanging
  */
 
 const fs = require('fs');
@@ -867,12 +870,19 @@ class FractalPlanner {
         this.showParentContext(null, monthPlan, quarterPlan);
 
         console.log(`\n🎯 Weekly Priorities (3-5 key focus areas):`);
-        for (let i = 1; i <= 5; i++) {
-            const priority = await this.ask(`Priority ${i}: `);
-            if (priority.trim()) {
-                plan.priorities.push(priority);
-            }
-        }
+        // Default weekly priorities aligned with monthly goals
+        const defaultPriorities = [
+            'Advance portfolio project development',
+            'Maintain consistent technical learning practice', 
+            'Optimize productivity systems and workflow',
+            'Build professional relationships and positioning',
+            'Prepare certification study materials'
+        ];
+        
+        defaultPriorities.forEach((priority, i) => {
+            plan.priorities.push(priority);
+            console.log(`  ${i + 1}. ${priority}`);
+        });
 
         console.log(`\n📋 Weekly Objectives:`);
         for (let i = 1; i <= 8; i++) {
@@ -949,12 +959,12 @@ class FractalPlanner {
         });
 
         console.log(`\n🏆 Monthly Milestones:`);
-        // Default milestones for September 2025 based on strategic analysis
+        // Generic milestones that can be adapted for any month
         const defaultMilestones = [
-            'Launch Azure certification study plan with October exam target',
-            'Complete public portfolio demonstration with GitHub showcase',
-            'Establish consistent weekly community engagement schedule',
-            'Document and systematize August breakthrough patterns'
+            'Launch strategic skill development initiative',
+            'Complete significant project demonstration or milestone',
+            'Establish sustainable learning or networking rhythm',
+            'Document and systematize performance patterns'
         ];
         
         defaultMilestones.forEach((milestone, i) => {
@@ -967,7 +977,7 @@ class FractalPlanner {
             console.log(`  ${i + 1}. ${milestone}`);
         });
 
-        const theme = 'Professional Demonstration and Market Positioning';
+        const theme = `Strategic Development and Execution - ${identifiers.month}`;
         plan.context = theme;
         console.log(`\n📝 Monthly Theme: ${theme}`);
 
