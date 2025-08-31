@@ -168,12 +168,15 @@ Mid-day energy and planning checkpoint:
 - Quick encouragement without full analysis
 
 #### `/evening-checkin` Command  
-End-of-day reflection and tomorrow planning:
+End-of-day reflection and tomorrow planning with optional day plan integration:
 - Overall day feeling and accomplishment review
 - Challenge and blocker identification
 - Gratitude and reflection prompts
 - Tomorrow's priority setting
-- Combined analysis of all sessions (if multiple exist)
+- **Smart Day Plan Integration**: Automatically detects if you have a day plan and offers performance review
+- **Unified Analysis**: Combines subjective reflection with objective performance metrics
+- **Victory Detection**: Enhanced victory detection from both reflection AND day plan completion
+- Silent victory detection from accomplishments and gratitude
 
 #### File Management
 - All commands append to same `journal/daily/daily-YYYY-MM-DD.md` file
@@ -718,6 +721,7 @@ Extended review commands for comprehensive reflection across all time scales.
 
 #### Daily Workflows
 - **`scripts/morning-checkin.js`** - Morning check-in routine
+- **`scripts/evening-checkin.cjs`** - Evening check-in with optional day plan performance review integration
 - **`scripts/daily-brief.js`** - Generate daily news and career briefing
 - **`scripts/executive-function.js`** - Executive function support tools
 

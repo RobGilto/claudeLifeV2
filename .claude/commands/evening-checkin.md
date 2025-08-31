@@ -1,18 +1,24 @@
-# Evening Check-in
+# Evening Check-in with Smart Day Plan Integration
 
-End-of-day reflection and tomorrow planning.
+End-of-day reflection and tomorrow planning with optional day plan performance review.
 
 ## Process:
 
 1. First, understand the user's context by reading CLAUDE.md or any personal/business files to personalize the greeting and understand their work.
 
-2. Check if `/journal/daily/YYYY-MM-DD.md` exists:
+2. **Check for Day Plan Integration**:
+   - Check if `/planning/data/day-YYYY-MM-DD.json` exists
+   - If day plan exists, ask: "I found a day plan for today! Would you like me to run the full performance review using the evening-checkin script? This will include time block analysis and objective completion tracking. (y/n)"
+   - If YES: Run `node scripts/evening-checkin.cjs` and stop here (script handles everything)
+   - If NO or no day plan: Continue with manual evening checkin below
+
+3. Check if `/journal/daily/YYYY-MM-DD.md` exists:
    - If exists: Read to see if noon session exists, append evening section
    - Update metadata: `sessions: [noon, evening]` or `[evening]`
    - Set `status: complete`
    - If not exists: Create new file (evening-only case)
 
-3. Greet them warmly and ask these questions:
+4. Greet them warmly and ask these questions:
 
 🌙 Evening Check-in for [Today's Date] - [Current Time]
 
@@ -26,7 +32,7 @@ Good evening! Let's reflect on your day:
 6. **What are you grateful for today?**
 7. **Any other thoughts or reflections?**
 
-4. Update/save to `/journal/daily/YYYY-MM-DD.md`:
+5. Update/save to `/journal/daily/YYYY-MM-DD.md`:
    - Update frontmatter: `sessions: [noon, evening]` and `status: complete`
    - Append evening section:
 
@@ -45,7 +51,7 @@ Good evening! Let's reflect on your day:
    **Reflections:** [response]
    ```
 
-5. Launch the daily-reflection subagent with:
+6. Launch the daily-reflection subagent with:
    Analyze today's check-in:
    [provide ALL responses from both noon AND evening if both exist]
    
@@ -59,9 +65,9 @@ Good evening! Let's reflect on your day:
    - Weekly trend if enough data
    - Celebration of wins (however small)
 
-6. Create a visual summary and append to same file as `## 📊 Daily Analysis`
+7. Create a visual summary and append to same file as `## 📊 Daily Analysis`
 
-7. **Victory Detection (Silent Background Process)**:
+8. **Victory Detection (Silent Background Process)**:
    After saving the evening journal, scan ALL accomplishments (noon + evening) for victory patterns:
    - Technical victories: "figured out", "built", "solved", "learned"
    - Personal victories: financial decisions, boundary setting, help-seeking
