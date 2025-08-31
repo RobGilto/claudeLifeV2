@@ -389,6 +389,41 @@ class FractalPlanner {
         const currentTime = getSydneyDate(new Date());
         const isToday = identifiers.day === formatSydneyDateString(currentTime);
         
+        // First check for calendar conflicts and use calendar-aware planning
+        console.log('🔍 Checking existing calendar events...');
+        try {
+            const { spawn } = require('child_process');
+            const calendarAwareResult = await new Promise((resolve, reject) => {
+                const child = spawn('node', [
+                    path.join(__dirname, 'calendar-aware-planner.cjs'), 
+                    'plan-with-calendar', 
+                    identifiers.day
+                ], { stdio: 'inherit' });
+                
+                child.on('close', (code) => {
+                    if (code === 0) {
+                        console.log('✅ Calendar-aware planning completed');
+                        resolve(true);
+                    } else {
+                        console.log('⚠️ Calendar-aware planning failed, falling back to basic planning');
+                        resolve(false);
+                    }
+                });
+                
+                child.on('error', (error) => {
+                    console.log('⚠️ Calendar-aware planner not available, using basic planning');
+                    resolve(false);
+                });
+            });
+            
+            // If calendar-aware planning succeeded, we're done
+            if (calendarAwareResult) {
+                return;
+            }
+        } catch (error) {
+            console.log('⚠️ Calendar integration error, proceeding with basic planning:', error.message);
+        }
+        
         console.log(`\n🗓️  Planning Day: ${identifiers.day}`);
         console.log(`📊 Multi-Index: Week ${identifiers.week}, Month ${identifiers.month}, Quarter ${identifiers.quarter}`);
         
