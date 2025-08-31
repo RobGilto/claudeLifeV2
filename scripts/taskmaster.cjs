@@ -269,14 +269,17 @@ class Taskmaster {
     async startDay(dateStr) {
         const dateIndex = new DateIndex(dateStr ? new Date(dateStr) : new Date());
         const identifiers = dateIndex.getIdentifiers();
+        const now = new Date();
+        const currentTimeMinutes = now.getHours() * 60 + now.getMinutes();
         
         console.log(`\n⏰ Starting Taskmaster for: ${identifiers.day}`);
+        console.log(`🕐 Current time: ${now.toLocaleTimeString()}`);
         
         // Load day plan
         const dayPlan = PlanStorage.load('day', identifiers.day);
         if (!dayPlan || !dayPlan.timeBlocks.length) {
             console.log(`❌ No daily plan or time blocks found for ${identifiers.day}`);
-            console.log(`Create a plan first: node scripts/fractal-planner.js plan-day`);
+            console.log(`📝 Create a plan first: node scripts/fractal-planner.js plan-day`);
             return;
         }
 
@@ -287,7 +290,7 @@ class Taskmaster {
             dailyExecution.started = new Date().toISOString();
         }
 
-        // Initialize executions for each time block
+        // Initialize executions for ALL time blocks (not just future ones)
         for (const timeBlock of dayPlan.timeBlocks) {
             if (!dailyExecution.getExecution(timeBlock.id)) {
                 const execution = new TimeBlockExecution(timeBlock, dayPlan);
@@ -298,25 +301,32 @@ class Taskmaster {
         this.currentExecution = dailyExecution;
         ExecutionStorage.save(dailyExecution);
 
-        // Show daily overview
-        console.log(`\n📋 Daily Time Block Overview:`);
-        console.log(`📊 Total blocks: ${dayPlan.timeBlocks.length}`);
+        // Calculate session parameters for recommendations
+        const sessionParams = this.calculateSessionParameters(currentTimeMinutes);
+        
+        // Display overview with ALL blocks
+        console.log(`\n📊 Daily Time Block Overview:`);
+        console.log(`📋 Total blocks: ${dayPlan.timeBlocks.length}`);
         console.log(`⏱️  Total planned time: ${dayPlan.timeBlocks.reduce((sum, block) => sum + block.duration, 0)} minutes`);
         
-        // Show parent alignment
+        // Show session recommendations
+        if (sessionParams.recommendations.length > 0) {
+            console.log(`\n💡 Session Recommendations (based on current time):`);
+            sessionParams.recommendations.forEach(rec => console.log(`  ${rec}`));
+        }
+
+        // Show alignment context
         this.showAlignmentContext(dayPlan);
 
-        // Show time blocks
-        this.showTimeBlocks(dayPlan.timeBlocks, dailyExecution);
+        // Show ALL time blocks with status indicators
+        this.showAllTimeBlocks(dayPlan.timeBlocks, dailyExecution, currentTimeMinutes);
 
-        console.log(`\n🎯 Commands:`);
-        console.log(`  node scripts/taskmaster.js block [blockId] - Execute specific block`);
-        console.log(`  node scripts/taskmaster.js complete [blockId] - Complete current block`);
-        console.log(`  node scripts/taskmaster.js status - Show current status`);
+        // Provide commands
+        this.provideExecutionCommands(dayPlan.timeBlocks, currentTimeMinutes);
     }
 
     showAlignmentContext(dayPlan) {
-        console.log(`\n🎯 Alignment Context:`);
+        console.log(`\nðŸŽ¯ Alignment Context:`);
         
         // Load parent plans for context
         const dateIndex = new DateIndex(dayPlan.identifier);
@@ -326,29 +336,29 @@ class Taskmaster {
         const monthPlan = PlanStorage.load('month', identifiers.month);
         
         if (weekPlan && weekPlan.priorities.length > 0) {
-            console.log(`📅 Week Priorities: ${weekPlan.priorities.slice(0, 3).join(', ')}`);
+            console.log(`ðŸ“… Week Priorities: ${weekPlan.priorities.slice(0, 3).join(', ')}`);
         }
         if (monthPlan && monthPlan.priorities.length > 0) {
-            console.log(`📆 Month Focus: ${monthPlan.objectives.slice(0, 2).map(obj => obj.text).join(', ')}`);
+            console.log(`ðŸ“† Month Focus: ${monthPlan.objectives.slice(0, 2).map(obj => obj.text).join(', ')}`);
         }
     }
 
     showTimeBlocks(timeBlocks, dailyExecution) {
-        console.log(`\n⏰ Time Blocks:`);
+        console.log(`\nâ�° Time Blocks:`);
         
         for (const block of timeBlocks) {
             const execution = dailyExecution.getExecution(block.id);
-            const status = execution ? this.getBlockStatus(execution) : '⏸️  Not started';
-            const alignment = block.alignment ? ` → ${block.alignment}` : '';
+            const status = execution ? this.getBlockStatus(execution) : 'â�¸ï¸�  Not started';
+            const alignment = block.alignment ? ` â†’ ${block.alignment}` : '';
             
-            console.log(`  ${status} [${block.id.slice(-4)}] ${block.startTime} (${block.duration}min) - ${block.activity}${alignment}`);
+            console.log(`  ${status} [${block.id.slice(-4)}] ${block.start} (${block.duration}min) - ${block.activity}${alignment}`);
         }
     }
 
     getBlockStatus(execution) {
-        if (execution.completed) return '✅';
-        if (execution.started) return '⏳';
-        return '⏸️ ';
+        if (execution.completed) return 'âœ…';
+        if (execution.started) return 'â�³';
+        return 'â�¸ï¸� ';
     }
 
     async executeBlock(blockId) {
@@ -357,30 +367,30 @@ class Taskmaster {
             this.currentExecution = ExecutionStorage.load(today);
             
             if (!this.currentExecution) {
-                console.log(`❌ No active execution session. Run 'taskmaster start' first.`);
+                console.log(`â�Œ No active execution session. Run 'taskmaster start' first.`);
                 return;
             }
         }
 
         const execution = this.currentExecution.getExecution(blockId);
         if (!execution) {
-            console.log(`❌ Block ${blockId} not found`);
+            console.log(`â�Œ Block ${blockId} not found`);
             return;
         }
 
         if (execution.started && !execution.completed) {
-            console.log(`⏳ Block already in progress: ${execution.originalBlock.activity}`);
+            console.log(`â�³ Block already in progress: ${execution.originalBlock.activity}`);
             return;
         }
 
         if (execution.completed) {
-            console.log(`✅ Block already completed: ${execution.originalBlock.activity}`);
+            console.log(`âœ… Block already completed: ${execution.originalBlock.activity}`);
             return;
         }
 
-        console.log(`\n🚀 Starting Time Block: ${execution.originalBlock.activity}`);
-        console.log(`⏰ Planned duration: ${execution.originalBlock.duration} minutes`);
-        console.log(`🎯 Alignment: ${execution.alignment || 'General productivity'}`);
+        console.log(`\nðŸš€ Starting Time Block: ${execution.originalBlock.activity}`);
+        console.log(`â�° Planned duration: ${execution.originalBlock.duration} minutes`);
+        console.log(`ðŸŽ¯ Alignment: ${execution.alignment || 'General productivity'}`);
 
         // Pre-execution setup
         const energyBefore = await this.ask(`Energy level before starting (1-10): `);
@@ -391,16 +401,16 @@ class Taskmaster {
         // Confirm start
         const ready = await this.ask(`Ready to start? (y/n): `);
         if (ready.toLowerCase() !== 'y') {
-            console.log(`⏸️  Execution postponed`);
+            console.log(`â�¸ï¸�  Execution postponed`);
             return;
         }
 
         execution.start();
         ExecutionStorage.save(this.currentExecution);
 
-        console.log(`\n✨ Time block started at ${new Date().toLocaleTimeString()}`);
-        console.log(`⏰ Set a timer for ${execution.originalBlock.duration} minutes`);
-        console.log(`🎯 Focus on: ${execution.originalBlock.activity}`);
+        console.log(`\nâœ¨ Time block started at ${new Date().toLocaleTimeString()}`);
+        console.log(`â�° Set a timer for ${execution.originalBlock.duration} minutes`);
+        console.log(`ðŸŽ¯ Focus on: ${execution.originalBlock.activity}`);
         console.log(`\nCommands during execution:`);
         console.log(`  node scripts/taskmaster.js interrupt ${blockId} - Record interruption`);
         console.log(`  node scripts/taskmaster.js complete ${blockId} - Complete this block`);
@@ -414,16 +424,16 @@ class Taskmaster {
 
         const execution = this.currentExecution.getExecution(blockId);
         if (!execution) {
-            console.log(`❌ Block ${blockId} not found`);
+            console.log(`â�Œ Block ${blockId} not found`);
             return;
         }
 
         if (execution.completed) {
-            console.log(`✅ Block already completed`);
+            console.log(`âœ… Block already completed`);
             return;
         }
 
-        console.log(`\n🏁 Completing Time Block: ${execution.originalBlock.activity}`);
+        console.log(`\nðŸ�� Completing Time Block: ${execution.originalBlock.activity}`);
 
         // Post-execution metrics
         const outcomes = await this.ask(`What did you accomplish? `);
@@ -453,9 +463,9 @@ class Taskmaster {
 
         ExecutionStorage.save(this.currentExecution);
 
-        console.log(`\n✅ Block completed successfully!`);
-        console.log(`⏱️  Actual duration: ${execution.actualDuration} minutes`);
-        console.log(`📊 Efficiency: ${execution.getEfficiency()?.toFixed(1) || 'N/A'}%`);
+        console.log(`\nâœ… Block completed successfully!`);
+        console.log(`â�±ï¸�  Actual duration: ${execution.actualDuration} minutes`);
+        console.log(`ðŸ“Š Efficiency: ${execution.getEfficiency()?.toFixed(1) || 'N/A'}%`);
         
         // Show next block
         this.suggestNextBlock();
@@ -466,11 +476,11 @@ class Taskmaster {
         
         const execution = this.currentExecution.getExecution(blockId);
         if (!execution || !execution.started || execution.completed) {
-            console.log(`❌ Block ${blockId} not currently executing`);
+            console.log(`â�Œ Block ${blockId} not currently executing`);
             return;
         }
 
-        console.log(`\n⚠️  Recording Interruption for: ${execution.originalBlock.activity}`);
+        console.log(`\nâš ï¸�  Recording Interruption for: ${execution.originalBlock.activity}`);
         
         const type = await this.ask(`Interruption type (external/internal/urgent): `);
         const duration = await this.ask(`Duration in minutes: `);
@@ -479,7 +489,7 @@ class Taskmaster {
         execution.addInterruption(type, parseInt(duration) || 0, notes);
         ExecutionStorage.save(this.currentExecution);
 
-        console.log(`📝 Interruption recorded. Resume when ready.`);
+        console.log(`ðŸ“� Interruption recorded. Resume when ready.`);
     }
 
     suggestNextBlock() {
@@ -487,10 +497,10 @@ class Taskmaster {
         const nextBlock = executions.find(ex => !ex.started);
         
         if (nextBlock) {
-            console.log(`\n⏭️  Next block: ${nextBlock.originalBlock.startTime} - ${nextBlock.originalBlock.activity}`);
+            console.log(`\nâ�­ï¸�  Next block: ${nextBlock.originalBlock.startTime} - ${nextBlock.originalBlock.activity}`);
             console.log(`   Command: node scripts/taskmaster.js block ${nextBlock.blockId}`);
         } else {
-            console.log(`\n🎉 All time blocks completed! Consider running summary.`);
+            console.log(`\nðŸŽ‰ All time blocks completed! Consider running summary.`);
         }
     }
 
@@ -498,28 +508,28 @@ class Taskmaster {
         const today = new DateIndex().toString();
         const dailyExecution = ExecutionStorage.load(today) || new DailyExecution(today);
         
-        console.log(`\n📊 Taskmaster Status - ${today}`);
+        console.log(`\nðŸ“Š Taskmaster Status - ${today}`);
         
         if (!dailyExecution.started) {
-            console.log(`⏸️  No execution session started`);
+            console.log(`â�¸ï¸�  No execution session started`);
             console.log(`Start with: node scripts/taskmaster.js start`);
             return;
         }
 
         const stats = dailyExecution.getDailyStats();
         
-        console.log(`\n📈 Daily Progress:`);
-        console.log(`  ✅ Completed: ${stats.completedBlocks}/${stats.totalBlocks} blocks (${stats.completionRate.toFixed(1)}%)`);
-        console.log(`  ⏱️  Time: ${stats.totalActualTime}/${stats.totalPlannedTime} minutes (${stats.timeEfficiency.toFixed(1)}%)`);
+        console.log(`\nðŸ“ˆ Daily Progress:`);
+        console.log(`  âœ… Completed: ${stats.completedBlocks}/${stats.totalBlocks} blocks (${stats.completionRate.toFixed(1)}%)`);
+        console.log(`  â�±ï¸�  Time: ${stats.totalActualTime}/${stats.totalPlannedTime} minutes (${stats.timeEfficiency.toFixed(1)}%)`);
         
         if (stats.avgEnergy) {
-            console.log(`  ⚡ Avg Energy: ${stats.avgEnergy.toFixed(1)}/10`);
+            console.log(`  âš¡ Avg Energy: ${stats.avgEnergy.toFixed(1)}/10`);
         }
         if (stats.avgFocus) {
-            console.log(`  🎯 Avg Focus: ${stats.avgFocus.toFixed(1)}/10`);
+            console.log(`  ðŸŽ¯ Avg Focus: ${stats.avgFocus.toFixed(1)}/10`);
         }
         
-        console.log(`  ⚠️  Interruptions: ${stats.totalInterruptions}`);
+        console.log(`  âš ï¸�  Interruptions: ${stats.totalInterruptions}`);
 
         // Show current and next blocks
         const executions = dailyExecution.getAllExecutions();
@@ -527,10 +537,10 @@ class Taskmaster {
         const nextBlock = executions.find(ex => !ex.started);
 
         if (inProgress) {
-            console.log(`\n⏳ In Progress: ${inProgress.originalBlock.activity}`);
+            console.log(`\nâ�³ In Progress: ${inProgress.originalBlock.activity}`);
         }
         if (nextBlock) {
-            console.log(`\n⏭️  Next: ${nextBlock.originalBlock.startTime} - ${nextBlock.originalBlock.activity}`);
+            console.log(`\nâ�­ï¸�  Next: ${nextBlock.originalBlock.startTime} - ${nextBlock.originalBlock.activity}`);
         }
     }
 
@@ -539,15 +549,15 @@ class Taskmaster {
         const dailyExecution = ExecutionStorage.load(date);
         
         if (!dailyExecution) {
-            console.log(`❌ No execution data found for ${date}`);
+            console.log(`â�Œ No execution data found for ${date}`);
             return;
         }
 
-        console.log(`\n📊 Daily Execution Summary - ${date}`);
+        console.log(`\nðŸ“Š Daily Execution Summary - ${date}`);
         
         const stats = dailyExecution.getDailyStats();
         
-        console.log(`\n📈 Performance Metrics:`);
+        console.log(`\nðŸ“ˆ Performance Metrics:`);
         console.log(`  Completion Rate: ${stats.completionRate.toFixed(1)}%`);
         console.log(`  Time Efficiency: ${stats.timeEfficiency.toFixed(1)}%`);
         console.log(`  Total Actual Time: ${stats.totalActualTime} minutes`);
@@ -559,20 +569,20 @@ class Taskmaster {
         }
 
         // Show individual block results
-        console.log(`\n📋 Block Details:`);
+        console.log(`\nðŸ“‹ Block Details:`);
         const executions = dailyExecution.getAllExecutions();
         
         for (const execution of executions) {
-            const status = execution.completed ? '✅' : (execution.started ? '⏳' : '❌');
+            const status = execution.completed ? 'âœ…' : (execution.started ? 'â�³' : 'â�Œ');
             const efficiency = execution.getEfficiency();
             const effStr = efficiency ? ` (${efficiency.toFixed(1)}%)` : '';
             
             console.log(`  ${status} ${execution.originalBlock.activity}${effStr}`);
             if (execution.outcomes.length > 0) {
-                console.log(`      💡 ${execution.outcomes[0]}`);
+                console.log(`      ðŸ’¡ ${execution.outcomes[0]}`);
             }
             if (execution.challenges.length > 0) {
-                console.log(`      ⚠️  ${execution.challenges[0]}`);
+                console.log(`      âš ï¸�  ${execution.challenges[0]}`);
             }
         }
 
@@ -584,16 +594,16 @@ class Taskmaster {
         const stats = dailyExecution.getDailyStats();
         const executions = dailyExecution.getAllExecutions();
         
-        console.log(`\n💡 Insights & Recommendations:`);
+        console.log(`\nðŸ’¡ Insights & Recommendations:`);
         
         if (stats.completionRate < 70) {
-            console.log(`  📉 Low completion rate - consider shorter blocks or fewer objectives`);
+            console.log(`  ðŸ“‰ Low completion rate - consider shorter blocks or fewer objectives`);
         } else if (stats.completionRate > 90) {
-            console.log(`  📈 Excellent completion rate - you could challenge yourself with more ambitious goals`);
+            console.log(`  ðŸ“ˆ Excellent completion rate - you could challenge yourself with more ambitious goals`);
         }
         
         if (stats.totalInterruptions > 5) {
-            console.log(`  ⚠️  High interruption count - consider focus techniques or environment changes`);
+            console.log(`  âš ï¸�  High interruption count - consider focus techniques or environment changes`);
         }
         
         // Energy pattern insights
@@ -602,7 +612,7 @@ class Taskmaster {
             const avgEnergy = energyLevels.reduce((sum, e) => sum + e, 0) / energyLevels.length;
             
             if (avgEnergy < 5) {
-                console.log(`  ⚡ Low average energy - consider rest, nutrition, or schedule adjustments`);
+                console.log(`  âš¡ Low average energy - consider rest, nutrition, or schedule adjustments`);
             }
         }
         
@@ -612,7 +622,7 @@ class Taskmaster {
             .sort((a, b) => (b.focus || 0) - (a.focus || 0));
             
         if (bestBlocks.length > 0) {
-            console.log(`  🌟 Best focus block: ${bestBlocks[0].originalBlock.activity} (${bestBlocks[0].focus}/10)`);
+            console.log(`  ðŸŒŸ Best focus block: ${bestBlocks[0].originalBlock.activity} (${bestBlocks[0].focus}/10)`);
         }
     }
 
@@ -624,7 +634,7 @@ class Taskmaster {
 
     showHelp() {
         console.log(`
-⏰ Taskmaster - Time Block Execution System
+â�° Taskmaster - Time Block Execution System
 
 Commands:
   start [date]         - Start executing planned time blocks for the day
@@ -650,10 +660,297 @@ Integration:
     }
 }
 
-// Run if called directly
+
+// Add these functions to taskmaster.cjs
+
+class TimeAwareTaskmaster extends Taskmaster {
+    async startDay(dateStr) {
+        const dateIndex = new DateIndex(dateStr ? new Date(dateStr) : new Date());
+        const identifiers = dateIndex.getIdentifiers();
+        const now = new Date();
+        const currentTimeMinutes = now.getHours() * 60 + now.getMinutes();
+        
+        console.log(`\n⏰ Starting Taskmaster for: ${identifiers.day}`);
+        console.log(`🕐 Current time: ${now.toLocaleTimeString()}`);
+        
+        // Load day plan
+        const dayPlan = PlanStorage.load('day', identifiers.day);
+        if (!dayPlan || !dayPlan.timeBlocks.length) {
+            console.log(`❌ No daily plan or time blocks found for ${identifiers.day}`);
+            console.log(`📝 Create a plan first: node scripts/fractal-planner.js plan-day`);
+            return;
+        }
+
+        // Calculate session parameters
+        const sessionParams = this.calculateSessionParameters(currentTimeMinutes);
+        
+        // Filter and adjust blocks based on current time
+        const { relevantBlocks, skippedBlocks, adjustedBlocks } = 
+            this.filterAndAdjustBlocks(dayPlan.timeBlocks, currentTimeMinutes, sessionParams);
+
+        // Load or create execution session
+        let dailyExecution = ExecutionStorage.load(identifiers.day) || new DailyExecution(identifiers.day);
+        
+        if (!dailyExecution.started) {
+            dailyExecution.started = new Date().toISOString();
+        }
+
+        // Display session overview
+        this.displaySessionOverview(sessionParams, relevantBlocks, skippedBlocks, adjustedBlocks);
+
+        // Initialize executions only for relevant blocks
+        for (const block of relevantBlocks) {
+            if (!dailyExecution.getExecution(block.id)) {
+                const execution = new TimeBlockExecution(block, dayPlan);
+                dailyExecution.addExecution(execution);
+            }
+        }
+
+        this.currentExecution = dailyExecution;
+        ExecutionStorage.save(dailyExecution);
+
+        // Show alignment context
+        this.showAlignmentContext(dayPlan);
+
+        // Show time blocks with adjusted times
+        this.showAdjustedTimeBlocks(relevantBlocks, dailyExecution);
+
+        // Provide appropriate commands based on time
+        this.provideTimeBasedCommands(sessionParams, relevantBlocks);
+    }
+
+    calculateSessionParameters(currentTimeMinutes) {
+        const currentHour = Math.floor(currentTimeMinutes / 60);
+        const remainingToday = (23 * 60 + 59) - currentTimeMinutes; // Until 11:59 PM
+        const maxADDSession = 4 * 60; // 4-hour max
+        const maxSession = Math.min(remainingToday, maxADDSession);
+        
+        // Determine session mode based on time
+        let mode = 'standard';
+        let recommendations = [];
+        
+        if (currentHour >= 20) {
+            mode = 'evening';
+            recommendations = [
+                '🌙 Evening mode: Consider shorter blocks (15-30 min)',
+                '💡 Focus on low-energy tasks and planning',
+                '📝 Perfect time for review and tomorrow\'s prep'
+            ];
+        } else if (currentHour >= 17) {
+            mode = 'late';
+            recommendations = [
+                '🌆 Late session: Adjust expectations',
+                '⚡ Pick high-priority items only',
+                '🎯 Focus on quick wins'
+            ];
+        } else if (currentHour >= 12) {
+            mode = 'afternoon';
+            recommendations = [
+                '☀️ Afternoon session: Post-lunch energy considered',
+                '📊 Good for analytical work',
+                '🔄 Include breaks between blocks'
+            ];
+        }
+        
+        return {
+            currentTimeMinutes,
+            currentHour,
+            remainingToday,
+            maxSession,
+            mode,
+            recommendations,
+            suggestedBlockDuration: mode === 'evening' ? 30 : 60,
+            warningThreshold: mode === 'evening' ? 22 * 60 : 23 * 60 // Don't start blocks after 10 PM in evening mode
+        };
+    }
+
+    filterAndAdjustBlocks(timeBlocks, currentTimeMinutes, sessionParams) {
+        const relevantBlocks = [];
+        const skippedBlocks = [];
+        const adjustedBlocks = [];
+        let sessionTime = 0;
+        
+        for (const block of timeBlocks) {
+            const [blockHour, blockMin] = block.startTime.split(':').map(Number);
+            const blockStartMinutes = blockHour * 60 + blockMin;
+            const blockEndMinutes = blockStartMinutes + block.duration;
+            
+            // Skip if already completed
+            if (block.completed) {
+                continue;
+            }
+            
+            // Skip if completely in the past (unless flexible)
+            if (blockEndMinutes <= currentTimeMinutes && !block.flexible) {
+                skippedBlocks.push({...block, reason: 'Past time window'});
+                continue;
+            }
+            
+            // Skip if would exceed session limit
+            if (sessionTime >= sessionParams.maxSession) {
+                skippedBlocks.push({...block, reason: 'Exceeds session limit'});
+                continue;
+            }
+            
+            // Skip if would start too late
+            if (currentTimeMinutes + sessionTime >= sessionParams.warningThreshold) {
+                skippedBlocks.push({...block, reason: 'Too late to start'});
+                continue;
+            }
+            
+            // Check if block needs adjustment
+            const remainingInSession = sessionParams.maxSession - sessionTime;
+            
+            if (block.duration <= remainingInSession) {
+                // Block fits as-is
+                relevantBlocks.push({
+                    ...block,
+                    adjustedStartTime: this.minutesToTime(currentTimeMinutes + sessionTime),
+                    adjusted: blockStartMinutes !== (currentTimeMinutes + sessionTime)
+                });
+                sessionTime += block.duration;
+            } else if (remainingInSession >= 15 && block.splittable !== false) {
+                // Create partial block
+                const adjustedBlock = {
+                    ...block,
+                    originalDuration: block.duration,
+                    duration: remainingInSession,
+                    adjustedStartTime: this.minutesToTime(currentTimeMinutes + sessionTime),
+                    adjusted: true,
+                    partial: true,
+                    activity: `${block.activity} (Partial: ${remainingInSession}min)`
+                };
+                relevantBlocks.push(adjustedBlock);
+                adjustedBlocks.push(adjustedBlock);
+                sessionTime += remainingInSession;
+            } else {
+                skippedBlocks.push({...block, reason: 'Cannot fit in remaining time'});
+            }
+        }
+        
+        return { relevantBlocks, skippedBlocks, adjustedBlocks };
+    }
+
+    displaySessionOverview(sessionParams, relevantBlocks, skippedBlocks, adjustedBlocks) {
+        const totalPlannedMinutes = relevantBlocks.reduce((sum, b) => sum + b.duration, 0);
+        const totalBlocks = relevantBlocks.length;
+        
+        console.log(`\n📊 Session Overview:`);
+        console.log(`⏱️  Time remaining today: ${this.formatMinutes(sessionParams.remainingToday)}`);
+        console.log(`🎯 Maximum session (ADD-optimized): ${this.formatMinutes(sessionParams.maxSession)}`);
+        console.log(`📋 Session mode: ${sessionParams.mode.toUpperCase()}`);
+        
+        if (sessionParams.recommendations.length > 0) {
+            console.log(`\n💡 Recommendations:`);
+            sessionParams.recommendations.forEach(rec => console.log(`  ${rec}`));
+        }
+        
+        console.log(`\n📋 Daily Time Block Overview:`);
+        console.log(`📊 Total blocks: ${totalBlocks} ${totalBlocks > 5 ? '(⚠️ Above ADD-optimized 4-5 blocks)' : '(✅ ADD-optimized)'}`);
+        console.log(`⏱️  Total planned time: ${this.formatMinutes(totalPlannedMinutes)}`);
+        
+        if (skippedBlocks.length > 0) {
+            console.log(`\n⚠️  Skipped ${skippedBlocks.length} blocks:`);
+            skippedBlocks.slice(0, 3).forEach(block => {
+                console.log(`  ❌ ${block.startTime} - ${block.activity} (${block.reason})`);
+            });
+            if (skippedBlocks.length > 3) {
+                console.log(`  ... and ${skippedBlocks.length - 3} more`);
+            }
+        }
+        
+        if (adjustedBlocks.length > 0) {
+            console.log(`\n🔄 Adjusted ${adjustedBlocks.length} blocks to fit session`);
+        }
+    }
+
+    showAdjustedTimeBlocks(relevantBlocks, dailyExecution) {
+        console.log(`\n⏰ Time Blocks (adjusted for current time):`);
+        
+        for (const block of relevantBlocks) {
+            const execution = dailyExecution.getExecution(block.id);
+            const status = execution ? this.getBlockStatus(execution) : '⏸️ ';
+            const alignment = block.alignment ? ` → ${block.alignment}` : '';
+            const timeDisplay = block.adjusted ? 
+                `${block.adjustedStartTime}*` : 
+                block.adjustedStartTime || block.startTime;
+            const adjustNote = block.partial ? ' 📌' : (block.adjusted ? ' 🔄' : '');
+            
+            console.log(`  ${status} [${block.id.slice(-4)}] ${timeDisplay} (${block.duration}min) - ${block.activity}${alignment}${adjustNote}`);
+        }
+        
+        if (relevantBlocks.some(b => b.adjusted)) {
+            console.log(`\n  * Adjusted times  🔄 Rescheduled  📌 Partial block`);
+        }
+    }
+
+    provideTimeBasedCommands(sessionParams, relevantBlocks) {
+        console.log(`\n🚀 Commands:`);
+        
+        if (relevantBlocks.length > 0) {
+            console.log(`  node scripts/taskmaster.js block [blockId] - Execute specific block`);
+            console.log(`  node scripts/taskmaster.js complete [blockId] - Complete current block`);
+            console.log(`  node scripts/taskmaster.js status - Show current status`);
+        }
+        
+        // Provide mode-specific options
+        if (sessionParams.mode === 'evening') {
+            console.log(`\n🌙 Evening Options:`);
+            console.log(`  node scripts/taskmaster.js quick-review - 15-minute day review`);
+            console.log(`  node scripts/taskmaster.js plan-tomorrow - Plan tomorrow's blocks`);
+            console.log(`  node scripts/taskmaster.js wind-down - Create wind-down routine`);
+        } else if (sessionParams.mode === 'late') {
+            console.log(`\n🌆 Late Session Options:`);
+            console.log(`  node scripts/taskmaster.js sprint - 25-minute focus sprint`);
+            console.log(`  node scripts/taskmaster.js quick-wins - Identify 2-3 quick wins`);
+        }
+        
+        if (relevantBlocks.length === 0) {
+            console.log(`\n📝 No blocks available for remaining time.`);
+            console.log(`Consider:`);
+            console.log(`  - Planning tomorrow: node scripts/fractal-planner.js plan-day tomorrow`);
+            console.log(`  - Quick review: node scripts/taskmaster.js summary`);
+            console.log(`  - Creating evening routine: node scripts/taskmaster.js wind-down`);
+        }
+    }
+
+    // Helper methods
+    minutesToTime(minutes) {
+        const hours = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+    }
+
+    formatMinutes(minutes) {
+        const hours = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        if (hours > 0) {
+            return `${hours}h ${mins}m`;
+        }
+        return `${mins}m`;
+    }
+
+    // Add quick command methods
+    async quickReview() {
+        console.log(`\n🌙 Quick Evening Review (15 minutes)`);
+        // Implementation for quick review
+    }
+
+    async createSprint() {
+        console.log(`\n⚡ Creating 25-minute focus sprint`);
+        // Implementation for sprint creation
+    }
+
+    async windDown() {
+        console.log(`\n🌙 Creating wind-down routine`);
+        // Implementation for wind-down blocks
+    }
+}
+
+// Update the main execution
 if (require.main === module) {
-    const taskmaster = new Taskmaster();
+    const taskmaster = new TimeAwareTaskmaster();
     taskmaster.run();
 }
 
-module.exports = { Taskmaster, TimeBlockExecution, DailyExecution, ExecutionStorage };
+module.exports = { TimeAwareTaskmaster, TimeBlockExecution, DailyExecution, ExecutionStorage };
