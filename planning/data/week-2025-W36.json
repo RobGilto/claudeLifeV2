@@ -2,7 +2,7 @@
   "period": "week",
   "identifier": "2025-W36",
   "created": "2025-08-31T14:33:20.000Z",
-  "modified": "2025-08-31T14:42:34.000Z",
+  "modified": "2025-08-31T14:50:00.000Z",
   "status": "active",
   "parentPlans": [
     "2025-09"
@@ -10,134 +10,122 @@
   "childPlans": [],
   "objectives": [
     {
-      "id": "1756650800750",
-      "text": "Complete meaningful portfolio project progress",
-      "created": "2025-08-31T14:33:20.000Z",
+      "id": "W36-1",
+      "text": "Complete Azure certification study plan and schedule October exam",
+      "created": "2025-08-31T14:50:00.000Z",
       "completed": false,
-      "priority": "medium"
+      "priority": "high",
+      "alignment": "Monthly milestone MS09-1 due Sept 7",
+      "urgency": "critical"
     },
     {
-      "id": "1756650800750",
-      "text": "Maintain 7/7 daily Boot.dev practice sessions",
-      "created": "2025-08-31T14:33:20.000Z",
+      "id": "W36-2",
+      "text": "Document August breakthrough patterns for systematic replication",
+      "created": "2025-08-31T14:50:00.000Z",
       "completed": false,
-      "priority": "medium"
+      "priority": "high",
+      "alignment": "Monthly milestone MS09-4 due Sept 7",
+      "urgency": "critical"
     },
     {
-      "id": "1756650800750",
-      "text": "Optimize terminal workflow for productivity",
-      "created": "2025-08-31T14:33:20.000Z",
+      "id": "W36-3",
+      "text": "Define portfolio project MVP scope and begin implementation",
+      "created": "2025-08-31T14:50:00.000Z",
       "completed": false,
-      "priority": "medium"
+      "priority": "high",
+      "alignment": "Monthly objective M09-1 due Sept 15",
+      "urgency": "urgent"
     },
     {
-      "id": "1756650800751",
-      "text": "Engage with AI Engineer Launchpad community",
-      "created": "2025-08-31T14:33:20.000Z",
+      "id": "W36-4",
+      "text": "Achieve 7/7 daily Boot.dev practice sessions",
+      "created": "2025-08-31T14:50:00.000Z",
       "completed": false,
-      "priority": "medium"
+      "priority": "medium",
+      "alignment": "Monthly objective M09-3, addressing previous week 6/7 gap",
+      "urgency": "medium"
     },
     {
-      "id": "1756650800751",
-      "text": "Prepare Azure certification study materials",
-      "created": "2025-08-31T14:33:20.000Z",
+      "id": "W36-5",
+      "text": "Complete terminal workflow optimization setup",
+      "created": "2025-08-31T14:50:00.000Z",
       "completed": false,
-      "priority": "medium"
+      "priority": "high",
+      "alignment": "Monthly objective M09-4 due Sept 15",
+      "urgency": "urgent"
     },
     {
-      "id": "1756650800751",
-      "text": "Document learning progress and victories",
-      "created": "2025-08-31T14:33:20.000Z",
+      "id": "W36-6",
+      "text": "Begin systematic community engagement pattern",
+      "created": "2025-08-31T14:50:00.000Z",
       "completed": false,
-      "priority": "medium"
+      "priority": "medium",
+      "alignment": "Monthly objective M09-5",
+      "urgency": "low"
     },
     {
-      "id": "1756650800751",
-      "text": "Review and adjust productivity systems",
-      "created": "2025-08-31T14:33:20.000Z",
+      "id": "W36-7",
+      "text": "Set up weekly victory tracking rhythm",
+      "created": "2025-08-31T14:50:00.000Z",
       "completed": false,
-      "priority": "medium"
+      "priority": "low",
+      "alignment": "Previous week success pattern with 10 victories",
+      "urgency": "low"
     },
     {
-      "id": "1756650800751",
-      "text": "Plan next week execution strategies",
-      "created": "2025-08-31T14:33:20.000Z",
+      "id": "W36-8",
+      "text": "Plan portfolio demonstration strategy for Sept 15",
+      "created": "2025-08-31T14:50:00.000Z",
       "completed": false,
-      "priority": "medium"
-    },
-    {
-      "id": "1756651354735",
-      "text": "Complete meaningful portfolio project progress",
-      "created": "2025-08-31T14:42:34.000Z",
-      "completed": false,
-      "priority": "medium"
-    },
-    {
-      "id": "1756651354736",
-      "text": "Maintain 7/7 daily Boot.dev practice sessions",
-      "created": "2025-08-31T14:42:34.000Z",
-      "completed": false,
-      "priority": "medium"
-    },
-    {
-      "id": "1756651354736",
-      "text": "Optimize terminal workflow for productivity",
-      "created": "2025-08-31T14:42:34.000Z",
-      "completed": false,
-      "priority": "medium"
-    },
-    {
-      "id": "1756651354736",
-      "text": "Engage with AI Engineer Launchpad community",
-      "created": "2025-08-31T14:42:34.000Z",
-      "completed": false,
-      "priority": "medium"
-    },
-    {
-      "id": "1756651354736",
-      "text": "Prepare Azure certification study materials",
-      "created": "2025-08-31T14:42:34.000Z",
-      "completed": false,
-      "priority": "medium"
-    },
-    {
-      "id": "1756651354736",
-      "text": "Document learning progress and victories",
-      "created": "2025-08-31T14:42:34.000Z",
-      "completed": false,
-      "priority": "medium"
-    },
-    {
-      "id": "1756651354736",
-      "text": "Review and adjust productivity systems",
-      "created": "2025-08-31T14:42:34.000Z",
-      "completed": false,
-      "priority": "medium"
-    },
-    {
-      "id": "1756651354737",
-      "text": "Plan next week execution strategies",
-      "created": "2025-08-31T14:42:34.000Z",
-      "completed": false,
-      "priority": "medium"
+      "priority": "medium",
+      "alignment": "Monthly objective M09-1 demonstration preparation",
+      "urgency": "medium"
     }
   ],
   "priorities": [
-    "Advance portfolio project development",
-    "Maintain consistent technical learning practice",
-    "Optimize productivity systems and workflow",
-    "Build professional relationships and positioning",
-    "Prepare certification study materials",
-    "Advance portfolio project development",
-    "Maintain consistent technical learning practice",
-    "Optimize productivity systems and workflow",
-    "Build professional relationships and positioning",
-    "Prepare certification study materials"
+    "Launch Azure certification study plan (Milestone due Sept 7)",
+    "Begin portfolio project MVP development (Due Sept 15)",
+    "Document August breakthrough patterns (Due Sept 7)",
+    "Maintain Boot.dev consistency momentum", 
+    "Complete terminal workflow optimization"
   ],
   "timeBlocks": [],
-  "milestones": [],
+  "milestones": [
+    {
+      "id": "WM36-1",
+      "text": "Azure certification study plan completed and October exam scheduled",
+      "target_date": "2025-09-07",
+      "category": "certification",
+      "completion_rate": 0
+    },
+    {
+      "id": "WM36-2", 
+      "text": "August breakthrough patterns documented and systematized",
+      "target_date": "2025-09-07",
+      "category": "productivity", 
+      "completion_rate": 0
+    }
+  ],
   "metrics": {},
-  "context": "Strategic Execution - 2025-W36",
-  "challenges": [],
-  "resources": []
+  "context": "September Launch Week - Critical Deadlines Focus",
+  "challenges": [
+    "Family stress and boundary management from previous week",
+    "Avoiding tunnel vision on low-value technical tasks",
+    "Managing energy for critical Sept 7 deadlines"
+  ],
+  "resources": [
+    "Azure AI Engineer certification materials ($165 USD budget)",
+    "Previous week's 10 victories for momentum patterns",
+    "Terminal workflow optimization learnings from August"
+  ],
+  "carryForwardFromPreviousWeek": [
+    "Complete 1 hour daily Boot.dev practice (was 6/7, need 7/7)",
+    "Daily tmux/sessionX practice sessions (was 3/7, need consistent practice)"
+  ],
+  "weekPosition": {
+    "monthWeek": 1,
+    "quarterWeek": 10,
+    "yearWeek": 36,
+    "phase": "early-september-launch"
+  }
 }
