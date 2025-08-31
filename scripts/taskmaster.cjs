@@ -497,7 +497,7 @@ class Taskmaster {
         const nextBlock = executions.find(ex => !ex.started);
         
         if (nextBlock) {
-            console.log(`\nâ�­ï¸�  Next block: ${nextBlock.originalBlock.startTime} - ${nextBlock.originalBlock.activity}`);
+            console.log(`\nâ�­ï¸�  Next block: ${nextBlock.originalBlock.start} - ${nextBlock.originalBlock.activity}`);
             console.log(`   Command: node scripts/taskmaster.js block ${nextBlock.blockId}`);
         } else {
             console.log(`\nðŸŽ‰ All time blocks completed! Consider running summary.`);
@@ -540,7 +540,7 @@ class Taskmaster {
             console.log(`\nâ�³ In Progress: ${inProgress.originalBlock.activity}`);
         }
         if (nextBlock) {
-            console.log(`\nâ�­ï¸�  Next: ${nextBlock.originalBlock.startTime} - ${nextBlock.originalBlock.activity}`);
+            console.log(`\nâ�­ï¸�  Next: ${nextBlock.originalBlock.start} - ${nextBlock.originalBlock.activity}`);
         }
     }
 
@@ -771,7 +771,7 @@ class TimeAwareTaskmaster extends Taskmaster {
         let sessionTime = 0;
         
         for (const block of timeBlocks) {
-            const [blockHour, blockMin] = block.startTime.split(':').map(Number);
+            const [blockHour, blockMin] = block.start.split(':').map(Number);
             const blockStartMinutes = blockHour * 60 + blockMin;
             const blockEndMinutes = blockStartMinutes + block.duration;
             
@@ -852,7 +852,7 @@ class TimeAwareTaskmaster extends Taskmaster {
         if (skippedBlocks.length > 0) {
             console.log(`\n⚠️  Skipped ${skippedBlocks.length} blocks:`);
             skippedBlocks.slice(0, 3).forEach(block => {
-                console.log(`  ❌ ${block.startTime} - ${block.activity} (${block.reason})`);
+                console.log(`  ❌ ${block.start} - ${block.activity} (${block.reason})`);
             });
             if (skippedBlocks.length > 3) {
                 console.log(`  ... and ${skippedBlocks.length - 3} more`);
@@ -873,7 +873,7 @@ class TimeAwareTaskmaster extends Taskmaster {
             const alignment = block.alignment ? ` → ${block.alignment}` : '';
             const timeDisplay = block.adjusted ? 
                 `${block.adjustedStartTime}*` : 
-                block.adjustedStartTime || block.startTime;
+                block.adjustedStartTime || block.start;
             const adjustNote = block.partial ? ' 📌' : (block.adjusted ? ' 🔄' : '');
             
             console.log(`  ${status} [${block.id.slice(-4)}] ${timeDisplay} (${block.duration}min) - ${block.activity}${alignment}${adjustNote}`);
