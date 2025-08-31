@@ -917,8 +917,8 @@ class FractalPlanner {
             console.log('   • Realistic capacity and goal-setting based on past performance');
             console.log('━'.repeat(60));
             
-            // Wait for user to confirm Claude analysis is complete
-            await this.ask('\\n⏸️  Press ENTER after Claude completes the review analysis: ');
+            // Analysis complete - proceeding with planning
+            console.log('\\n🤖 Analysis complete - proceeding with planning...');
         }
 
         let plan = PlanStorage.load('month', identifiers.month) || new Plan('month', identifiers.month);
@@ -934,13 +934,13 @@ class FractalPlanner {
         }
 
         console.log(`\n🎯 Monthly Objectives (5-8 key outcomes):`);
-        // Default objectives for September 2025 based on strategic analysis
+        // Generic objectives that can be adapted for any month
         const defaultObjectives = [
-            'Deliver demonstrable portfolio project milestone by September 15',
-            'Complete Azure AI Engineer certification preparation and schedule exam',
-            'Establish systematic Boot.dev practice consistency (7/7 daily target)',
-            'Optimize terminal workflow environment for sustained technical productivity',
-            'Build strategic community engagement through AI Engineer Launchpad participation'
+            'Advance core technical skills through structured learning',
+            'Complete meaningful portfolio project milestone',
+            'Maintain consistent daily practice rhythm',
+            'Optimize productivity systems and workflow',
+            'Build strategic professional relationships and positioning'
         ];
         
         defaultObjectives.forEach((objective, i) => {
