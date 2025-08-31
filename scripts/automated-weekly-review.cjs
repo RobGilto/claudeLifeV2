@@ -20,6 +20,7 @@ const path = require('path');
 
 // Configuration
 const JOURNAL_DIR = path.join(__dirname, '..', 'journal', 'daily');
+const DAILY_REVIEWS_DIR = path.join(__dirname, '..', 'journal', 'planning', 'daily-reviews');
 const PLANNING_DIR = path.join(__dirname, '..', 'planning', 'data');
 const REVIEW_DIR = path.join(__dirname, '..', 'journal', 'planning', 'weekly-reviews');
 const VICTORIES_DIR = path.join(__dirname, '..', 'victories');
@@ -183,6 +184,106 @@ function loadDailyJournal(date) {
         if (line.includes('Reflections:')) {
             const reflection = line.replace(/.*Reflections:\s*/, '').trim();
             if (reflection) data.reflections.push(reflection);
+        }
+    }
+    
+    return data;
+}
+
+// Load and parse daily review entry  
+function loadDailyReview(date) {
+    const filePath = path.join(DAILY_REVIEWS_DIR, `review-${date}.md`);
+    if (!fs.existsSync(filePath)) {
+        return null;
+    }
+    
+    const content = fs.readFileSync(filePath, 'utf-8');
+    const lines = content.split('\n');
+    
+    const data = {
+        date,
+        exists: true,
+        completionRate: null,
+        energyAverage: null,
+        focusAverage: null,
+        satisfaction: null,
+        timeBlocksCompleted: 0,
+        timeBlocksTotal: 0,
+        objectivesCompleted: 0,
+        objectivesTotal: 0,
+        accomplishments: [],
+        challenges: [],
+        insights: [],
+        recommendations: []
+    };
+    
+    // Parse frontmatter
+    const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+    if (frontmatterMatch) {
+        const frontmatter = frontmatterMatch[1];
+        
+        const completionMatch = frontmatter.match(/completion_rate:\s*([0-9.]+)/);
+        if (completionMatch) data.completionRate = parseFloat(completionMatch[1]);
+        
+        const energyMatch = frontmatter.match(/energy_average:\s*([0-9.]+)/);
+        if (energyMatch) data.energyAverage = parseFloat(energyMatch[1]);
+        
+        const focusMatch = frontmatter.match(/focus_average:\s*([0-9.]+)/);
+        if (focusMatch) data.focusAverage = parseFloat(focusMatch[1]);
+        
+        const satisfactionMatch = frontmatter.match(/satisfaction:\s*([0-9.]+)/);
+        if (satisfactionMatch) data.satisfaction = parseFloat(satisfactionMatch[1]);
+    }
+    
+    // Parse content sections
+    for (const line of lines) {
+        // Time blocks and objectives completion
+        if (line.includes('Time blocks completed:')) {
+            const match = line.match(/(\d+)\/(\d+)/);
+            if (match) {
+                data.timeBlocksCompleted = parseInt(match[1]);
+                data.timeBlocksTotal = parseInt(match[2]);
+            }
+        }
+        
+        if (line.includes('Objectives achieved:')) {
+            const match = line.match(/(\d+)\/(\d+)/);
+            if (match) {
+                data.objectivesCompleted = parseInt(match[1]);
+                data.objectivesTotal = parseInt(match[2]);
+            }
+        }
+        
+        // Extract accomplishments from Major Technical Victories, Hidden Productivity Insights, etc.
+        if (line.match(/^\d+\.\s+\*\*(.+?)\*\*:/) || line.match(/^- \*\*(.+?)\*\*:/)) {
+            const accomplishment = line.replace(/^\d+\.\s+\*\*/, '').replace(/^- \*\*/, '').replace(/\*\*:.*/, '').trim();
+            if (accomplishment && !data.accomplishments.includes(accomplishment)) {
+                data.accomplishments.push(accomplishment);
+            }
+        }
+        
+        // Extract challenges
+        if (line.match(/^\d+\.\s+\*\*(.+?)Challenge/i) || line.includes('Primary Challenge:') || line.includes('Struggle:')) {
+            const challenge = line.replace(/^\d+\.\s+\*\*/, '').replace(/Primary Challenge:\s*/, '').replace(/Struggle:\s*/, '').replace(/\*\*.*/, '').trim();
+            if (challenge && !data.challenges.includes(challenge)) {
+                data.challenges.push(challenge);
+            }
+        }
+        
+        // Extract insights
+        if (line.includes('Critical Discovery:') || line.includes('Insight:') || line.includes('Key Insight:')) {
+            const insight = line.replace(/.*Critical Discovery:\s*/, '').replace(/.*Insight:\s*/, '').replace(/.*Key Insight:\s*/, '').trim();
+            if (insight && !data.insights.includes(insight)) {
+                data.insights.push(insight);
+            }
+        }
+        
+        // Extract recommendations  
+        if (line.includes('Recommendation:') || line.includes('Strategy:') || line.includes('Next Actions:')) {
+            const recommendation = line.replace(/.*Recommendation:\s*/, '').replace(/.*Strategy:\s*/, '').replace(/.*Next Actions:\s*/, '').trim();
+            if (recommendation && !data.recommendations.includes(recommendation)) {
+                data.recommendations.push(recommendation);
+            }
         }
     }
     
