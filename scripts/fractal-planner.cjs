@@ -885,15 +885,26 @@ class FractalPlanner {
         });
 
         console.log(`\n📋 Weekly Objectives:`);
-        for (let i = 1; i <= 8; i++) {
-            const objective = await this.ask(`Objective ${i}: `);
-            if (objective.trim()) {
-                plan.addObjective(objective);
-            }
-        }
+        // Default weekly objectives supporting monthly goals
+        const defaultObjectives = [
+            'Complete meaningful portfolio project progress',
+            'Maintain 7/7 daily Boot.dev practice sessions',
+            'Optimize terminal workflow for productivity',
+            'Engage with AI Engineer Launchpad community',
+            'Prepare Azure certification study materials',
+            'Document learning progress and victories',
+            'Review and adjust productivity systems',
+            'Plan next week execution strategies'
+        ];
+        
+        defaultObjectives.forEach((objective, i) => {
+            plan.addObjective(objective);
+            console.log(`  ${i + 1}. ${objective}`);
+        });
 
-        const context = await this.ask(`\n📝 Weekly Context/Theme: `);
+        const context = `Strategic Execution - ${identifiers.week}`;
         plan.context = context;
+        console.log(`\n📝 Weekly Context/Theme: ${context}`);
 
         plan.parentPlans = [monthPlan ? identifiers.month : null, quarterPlan ? identifiers.quarter : null].filter(Boolean);
         plan.status = 'active';
