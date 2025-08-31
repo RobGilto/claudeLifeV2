@@ -377,33 +377,53 @@ function analyzeObjectiveCompletion(weekPlan, dailyDataArray) {
 }
 
 // Calculate well-being metrics from daily data
-function calculateWellbeingMetrics(dailyDataArray) {
+function calculateIntegratedMetrics(dailyDataArray, dailyReviewsArray) {
     const metrics = {
         energyAverage: 0,
         focusAverage: 0,
         satisfactionAverage: 0,
         energyTrend: [],
+        energySources: "subjective+objective",
         bestDays: [],
-        challengingDays: []
+        challengingDays: [],
+        objectivePerformance: {
+            avgCompletionRate: 0,
+            avgTimeBlockEffectiveness: 0,
+            totalObjectivesCompleted: 0,
+            totalObjectivesPlanned: 0
+        }
     };
     
     const energyValues = [];
+    const focusValues = [];
     const feelingValues = [];
+    const satisfactionValues = [];
     
-    dailyDataArray.forEach(day => {
+    // Process subjective data (daily journals)
+    dailyDataArray.forEach((day, index) => {
         if (!day) return;
         
-        // Collect energy values
+        // Collect energy values from check-ins
         const dayEnergy = [day.energy.morning, day.energy.noon, day.energy.evening]
             .filter(e => e !== null);
         if (dayEnergy.length > 0) {
             const avgEnergy = dayEnergy.reduce((a, b) => a + b, 0) / dayEnergy.length;
             energyValues.push(avgEnergy);
-            metrics.energyTrend.push({ date: day.date, energy: avgEnergy });
             
-            if (avgEnergy >= 7) {
+            // Also check objective energy if available
+            const review = dailyReviewsArray[index];
+            if (review && review.energyAverage !== null) {
+                // Average subjective and objective energy
+                const integratedEnergy = (avgEnergy + review.energyAverage) / 2;
+                energyValues[energyValues.length - 1] = integratedEnergy;
+                metrics.energyTrend.push({ date: day.date, energy: integratedEnergy, sources: "both" });
+            } else {
+                metrics.energyTrend.push({ date: day.date, energy: avgEnergy, sources: "subjective" });
+            }
+            
+            if (energyValues[energyValues.length - 1] >= 7) {
                 metrics.bestDays.push(day.date);
-            } else if (avgEnergy <= 4) {
+            } else if (energyValues[energyValues.length - 1] <= 4) {
                 metrics.challengingDays.push({ date: day.date, reason: 'Low energy' });
             }
         }
@@ -721,7 +741,7 @@ async function main() {
             console.log('⚠️  No weekly plan found');
         }
         
-        // Load daily journals
+        // Load daily journals (subjective data)
         console.log('\n📖 Loading daily journals...');
         const dailyDataArray = weekInfo.dates.map(date => {
             const data = loadDailyJournal(date);
@@ -734,6 +754,19 @@ async function main() {
         const journalCount = dailyDataArray.filter(d => d).length;
         console.log(`📊 Loaded ${journalCount}/7 daily journals`);
         
+        // Load daily reviews (objective data)
+        console.log('\n📋 Loading daily reviews...');
+        const dailyReviewsArray = weekInfo.dates.map(date => {
+            const data = loadDailyReview(date);
+            if (data) {
+                console.log(`✓ Found review for ${date}`);
+            }
+            return data;
+        });
+        
+        const reviewCount = dailyReviewsArray.filter(d => d).length;
+        console.log(`📊 Loaded ${reviewCount}/7 daily reviews`);
+        
         // Analyze objective completion
         console.log('\n🎯 Analyzing objective completion...');
         const objectives = analyzeObjectiveCompletion(weekPlan, dailyDataArray);
@@ -743,10 +776,11 @@ async function main() {
             });
         }
         
-        // Calculate metrics
-        console.log('\n📈 Calculating well-being metrics...');
-        const metrics = calculateWellbeingMetrics(dailyDataArray);
-        console.log(`✓ Energy average: ${metrics.energyAverage.toFixed(1)}/10`);
+        // Calculate integrated metrics from both subjective and objective data
+        console.log('\n📈 Calculating integrated well-being metrics...');
+        const metrics = calculateIntegratedMetrics(dailyDataArray, dailyReviewsArray);
+        console.log(`✓ Energy average: ${metrics.energyAverage.toFixed(1)}/10 (from ${metrics.energySources})`);
+        console.log(`✓ Focus average: ${metrics.focusAverage.toFixed(1)}/10 (from objective reviews)`);
         console.log(`✓ Satisfaction average: ${metrics.satisfactionAverage.toFixed(1)}/10`);
         
         // Detect victories
