@@ -3,9 +3,9 @@ date: 2025-08-31
 week: 2025-W36
 type: weekly-review
 completion_rate: 0.0
-satisfaction: 6.4/10
-energy_average: 6.2/10
-focus_average: 6.2/10
+satisfaction: 6.3/10
+energy_average: 6.1/10
+focus_average: 6.0/10
 ---
 
 # Weekly Review: Week 36, 2025
@@ -13,7 +13,7 @@ focus_average: 6.2/10
 ## 📊 Performance Summary
 - **Week Range:** 2025-08-25 to 2025-08-31
 - **Objectives completed:** 0/0 (0.0%)
-- **Overall satisfaction:** 6.4/10
+- **Overall satisfaction:** 6.3/10
 - **Days with journal entries:** 7/7
 
 ## 🎯 Planned vs Actual Analysis
@@ -36,10 +36,10 @@ focus_average: 6.2/10
 - **Success pattern:** Objectives need clearer definition or different approach
 
 ## 💪 Well-being Metrics
-- **Average energy level:** 6.2/10
-- **Average focus quality:** 6.2/10
-- **Week satisfaction:** 6.4/10
-- **Best performance days:** 2025-08-25, 2025-08-27, 2025-08-31
+- **Average energy level:** 6.1/10
+- **Average focus quality:** 6.0/10
+- **Week satisfaction:** 6.3/10
+- **Best performance days:** 2025-08-25, 2025-08-27
 - **Challenging days:** 2025-08-28 (Low energy)
 
 ## 📈 Energy Trend
@@ -49,7 +49,7 @@ focus_average: 6.2/10
 - 2025-08-28: 4.0/10
 - 2025-08-29: 6.0/10
 - 2025-08-30: 6.0/10
-- 2025-08-31: 7.0/10
+- 2025-08-31: 6.3/10
 
 ## 🔍 Weekly Insights
 1. ** Need to be very careful how I talk to children - was harsh with son thinking he lacked empathy with sister's condition, went overboard telling him off, could have communicated better. Want to increase training habits and walking incrementally, maybe tomorrow will wear the weighted vest
@@ -90,12 +90,12 @@ No monthly plan alignment configured
 No quarterly alignment configured
 
 ## 🔄 Performance Patterns
-- **Most productive days:** 2025-08-25, 2025-08-27, 2025-08-31
+- **Most productive days:** 2025-08-25, 2025-08-27
 - **Energy optimization:** Good energy management
 - **Consistency:** Strong daily check-in habit
 
 ## 🎉 Victory Detection
-Detected 14 victories from accomplishments:
+Detected 19 victories from accomplishments:
 - **2025-08-25** [discipline]: Completed full 38,000 subscription completion successfully for Domo client
 - **2025-08-25** [technical]: Created and appreciated 3 issues on the AIPortfolio CLI project github - first time planning features through GitHub issues
 - **2025-08-25** [persistence]: **Consistent Practice**: Continuing AI engineering work despite physical tiredness demonstrates the discipline pattern that helped you maintain habits even during difficult periods
@@ -105,8 +105,8 @@ Detected 14 victories from accomplishments:
 ## 🎯 Strategic Feedback for Goal Alignment
 
 ### What's Working Well
-- Strong momentum with 14 victories detected
-- Good energy management maintaining 6.2/10 average
+- Strong momentum with 19 victories detected
+- Good energy management maintaining 6.1/10 average
 - Excellent daily check-in consistency
 
 
@@ -123,8 +123,8 @@ Detected 14 victories from accomplishments:
 2. **Continue current time allocation** with minor adjustments based on energy patterns
 
 #### Energy Optimization
-3. **Leverage high energy:** Your 6.2/10 average is good
-   - Peak days: 2025-08-25, 2025-08-27, 2025-08-31
+3. **Leverage high energy:** Your 6.1/10 average is good
+   - Peak days: 2025-08-25, 2025-08-27
    - Maintain current rhythm
 
 #### Obstacle Mitigation
@@ -155,4 +155,4 @@ Based on your accomplishments and 2026 AI engineering goal:
 
 
 ---
-*Review generated: 31/08/2025, 11:46:38 pm*
+*Review generated: 31/08/2025, 11:52:24 pm*

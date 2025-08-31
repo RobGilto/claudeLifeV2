@@ -567,8 +567,8 @@ function detectIntegratedVictories(dailyDataArray, dailyReviewsArray) {
     return victories;
 }
 
-// Generate weekly review report
-function generateWeeklyReview(weekInfo, weekPlan, dailyDataArray, metrics, victories, objectives) {
+// Generate integrated weekly review report from both subjective and objective data
+function generateIntegratedWeeklyReview(weekInfo, weekPlan, dailyDataArray, dailyReviewsArray, metrics, victories, objectives) {
     const today = formatSydneyDateString();
     const completedObjectives = objectives?.filter(o => o.actualCompleted >= o.target) || [];
     const partialObjectives = objectives?.filter(o => o.actualCompleted > 0 && o.actualCompleted < o.target) || [];
@@ -873,9 +873,9 @@ async function main() {
         const victories = detectIntegratedVictories(dailyDataArray, dailyReviewsArray);
         console.log(`✓ Found ${victories.length} potential victories`);
         
-        // Generate review report
-        console.log('\n📝 Generating review report...');
-        const report = generateWeeklyReview(weekInfo, weekPlan, dailyDataArray, metrics, victories, objectives);
+        // Generate integrated review report
+        console.log('\n📝 Generating integrated review report...');
+        const report = generateIntegratedWeeklyReview(weekInfo, weekPlan, dailyDataArray, dailyReviewsArray, metrics, victories, objectives);
         
         // Save report
         const reviewPath = path.join(REVIEW_DIR, `review-${weekInfo.weekId}.md`);
@@ -891,8 +891,10 @@ async function main() {
         console.log(`\n📄 Review Summary:`);
         console.log(`- Week: ${weekInfo.weekId}`);
         console.log(`- Journal entries: ${journalCount}/7`);
-        console.log(`- Average energy: ${metrics.energyAverage.toFixed(1)}/10`);
-        console.log(`- Victories detected: ${victories.length}`);
+        console.log(`- Daily reviews: ${reviewCount}/7`);
+        console.log(`- Average energy: ${metrics.energyAverage.toFixed(1)}/10 (${metrics.energySources})`);
+        console.log(`- Average focus: ${metrics.focusAverage.toFixed(1)}/10`);
+        console.log(`- Victories detected: ${victories.length} (from both sources)`);
         console.log(`\nView full review at: ${reviewPath}`);
         
     } catch (error) {
@@ -906,4 +908,4 @@ if (require.main === module) {
     main();
 }
 
-module.exports = { getWeekInfo, parseWeekId, loadDailyJournal, generateWeeklyReview };
+module.exports = { getWeekInfo, parseWeekId, loadDailyJournal, generateIntegratedWeeklyReview };
