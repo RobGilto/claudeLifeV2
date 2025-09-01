@@ -4,7 +4,7 @@ A mid-day energy and planning checkpoint.
 
 ## Process:
 
-1. **Get Current Sydney Time**: Use `mcp__google-calendar__get-current-time` with `timeZone: "Australia/Sydney"` to get the correct Sydney local time and date (not the buggy mcp-time tool)
+1. **Get Current Sydney Time**: Use `./scripts/sydney-time.sh checkin` to get Sydney local time and `./scripts/sydney-time.sh date` for today's date (consistent timezone handling)
 
 2. First, understand the user's context by reading CLAUDE.md or any personal/business files to personalize the greeting and understand their work.
 
