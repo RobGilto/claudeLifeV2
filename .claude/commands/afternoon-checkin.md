@@ -19,7 +19,7 @@ An afternoon wrap-up checkpoint to review how the afternoon went (typically 5-6p
    - Check what was planned vs what actually happened
 
 4. Check if `/journal/daily/daily-YYYY-MM-DD.md` exists (using today's actual date):
-   - If exists: Read current content to see if noon session already completed
+   - If exists: Read current content to see what sessions are already completed
    - If afternoon session exists: Acknowledge and offer to update
    - If not exists: Create new file structure
 
@@ -27,23 +27,23 @@ An afternoon wrap-up checkpoint to review how the afternoon went (typically 5-6p
 
 🌅 **Afternoon Check-in for [Today's Date] - [Current Time]**
 
-Good afternoon! Let's check your mid-day momentum:
+Good afternoon! Let's review how your afternoon went:
 
-**📅 Today's Afternoon Plan:**
-[List upcoming time blocks and objectives from planning data]
+**📅 Today's Afternoon Time Blocks (Review):**
+[List completed afternoon time blocks and their outcomes]
 
 **📋 TaskWarrior Status:**
 [Show relevant pending tasks]
 
 **Check-in Questions:**
-1. **Current energy level:** (1-10 + how it compares to morning)
-2. **What have you accomplished so far today?** (reference morning plan)
-3. **What are your top 3 priorities for the remaining day?** (Reference planned time blocks)
-4. **Any momentum or breakthroughs?** (however small)
-5. **Current focus/energy challenges?**
-6. **What's working well in your approach today?**
-7. **How realistic does your remaining plan feel?** (too much/just right/could do more)
-8. **Need to adjust anything for the rest of the day?**
+1. **Current energy level:** (1-10 + how it compares to earlier)
+2. **How did your afternoon go overall?** (1-10 satisfaction rating)
+3. **Which time blocks/objectives did you complete?** (reference afternoon plan)
+4. **What worked well this afternoon?** (momentum, focus, energy management)
+5. **Any challenges or obstacles you faced?**
+6. **What would you do differently this afternoon?**
+7. **Any breakthroughs or wins worth celebrating?** (however small)
+8. **How are you feeling about tomorrow's priorities?**
 
 6. Save/append to `/journal/daily/daily-YYYY-MM-DD.md` (using today's actual date) with structure:
    ```yaml
@@ -58,23 +58,19 @@ Good afternoon! Let's check your mid-day momentum:
    # Daily Journal - [Full Date]
 
    ## 🌅 Afternoon Check-in ([TIME])
-   **Current Energy:** [response] 
-   **Accomplished So Far:** [response]
-   **Remaining Day Priorities:**
-   1. [priority 1]
-   2. [priority 2]
-   3. [priority 3]
+   **Current Energy:** [response]
+   **Afternoon Satisfaction:** [response] (1-10 rating)
+   **Completed Time Blocks/Objectives:** [response]
+   **What Worked Well:** [response]
+   **Challenges Faced:** [response]
+   **Would Do Differently:** [response]
+   **Wins/Breakthroughs:** [response]
+   **Tomorrow Outlook:** [response]
    
-   **Momentum/Breakthroughs:** [response]
-   **Current Challenges:** [response]
-   **What's Working:** [response]
-   **Plan Assessment:** [response]
-   **Adjustments Needed:** [response]
-   
-   **📅 Today's Afternoon Context:**
-   - Planned time blocks: [list from planning data]
-   - Key objectives: [from planning data]
-   - TaskWarrior tasks: [relevant tasks]
+   **📅 Afternoon Plan Review:**
+   - Planned time blocks: [list from planning data with completion status]
+   - Key objectives status: [from planning data with outcomes]
+   - TaskWarrior tasks: [relevant tasks and progress]
    ```
 
 7. **Victory Detection (Silent Background Process)**:
