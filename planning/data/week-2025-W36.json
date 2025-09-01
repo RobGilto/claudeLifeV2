@@ -38,12 +38,12 @@
     },
     {
       "id": "W36-4",
-      "text": "Achieve 7/7 daily Boot.dev practice sessions",
+      "text": "Achieve 7/7 daily Python Boot.dev practice sessions (prerequisite foundation)",
       "created": "2025-08-31T14:50:00.000Z",
       "completed": false,
-      "priority": "medium",
-      "alignment": "Monthly objective M09-3, addressing previous week 6/7 gap",
-      "urgency": "medium"
+      "priority": "high",
+      "alignment": "Python foundation prerequisite for Azure certification - elevated priority",
+      "urgency": "high"
     },
     {
       "id": "W36-5",
@@ -107,7 +107,7 @@
     }
   ],
   "metrics": {},
-  "context": "September Launch Week - Critical Deadlines Focus",
+  "context": "Python Foundation Week - Building Azure Certification Prerequisites",
   "challenges": [
     "Family stress and boundary management from previous week",
     "Avoiding tunnel vision on low-value technical tasks",
