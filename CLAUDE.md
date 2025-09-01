@@ -13,6 +13,7 @@ This is Robert's personal AI engineering journey and life transformation reposit
 - **Update existing files** rather than creating duplicates
 - All automated commands should reference scripts from `/scripts/` folder
 - Scripts are primarily JavaScript (.js/.cjs) with some shell scripts (.sh) and Python utilities (.py)
+- **CRITICAL - Time Zone Handling**: ALWAYS use `./scripts/sydney-time.sh checkin` and `./scripts/sydney-time.sh date` for current time/date. NEVER use MCP time tools - they return UTC not Sydney time which confuses the user
 - **Slash Command Reference**: Whenever any slash command (e.g., `/morning-checkin`, `/plan-day`, `/skill-status`) is mentioned or requested, ALWAYS read the corresponding command file from `./.claude/commands/[command-name].md` to get the complete implementation details, process steps, and requirements before executing
 
 ### Directory Structure

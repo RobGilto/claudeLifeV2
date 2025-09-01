@@ -4,7 +4,11 @@ A mid-day energy and planning checkpoint.
 
 ## Process:
 
-1. **Get Current Sydney Time**: Use `./scripts/sydney-time.sh checkin` to get Sydney local time and `./scripts/sydney-time.sh date` for today's date (consistent timezone handling)
+1. **CRITICAL - Get Current Sydney Time FIRST**: 
+   - ALWAYS use `./scripts/sydney-time.sh checkin` to get Sydney local time
+   - ALWAYS use `./scripts/sydney-time.sh date` for today's date 
+   - NEVER use MCP time tools - they return UTC not Sydney time
+   - This prevents showing wrong time zones to the user
 
 2. First, understand the user's context by reading CLAUDE.md or any personal/business files to personalize the greeting and understand their work.
 
