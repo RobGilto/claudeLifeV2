@@ -74,7 +74,7 @@ Good afternoon! Let's review how your afternoon went:
    ```
 
 7. **Victory Detection (Silent Background Process)**:
-   Scan accomplishments and breakthroughs for victory patterns:
+   Scan completed objectives and breakthroughs for victory patterns:
    - Technical victories: "figured out", "built", "solved", "learned"
    - Personal victories: financial decisions, boundary setting, help-seeking
    - Discipline victories: "resisted", "stayed focused", "chose simple"
@@ -85,8 +85,8 @@ Good afternoon! Let's review how your afternoon went:
 8. NO full analysis yet - save that for evening when both sessions combine.
 
 9. **Context-Aware Encouragement**: 
-   - Reference specific afternoon time blocks
-   - Acknowledge any potential energy/challenge alignment
-   - Simple encouragement: "Great momentum! Your afternoon plan looks [realistic/energizing]. See you this evening for reflection."
+   - Reference specific completed afternoon accomplishments
+   - Acknowledge challenges faced and how they were handled
+   - Simple encouragement: "Great work today! Your afternoon progress shows [specific observation]. Looking forward to your evening reflection."
 
-Remember: Be encouraging, empathetic, calendar-aware, and focus on maintaining mid-day energy with realistic afternoon expectations.
+Remember: Be encouraging, empathetic, and focused on celebrating afternoon accomplishments while setting up for a good evening wrap-up.

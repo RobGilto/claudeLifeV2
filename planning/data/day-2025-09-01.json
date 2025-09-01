@@ -98,17 +98,17 @@
       "title": "August Patterns Documentation",
       "activity": "August Patterns Documentation",
       "description": "Begin August breakthrough documentation (patterns extraction)",
-      "start": "15:30",
-      "end": "16:30", 
+      "start": "19:00",
+      "end": "20:00", 
       "duration": 60,
       "objective": "D0901-3",
       "alignment": "Critical Sept 7 deadline",
       "energyLevel": "medium",
-      "status": "planned",
+      "status": "rescheduled",
       "completed": false,
       "calendarSynced": true,
       "eventId": "43idabfk4ftc9goekka733hh2g",
-      "notes": ""
+      "notes": "Rescheduled from 15:30-16:30 to evening slot for better focus"
     }
   ],
   "adaptiveFlexibility": {
