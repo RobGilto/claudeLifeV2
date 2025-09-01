@@ -4,20 +4,22 @@ A mid-day energy and planning checkpoint.
 
 ## Process:
 
-1. First, understand the user's context by reading CLAUDE.md or any personal/business files to personalize the greeting and understand their work.
+1. **Get Current Sydney Time**: Use `mcp__google-calendar__get-current-time` with `timeZone: "Australia/Sydney"` to get the correct Sydney local time and date (not the buggy mcp-time tool)
 
-2. **Check Calendar and Planning Context**:
-   - Read `/planning/data/day-YYYY-MM-DD.json` to get today's time blocks and objectives
+2. First, understand the user's context by reading CLAUDE.md or any personal/business files to personalize the greeting and understand their work.
+
+3. **Check Calendar and Planning Context**:
+   - Read `/planning/data/day-YYYY-MM-DD.json` using today's actual date to get time blocks and objectives
    - Use MCP TaskWarrior to get current tasks: `mcp__taskwarrior__get_next_tasks`
    - Identify afternoon time blocks (after current time)
    - Note any calendar events or commitments
 
-3. Check if `/journal/daily/YYYY-MM-DD.md` exists:
+4. Check if `/journal/daily/daily-YYYY-MM-DD.md` exists (using today's actual date):
    - If exists: Read current content to see if noon session already completed
    - If afternoon session exists: Acknowledge and offer to update
    - If not exists: Create new file structure
 
-4. Greet them warmly with context-aware questions:
+5. Greet them warmly with context-aware questions:
 
 🌅 **Afternoon Check-in for [Today's Date] - [Current Time]**
 
@@ -39,7 +41,7 @@ Good afternoon! Let's check your mid-day momentum:
 7. **How do you feel about your afternoon plan?** (realistic/overwhelming/energizing)
 8. Anything else to talk about?
 
-5. Save/append to `/journal/daily/YYYY-MM-DD.md` with structure:
+6. Save/append to `/journal/daily/daily-YYYY-MM-DD.md` (using today's actual date) with structure:
    ```yaml
    ---
    date: YYYY-MM-DD
@@ -70,7 +72,7 @@ Good afternoon! Let's check your mid-day momentum:
    - TaskWarrior tasks: [relevant tasks]
    ```
 
-6. **Victory Detection (Silent Background Process)**:
+7. **Victory Detection (Silent Background Process)**:
    Scan the morning wins for victory patterns:
    - Technical victories: "figured out", "built", "solved", "learned"
    - Personal victories: financial decisions, boundary setting, help-seeking
@@ -79,9 +81,9 @@ Good afternoon! Let's check your mid-day momentum:
    
    Silently append detected victories to `/victories/victories-YYYY-MM.md` using the established format.
 
-7. NO full analysis yet - save that for evening when both sessions combine.
+8. NO full analysis yet - save that for evening when both sessions combine.
 
-8. **Context-Aware Encouragement**: 
+9. **Context-Aware Encouragement**: 
    - Reference specific afternoon time blocks
    - Acknowledge any potential energy/challenge alignment
    - Simple encouragement: "Great momentum! Your afternoon plan looks [realistic/energizing]. See you this evening for reflection."

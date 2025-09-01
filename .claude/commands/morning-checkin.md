@@ -4,14 +4,16 @@ An early-day energy assessment and intention-setting checkpoint.
 
 ## Process:
 
-1. First, understand the user's context by reading CLAUDE.md or any personal/business files to personalize the greeting and understand their work.
+1. **Get Current Sydney Time**: Use `mcp__google-calendar__get-current-time` with `timeZone: "Australia/Sydney"` to get the correct Sydney local time and date (YYYY-MM-DD format).
 
-2. Check if `/journal/daily/YYYY-MM-DD.md` exists:
+2. First, understand the user's context by reading CLAUDE.md or any personal/business files to personalize the greeting and understand their work.
+
+3. Check if `/journal/daily/YYYY-MM-DD.md` exists (using today's actual Sydney date):
    - If exists: Read current content to see if morning session already completed
    - If morning session exists: Acknowledge and offer to update
    - If not exists: Create new file structure
 
-3. Greet them warmly and ask these questions:
+4. Greet them warmly and ask these questions:
 
 🌄 Morning Check-in for [Today's Date] - [Current Time]
 
