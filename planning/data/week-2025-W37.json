@@ -39,10 +39,12 @@
     },
     {
       "id": "1756650890404",
-      "text": "Prepare Azure certification study materials",
+      "text": "Launch Azure certification study and schedule October exam",
       "created": "2025-08-31T14:34:50.000Z",
       "completed": false,
-      "priority": "medium"
+      "priority": "high",
+      "alignment": "Moved from W36 after Python prerequisite focus completed",
+      "urgency": "critical"
     },
     {
       "id": "1756650890404",
@@ -67,11 +69,11 @@
     }
   ],
   "priorities": [
+    "Launch Azure certification study and schedule October exam",
     "Advance portfolio project development",
     "Maintain consistent technical learning practice",
     "Optimize productivity systems and workflow",
-    "Build professional relationships and positioning",
-    "Prepare certification study materials"
+    "Build professional relationships and positioning"
   ],
   "timeBlocks": [],
   "milestones": [],
