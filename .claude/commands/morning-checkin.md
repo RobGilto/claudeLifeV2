@@ -29,7 +29,7 @@ Good morning! Let's set up your day for success:
 8. **What's one thing you commit to completing?**
 9. Anything else to note?
 
-4. Save/append to `/journal/daily/YYYY-MM-DD.md` with structure:
+5. Save/append to `/journal/daily/YYYY-MM-DD.md` (using today's actual Sydney date) with structure:
    ```yaml
    ---
    date: YYYY-MM-DD
@@ -59,7 +59,7 @@ Good morning! Let's set up your day for success:
    **Commitment:** [response]
    ```
 
-5. **Victory Detection (Silent Background Process)**:
+6. **Victory Detection (Silent Background Process)**:
    Scan intentions and commitments for victory patterns:
    - Technical victories: "will figure out", "will build", "will solve", "will learn"
    - Personal victories: boundary setting intentions, self-care plans
@@ -68,9 +68,9 @@ Good morning! Let's set up your day for success:
    
    Silently append detected victories to `/victories/victories-YYYY-MM.md` using the established format.
 
-6. NO full analysis yet - save that for evening when all sessions combine.
+7. NO full analysis yet - save that for evening when all sessions combine.
 
-7. Simple encouragement focusing on energy and intention:
+8. Simple encouragement focusing on energy and intention:
    - "Your intentions are set!"
    - "Energy follows action"
    - "Small wins compound"

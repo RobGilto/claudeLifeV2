@@ -4,23 +4,25 @@ End-of-day reflection and tomorrow planning with optional day plan performance r
 
 ## Process:
 
-1. First, understand the user's context by reading CLAUDE.md or any personal/business files to personalize the greeting and understand their work.
+1. **Get Current Sydney Time**: Use `mcp__google-calendar__get-current-time` with `timeZone: "Australia/Sydney"` to get the correct Sydney local time and date (YYYY-MM-DD format).
 
-2. **Check Calendar and Planning Context**:
-   - Check if `/planning/data/day-YYYY-MM-DD.json` exists
+2. First, understand the user's context by reading CLAUDE.md or any personal/business files to personalize the greeting and understand their work.
+
+3. **Check Calendar and Planning Context**:
+   - Check if `/planning/data/day-YYYY-MM-DD.json` exists (using today's actual Sydney date)
    - Use MCP TaskWarrior to get today's completed/remaining tasks: `mcp__taskwarrior__get_next_tasks`
    - Analyze today's time blocks and objective completion from planning data
    - If day plan exists, ask: "I found a day plan for today! Would you like me to run the full performance review using the evening-checkin script? This will include time block analysis and objective completion tracking. (y/n)"
    - If YES: Run `node scripts/evening-checkin.cjs` and stop here (script handles everything)
    - If NO or no day plan: Continue with manual evening checkin with calendar context below
 
-3. Check if `/journal/daily/YYYY-MM-DD.md` exists:
+4. Check if `/journal/daily/YYYY-MM-DD.md` exists (using today's actual Sydney date):
    - If exists: Read to see if afternoon session exists, append evening section
    - Update metadata: `sessions: [afternoon, evening]` or `[evening]`
    - Set `status: complete`
    - If not exists: Create new file (evening-only case)
 
-4. Greet them warmly with context-aware questions:
+5. Greet them warmly with context-aware questions:
 
 🌙 **Evening Check-in for [Today's Date] - [Current Time]**
 
@@ -43,7 +45,7 @@ Good evening! Let's reflect on your day:
 8. **Any insights about your planning vs execution?**
 9. **Any other thoughts or reflections?**
 
-5. Update/save to `/journal/daily/YYYY-MM-DD.md`:
+6. Update/save to `/journal/daily/YYYY-MM-DD.md` (using today's actual Sydney date):
    - Update frontmatter: `sessions: [afternoon, evening]` and `status: complete`
    - Append evening section:
 
@@ -68,7 +70,7 @@ Good evening! Let's reflect on your day:
    - TaskWarrior tasks: [completed/remaining status]
    ```
 
-6. Launch the daily-reflection subagent with:
+7. Launch the daily-reflection subagent with:
    Analyze today's check-in:
    [provide ALL responses from both afternoon AND evening if both exist]
    [Include planning vs execution analysis from calendar data]
@@ -87,9 +89,9 @@ Good evening! Let's reflect on your day:
    - Weekly trend if enough data
    - Celebration of wins (however small)
 
-7. Create a visual summary and append to same file as `## 📊 Daily Analysis`
+8. Create a visual summary and append to same file as `## 📊 Daily Analysis`
 
-8. **Victory Detection (Silent Background Process)**:
+9. **Victory Detection (Silent Background Process)**:
    After saving the evening journal, scan ALL accomplishments (afternoon + evening) for victory patterns:
    - Technical victories: "figured out", "built", "solved", "learned"
    - Personal victories: financial decisions, boundary setting, help-seeking
