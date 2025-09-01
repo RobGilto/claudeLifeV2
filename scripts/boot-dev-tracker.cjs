@@ -75,7 +75,7 @@ function updateWeeklyPlan(completed = false) {
   if (fs.existsSync(weekFile)) {
     const weekData = JSON.parse(fs.readFileSync(weekFile, 'utf8'));
     const today = getToday();
-    const dayOfWeek = new Date().toLocaleDateString('en-US', { weekday: 'lowercase' });
+    const dayOfWeek = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
     
     // Update daily tracking
     if (weekData.dailyTracking && weekData.dailyTracking[dayOfWeek]) {
@@ -204,7 +204,8 @@ function showWeeklyProgress() {
     const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
     
     days.forEach(day => {
-      const dayData = weekData.dailyTracking[day];
+      const dayData = weekData.dailyTracking && weekData.dailyTracking[day];
+      if (!dayData) return;
       const status = dayData.bootDev ? `${colors.green}✅${colors.reset}` : `${colors.red}❌${colors.reset}`;
       const dayLabel = day.charAt(0).toUpperCase() + day.slice(1);
       const dateStr = dayData.date;
@@ -214,7 +215,7 @@ function showWeeklyProgress() {
       console.log(`${dayLabel.padEnd(10)} ${dateStr}  ${status}${todayMarker}`);
     });
     
-    const completed = Object.values(weekData.dailyTracking).filter(d => d.bootDev).length;
+    const completed = weekData.dailyTracking ? Object.values(weekData.dailyTracking).filter(d => d && d.bootDev).length : 0;
     const percentage = Math.round((completed / 7) * 100);
     
     console.log(`\n${colors.cyan}Week Progress:${colors.reset} ${completed}/7 days (${percentage}%)`);
