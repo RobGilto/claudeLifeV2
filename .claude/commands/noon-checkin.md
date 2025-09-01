@@ -39,7 +39,7 @@ Good afternoon! Let's check your mid-day momentum:
 7. **How do you feel about your afternoon plan?** (realistic/overwhelming/energizing)
 8. Anything else to talk about?
 
-4. Save/append to `/journal/daily/YYYY-MM-DD.md` with structure:
+5. Save/append to `/journal/daily/YYYY-MM-DD.md` with structure:
    ```yaml
    ---
    date: YYYY-MM-DD
@@ -62,9 +62,15 @@ Good afternoon! Let's check your mid-day momentum:
    **Morning Wins:** [response]
    **Current Challenges:** [response]
    **What's Working:** [response]
+   **Afternoon Plan Assessment:** [response]
+   
+   **📅 Today's Afternoon Context:**
+   - Planned time blocks: [list from planning data]
+   - Key objectives: [from planning data]
+   - TaskWarrior tasks: [relevant tasks]
    ```
 
-5. **Victory Detection (Silent Background Process)**:
+6. **Victory Detection (Silent Background Process)**:
    Scan the morning wins for victory patterns:
    - Technical victories: "figured out", "built", "solved", "learned"
    - Personal victories: financial decisions, boundary setting, help-seeking
@@ -73,8 +79,11 @@ Good afternoon! Let's check your mid-day momentum:
    
    Silently append detected victories to `/victories/victories-YYYY-MM.md` using the established format.
 
-6. NO full analysis yet - save that for evening when both sessions combine.
+7. NO full analysis yet - save that for evening when both sessions combine.
 
-7. Simple encouragement: "Great momentum! See you this evening for reflection."
+8. **Context-Aware Encouragement**: 
+   - Reference specific afternoon time blocks
+   - Acknowledge any potential energy/challenge alignment
+   - Simple encouragement: "Great momentum! Your afternoon plan looks [realistic/energizing]. See you this evening for reflection."
 
-Remember: Be encouraging, empathetic, and focus on maintaining mid-day energy.
+Remember: Be encouraging, empathetic, calendar-aware, and focus on maintaining mid-day energy with realistic afternoon expectations.

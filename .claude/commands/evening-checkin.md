@@ -6,11 +6,13 @@ End-of-day reflection and tomorrow planning with optional day plan performance r
 
 1. First, understand the user's context by reading CLAUDE.md or any personal/business files to personalize the greeting and understand their work.
 
-2. **Check for Day Plan Integration**:
+2. **Check Calendar and Planning Context**:
    - Check if `/planning/data/day-YYYY-MM-DD.json` exists
+   - Use MCP TaskWarrior to get today's completed/remaining tasks: `mcp__taskwarrior__get_next_tasks`
+   - Analyze today's time blocks and objective completion from planning data
    - If day plan exists, ask: "I found a day plan for today! Would you like me to run the full performance review using the evening-checkin script? This will include time block analysis and objective completion tracking. (y/n)"
    - If YES: Run `node scripts/evening-checkin.cjs` and stop here (script handles everything)
-   - If NO or no day plan: Continue with manual evening checkin below
+   - If NO or no day plan: Continue with manual evening checkin with calendar context below
 
 3. Check if `/journal/daily/YYYY-MM-DD.md` exists:
    - If exists: Read to see if noon session exists, append evening section
@@ -18,19 +20,28 @@ End-of-day reflection and tomorrow planning with optional day plan performance r
    - Set `status: complete`
    - If not exists: Create new file (evening-only case)
 
-4. Greet them warmly and ask these questions:
+4. Greet them warmly with context-aware questions:
 
-🌙 Evening Check-in for [Today's Date] - [Current Time]
+🌙 **Evening Check-in for [Today's Date] - [Current Time]**
 
 Good evening! Let's reflect on your day:
 
+**📅 Today's Plan Review:**
+[Show planned time blocks and their intended completion status]
+
+**📋 TaskWarrior Status:**
+[Show completed vs remaining tasks from TaskWarrior]
+
+**Reflection Questions:**
 1. **How are you feeling about today overall?** (1-10 + description)
-2. **What are 3 things you accomplished today?** (big or small)
-3. **What's your #1 priority for tomorrow?**
-4. **End-of-day energy level:** (1-10)
-5. **Any challenges or blockers you faced?**
-6. **What are you grateful for today?**
-7. **Any other thoughts or reflections?**
+2. **What are 3 things you accomplished today?** (Reference planned objectives and actual work)
+3. **How did your time blocks go?** (Which worked well, which didn't)
+4. **What's your #1 priority for tomorrow?**
+5. **End-of-day energy level:** (1-10)
+6. **Any challenges or blockers you faced?** 
+7. **What are you grateful for today?**
+8. **Any insights about your planning vs execution?**
+9. **Any other thoughts or reflections?**
 
 5. Update/save to `/journal/daily/YYYY-MM-DD.md`:
    - Update frontmatter: `sessions: [noon, evening]` and `status: complete`
