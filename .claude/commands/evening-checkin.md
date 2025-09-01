@@ -15,8 +15,8 @@ End-of-day reflection and tomorrow planning with optional day plan performance r
    - If NO or no day plan: Continue with manual evening checkin with calendar context below
 
 3. Check if `/journal/daily/YYYY-MM-DD.md` exists:
-   - If exists: Read to see if noon session exists, append evening section
-   - Update metadata: `sessions: [noon, evening]` or `[evening]`
+   - If exists: Read to see if afternoon session exists, append evening section
+   - Update metadata: `sessions: [afternoon, evening]` or `[evening]`
    - Set `status: complete`
    - If not exists: Create new file (evening-only case)
 
@@ -44,7 +44,7 @@ Good evening! Let's reflect on your day:
 9. **Any other thoughts or reflections?**
 
 5. Update/save to `/journal/daily/YYYY-MM-DD.md`:
-   - Update frontmatter: `sessions: [noon, evening]` and `status: complete`
+   - Update frontmatter: `sessions: [afternoon, evening]` and `status: complete`
    - Append evening section:
 
    ```markdown
@@ -59,27 +59,38 @@ Good evening! Let's reflect on your day:
    **End Energy Level:** [response]
    **Challenges/Blockers:** [response]
    **Gratitude:** [response]
+   **Planning Insights:** [response]
    **Reflections:** [response]
+   
+   **📅 Today's Execution Review:**
+   - Planned time blocks: [list with completion status]
+   - Key objectives: [completion status from planning data]
+   - TaskWarrior tasks: [completed/remaining status]
    ```
 
 6. Launch the daily-reflection subagent with:
    Analyze today's check-in:
-   [provide ALL responses from both noon AND evening if both exist]
+   [provide ALL responses from both afternoon AND evening if both exist]
+   [Include planning vs execution analysis from calendar data]
+   [Include TaskWarrior completion patterns]
    
    Also reference the last 3 days of entries if available.
    
    Generate:
-   - Mood and energy patterns (compare noon vs evening if both exist)
+   - Mood and energy patterns (compare afternoon vs evening if both exist)
+   - Planning vs execution effectiveness analysis
+   - Time block success patterns
    - Accomplishment momentum score
+   - TaskWarrior completion insights
    - Insights about productivity patterns
-   - Gentle suggestions for tomorrow
+   - Gentle suggestions for tomorrow's planning
    - Weekly trend if enough data
    - Celebration of wins (however small)
 
 7. Create a visual summary and append to same file as `## 📊 Daily Analysis`
 
 8. **Victory Detection (Silent Background Process)**:
-   After saving the evening journal, scan ALL accomplishments (noon + evening) for victory patterns:
+   After saving the evening journal, scan ALL accomplishments (afternoon + evening) for victory patterns:
    - Technical victories: "figured out", "built", "solved", "learned"
    - Personal victories: financial decisions, boundary setting, help-seeking
    - Discipline victories: "resisted", "stayed focused", "chose simple"

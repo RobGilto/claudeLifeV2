@@ -159,7 +159,7 @@ Early-day energy assessment and intention-setting:
 - One commitment declaration
 - Silent victory detection from intentions
 
-#### `/noon-checkin` Command
+#### `/afternoon-checkin` Command
 Mid-day energy and planning checkpoint:
 - Morning energy assessment and sleep quality check
 - Afternoon priority setting (top 3 focus areas)
@@ -180,7 +180,7 @@ End-of-day reflection and tomorrow planning with optional day plan integration:
 
 #### File Management
 - All commands append to same `journal/daily/daily-YYYY-MM-DD.md` file
-- Metadata tracks which sessions completed: `sessions: [morning, noon, evening]`
+- Metadata tracks which sessions completed: `sessions: [morning, afternoon, evening]`
 - Analysis runs after evening checkin with combined data
 - Victory detection runs after each session for comprehensive tracking
 

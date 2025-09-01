@@ -1,4 +1,4 @@
-# Noon Check-in
+# Afternoon Check-in
 
 A mid-day energy and planning checkpoint.
 
@@ -14,12 +14,12 @@ A mid-day energy and planning checkpoint.
 
 3. Check if `/journal/daily/YYYY-MM-DD.md` exists:
    - If exists: Read current content to see if noon session already completed
-   - If noon session exists: Acknowledge and offer to update
+   - If afternoon session exists: Acknowledge and offer to update
    - If not exists: Create new file structure
 
 4. Greet them warmly with context-aware questions:
 
-🌅 **Noon Check-in for [Today's Date] - [Current Time]**
+🌅 **Afternoon Check-in for [Today's Date] - [Current Time]**
 
 Good afternoon! Let's check your mid-day momentum:
 
@@ -44,14 +44,14 @@ Good afternoon! Let's check your mid-day momentum:
    ---
    date: YYYY-MM-DD
    type: daily
-   sessions: [noon]
+   sessions: [afternoon]
    status: ongoing
    privacy: private
    ---
 
    # Daily Journal - [Full Date]
 
-   ## 🌅 Noon Check-in ([TIME])
+   ## 🌅 Afternoon Check-in ([TIME])
    **Morning Energy:** [response]
    **Sleep Quality:** [response] 
    **Afternoon Priorities:**
