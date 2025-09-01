@@ -1,6 +1,6 @@
 # Afternoon Check-in
 
-A mid-day energy and planning checkpoint.
+An afternoon wrap-up checkpoint to review how the afternoon went (typically 5-6pm).
 
 ## Process:
 
@@ -15,8 +15,8 @@ A mid-day energy and planning checkpoint.
 3. **Check Calendar and Planning Context**:
    - Read `/planning/data/day-YYYY-MM-DD.json` using today's actual date to get time blocks and objectives
    - Use MCP TaskWarrior to get current tasks: `mcp__taskwarrior__get_next_tasks`
-   - Identify afternoon time blocks (after current time)
-   - Note any calendar events or commitments
+   - Review afternoon time blocks that should be completed by now
+   - Check what was planned vs what actually happened
 
 4. Check if `/journal/daily/daily-YYYY-MM-DD.md` exists (using today's actual date):
    - If exists: Read current content to see if noon session already completed
@@ -36,14 +36,14 @@ Good afternoon! Let's check your mid-day momentum:
 [Show relevant pending tasks]
 
 **Check-in Questions:**
-1. **Morning energy level:** (1-10 + brief description)
-2. **How did you sleep last night?** (quality/hours)
-3. **What are your top 3 priorities for this afternoon?** (Reference planned time blocks)
-4. **Any morning wins already?** (however small)
+1. **Current energy level:** (1-10 + how it compares to morning)
+2. **What have you accomplished so far today?** (reference morning plan)
+3. **What are your top 3 priorities for the remaining day?** (Reference planned time blocks)
+4. **Any momentum or breakthroughs?** (however small)
 5. **Current focus/energy challenges?**
-6. **What's working well so far today?**
-7. **How do you feel about your afternoon plan?** (realistic/overwhelming/energizing)
-8. Anything else to talk about?
+6. **What's working well in your approach today?**
+7. **How realistic does your remaining plan feel?** (too much/just right/could do more)
+8. **Need to adjust anything for the rest of the day?**
 
 6. Save/append to `/journal/daily/daily-YYYY-MM-DD.md` (using today's actual date) with structure:
    ```yaml
@@ -58,17 +58,18 @@ Good afternoon! Let's check your mid-day momentum:
    # Daily Journal - [Full Date]
 
    ## 🌅 Afternoon Check-in ([TIME])
-   **Morning Energy:** [response]
-   **Sleep Quality:** [response] 
-   **Afternoon Priorities:**
+   **Current Energy:** [response] 
+   **Accomplished So Far:** [response]
+   **Remaining Day Priorities:**
    1. [priority 1]
    2. [priority 2]
    3. [priority 3]
    
-   **Morning Wins:** [response]
+   **Momentum/Breakthroughs:** [response]
    **Current Challenges:** [response]
    **What's Working:** [response]
-   **Afternoon Plan Assessment:** [response]
+   **Plan Assessment:** [response]
+   **Adjustments Needed:** [response]
    
    **📅 Today's Afternoon Context:**
    - Planned time blocks: [list from planning data]
@@ -77,7 +78,7 @@ Good afternoon! Let's check your mid-day momentum:
    ```
 
 7. **Victory Detection (Silent Background Process)**:
-   Scan the morning wins for victory patterns:
+   Scan accomplishments and breakthroughs for victory patterns:
    - Technical victories: "figured out", "built", "solved", "learned"
    - Personal victories: financial decisions, boundary setting, help-seeking
    - Discipline victories: "resisted", "stayed focused", "chose simple"
