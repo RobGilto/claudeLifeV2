@@ -6,15 +6,24 @@ Create or update a daily plan with time blocks aligned to higher-level objective
 
 1. First read CLAUDE.md and any existing planning context to understand the user's current planning state.
 
-2. Show multi-perspective date indexing and parent plan context:
+2. Show multi-perspective date indexing and values-aligned parent context:
    ```
    📅 Planning Day: YYYY-MM-DD
    📊 Multi-Index: Day X/365 | Week Y/7 | Month Z/31 | Quarter A/92  
+   🎯 Daily Values Focus: [1-2 core values to emphasize today]
+   🎭 Primary Role Today: [main role to advance today]
+   ✨ Vision Connection: [how today serves lifestyle vision]
    📋 Parent Context:
    - Week Priorities: [show from week plan if exists]
    - Month Goals: [show from month plan if exists]
    - Quarter Focus: [show from quarter plan if exists]
    ```
+
+2.5. Conduct Daily Values Alignment:
+   - Identify which core values today's time blocks will serve
+   - Ensure daily activities advance primary role development
+   - Check for Newport's "slow productivity" principles in the plan
+   - Verify sustainable pace and deep work protection
 
 3. **MANDATORY: Check existing calendar events first** to prevent conflicts:
    ```
@@ -57,8 +66,32 @@ Create or update a daily plan with time blocks aligned to higher-level objective
    ## Daily Objectives (Max 3 for focus)
    [List objectives with parent alignment]
 
-   ## Parent Alignment Context
-   [Show relevant parent priorities and goals]
+   ## Newport Multi-Scale Integration
+
+   ### Daily Values Expression
+   **Primary Value Today**: [Core value emphasized in today's activities]
+   **Values Through Time Blocks**:
+   - Block 1: [Which value this serves and how]
+   - Block 2: [Which value this serves and how]
+   - [etc...]
+
+   ### Role Development Today
+   **Primary Role**: [Main role receiving development today]
+   **Role Actions**: [Specific ways today advances this role]
+   **Role Balance**: [How other roles are maintained/served]
+
+   ### Slow Productivity Implementation
+   - **Deep Work Block**: [Protected focus time with no interruptions]
+   - **Quality Focus**: [What you'll do exceptionally well vs. just completing]
+   - **Sustainable Pace**: [How today supports long-term productivity]
+   - **Natural Rhythm**: [How the schedule honors your energy patterns]
+
+   ### Vision Connection
+   **Lifestyle Vision Link**: [How today's activities serve your ideal future]
+   **Transformation Step**: [Progress toward AI engineer transition]
+
+   ## Parent Plan Alignment
+   [Show relevant parent priorities and goals and how time blocks serve them]
    
    ## Notes
    [Any additional planning notes]
