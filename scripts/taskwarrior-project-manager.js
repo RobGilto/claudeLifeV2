@@ -402,6 +402,307 @@ class TaskWarriorProjectManager {
     }
 
     /**
+     * Advanced dependency and milestone tracking
+     */
+    async analyzeDependencyChain(projectIdentifier) {
+        this.log(`Analyzing dependency chain for project: ${projectIdentifier}`);
+
+        // Get all project tasks
+        let tasks;
+        try {
+            if (projectIdentifier.includes('-')) {
+                tasks = this.executeTaskCommand(`uuid:${projectIdentifier} export`, true);
+            } else {
+                tasks = this.executeTaskCommand(`project:${projectIdentifier} export`, true);
+            }
+        } catch (error) {
+            return { error: `No tasks found for project: ${projectIdentifier}` };
+        }
+
+        if (!tasks || tasks.length === 0) {
+            return { error: 'No tasks found' };
+        }
+
+        // Build dependency graph
+        const dependencyGraph = this.buildDependencyGraph(tasks);
+        
+        // Find critical path
+        const criticalPath = this.findCriticalPath(dependencyGraph);
+        
+        // Identify blockers and risks
+        const blockers = this.identifyBlockers(tasks, dependencyGraph);
+        
+        // Milestone progress analysis
+        const milestoneProgress = this.analyzeMilestoneProgress(tasks);
+
+        return {
+            projectIdentifier,
+            totalTasks: tasks.length,
+            dependencyGraph,
+            criticalPath,
+            blockers,
+            milestoneProgress,
+            riskAssessment: this.assessProjectRisk(tasks, criticalPath, blockers)
+        };
+    }
+
+    /**
+     * Build dependency graph from tasks
+     */
+    buildDependencyGraph(tasks) {
+        const graph = new Map();
+        
+        // Initialize all tasks in graph
+        tasks.forEach(task => {
+            graph.set(task.uuid, {
+                task: task,
+                dependencies: [],
+                dependents: [],
+                criticalPathLength: 0
+            });
+        });
+
+        // Build dependency relationships
+        tasks.forEach(task => {
+            if (task.depends && task.depends.length > 0) {
+                const dependencies = Array.isArray(task.depends) ? task.depends : task.depends.split(',');
+                
+                dependencies.forEach(depUuid => {
+                    if (graph.has(depUuid.trim())) {
+                        // Add dependency relationship
+                        graph.get(task.uuid).dependencies.push(depUuid.trim());
+                        graph.get(depUuid.trim()).dependents.push(task.uuid);
+                    }
+                });
+            }
+        });
+
+        return graph;
+    }
+
+    /**
+     * Find critical path through project
+     */
+    findCriticalPath(dependencyGraph) {
+        const visited = new Set();
+        const criticalPath = [];
+        let maxLength = 0;
+        let criticalEndTask = null;
+
+        // Calculate critical path length for each task
+        const calculatePathLength = (taskUuid, currentPath = []) => {
+            if (visited.has(taskUuid)) {
+                return currentPath.length; // Avoid cycles
+            }
+
+            visited.add(taskUuid);
+            const node = dependencyGraph.get(taskUuid);
+            const newPath = [...currentPath, taskUuid];
+            
+            let maxChildLength = 0;
+            
+            if (node.dependents.length === 0) {
+                // Leaf node - potential end of critical path
+                if (newPath.length > maxLength) {
+                    maxLength = newPath.length;
+                    criticalEndTask = taskUuid;
+                    criticalPath.splice(0, criticalPath.length, ...newPath);
+                }
+            } else {
+                // Continue through dependents
+                node.dependents.forEach(depUuid => {
+                    const childLength = calculatePathLength(depUuid, newPath);
+                    maxChildLength = Math.max(maxChildLength, childLength);
+                });
+            }
+
+            visited.delete(taskUuid);
+            return newPath.length + maxChildLength;
+        };
+
+        // Find tasks with no dependencies (starting points)
+        const startingTasks = Array.from(dependencyGraph.entries())
+            .filter(([uuid, node]) => node.dependencies.length === 0)
+            .map(([uuid, node]) => uuid);
+
+        // Calculate critical path from each starting point
+        startingTasks.forEach(taskUuid => {
+            visited.clear();
+            calculatePathLength(taskUuid);
+        });
+
+        return {
+            path: criticalPath,
+            length: maxLength,
+            endTask: criticalEndTask,
+            estimatedHours: this.calculatePathHours(criticalPath, dependencyGraph)
+        };
+    }
+
+    /**
+     * Identify current blockers and potential risks
+     */
+    identifyBlockers(tasks, dependencyGraph) {
+        const blockers = [];
+
+        tasks.forEach(task => {
+            const node = dependencyGraph.get(task.uuid);
+            
+            // Task is blocked if it has incomplete dependencies
+            if (node.dependencies.length > 0) {
+                const incompleteDependencies = node.dependencies.filter(depUuid => {
+                    const depNode = dependencyGraph.get(depUuid);
+                    return depNode && depNode.task.status !== 'completed';
+                });
+
+                if (incompleteDependencies.length > 0) {
+                    blockers.push({
+                        blockedTask: task,
+                        blockingTasks: incompleteDependencies.map(uuid => 
+                            dependencyGraph.get(uuid).task
+                        ),
+                        impact: this.assessBlockerImpact(task, node, dependencyGraph)
+                    });
+                }
+            }
+
+            // Task is a blocker if it's incomplete and has waiting dependents
+            if (task.status !== 'completed' && node.dependents.length > 0) {
+                const waitingDependents = node.dependents.filter(depUuid => {
+                    const depNode = dependencyGraph.get(depUuid);
+                    return depNode && depNode.task.status === 'pending';
+                });
+
+                if (waitingDependents.length > 0) {
+                    blockers.push({
+                        blockerTask: task,
+                        affectedTasks: waitingDependents.map(uuid => 
+                            dependencyGraph.get(uuid).task
+                        ),
+                        impact: 'HIGH' // Blocking others is high impact
+                    });
+                }
+            }
+        });
+
+        return blockers;
+    }
+
+    /**
+     * Analyze milestone progress
+     */
+    analyzeMilestoneProgress(tasks) {
+        const milestones = tasks.filter(task => 
+            task.uda_milestone === 'true' || 
+            (task.description && task.description.includes('MILESTONE'))
+        );
+
+        return milestones.map(milestone => {
+            // Find tasks that contribute to this milestone
+            const contributingTasks = this.findContributingTasks(milestone, tasks);
+            const completedContributing = contributingTasks.filter(t => t.status === 'completed');
+            
+            return {
+                milestone: milestone,
+                progress: contributingTasks.length > 0 ? 
+                    Math.round((completedContributing.length / contributingTasks.length) * 100) : 0,
+                contributingTasks: contributingTasks.length,
+                completedContributing: completedContributing.length,
+                dueDate: milestone.due || null,
+                riskLevel: this.assessMilestoneRisk(milestone, contributingTasks)
+            };
+        });
+    }
+
+    /**
+     * Find tasks that contribute to a milestone
+     */
+    findContributingTasks(milestone, allTasks) {
+        // Find tasks in same project that come before this milestone
+        return allTasks.filter(task => 
+            task.project === milestone.project &&
+            task.uuid !== milestone.uuid &&
+            task.uda_milestone !== 'true'
+        );
+    }
+
+    /**
+     * Assess overall project risk
+     */
+    assessProjectRisk(tasks, criticalPath, blockers) {
+        const factors = {
+            completionRate: this.calculateCompletionRate(tasks).percentage,
+            criticalPathLength: criticalPath.length,
+            blockerCount: blockers.length,
+            overdueCount: tasks.filter(task => 
+                task.due && new Date(task.due) < new Date() && task.status !== 'completed'
+            ).length
+        };
+
+        let riskLevel = 'LOW';
+        let riskFactors = [];
+
+        if (factors.completionRate < 30) {
+            riskLevel = 'HIGH';
+            riskFactors.push('Low completion rate');
+        }
+
+        if (factors.blockerCount > 3) {
+            riskLevel = 'HIGH';
+            riskFactors.push('Multiple blockers');
+        }
+
+        if (factors.overdueCount > 0) {
+            riskLevel = factors.overdueCount > 2 ? 'HIGH' : 'MEDIUM';
+            riskFactors.push(`${factors.overdueCount} overdue tasks`);
+        }
+
+        return {
+            level: riskLevel,
+            factors: riskFactors,
+            metrics: factors
+        };
+    }
+
+    /**
+     * Calculate estimated hours for a path
+     */
+    calculatePathHours(pathUuids, dependencyGraph) {
+        return pathUuids.reduce((total, uuid) => {
+            const node = dependencyGraph.get(uuid);
+            const estimatedHours = parseFloat(node.task.uda_estimated_hours || 2);
+            return total + estimatedHours;
+        }, 0);
+    }
+
+    /**
+     * Assess impact of a blocker
+     */
+    assessBlockerImpact(task, node, dependencyGraph) {
+        if (node.dependents.length > 2) return 'HIGH';
+        if (node.dependents.length > 0) return 'MEDIUM';
+        return 'LOW';
+    }
+
+    /**
+     * Assess milestone risk
+     */
+    assessMilestoneRisk(milestone, contributingTasks) {
+        if (!milestone.due) return 'UNKNOWN';
+        
+        const dueDate = new Date(milestone.due);
+        const today = new Date();
+        const daysRemaining = Math.ceil((dueDate - today) / (1000 * 60 * 60 * 24));
+        
+        const completionRate = contributingTasks.length > 0 ? 
+            contributingTasks.filter(t => t.status === 'completed').length / contributingTasks.length : 0;
+
+        if (daysRemaining < 7 && completionRate < 0.8) return 'HIGH';
+        if (daysRemaining < 14 && completionRate < 0.5) return 'MEDIUM';
+        return 'LOW';
+    }
+
+    /**
      * Link TaskWarrior task to Google Calendar event via UUID
      */
     async linkToCalendar(taskUuid, calendarEventData) {
