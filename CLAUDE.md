@@ -888,3 +888,4 @@ AI Solutions Engineer
 - if its not on the google calendar then it will never be done. need to ensure that when the user ask for something temporally, please offer to add it to their google calendar with an appropriate time block
 - any event add to google calendar needs to be associated with a task in taskWarrior and should have a UUID
 - any web search needs to be done by firecrawl mcp
+- i really like how you added Next Step recommendation showing the potentail slash commands to use and why
