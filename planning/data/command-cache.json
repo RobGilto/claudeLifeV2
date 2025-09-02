@@ -1,5 +1,5 @@
 {
-  "buildTime": "2025-09-02T21:52:52.925Z",
+  "buildTime": "2025-09-02T21:53:31.687Z",
   "totalCommands": 55,
   "categories": {
     "content": 3,
@@ -1399,13 +1399,13 @@
         "2. /weekly-checkin - Review last week's performance",
         "```",
         "2. /plan-week - Strategic weekly priorities",
-        "node scripts/intelligent-recommender.js [context]"
+        "node scripts/intelligent-recommender.cjs [context]"
       ],
       "integrations": [
         "```"
       ],
       "priority": 50,
-      "lastModified": "2025-09-02T21:52:25.254Z"
+      "lastModified": "2025-09-02T21:53:28.016Z"
     },
     "review-day": {
       "name": "review-day",

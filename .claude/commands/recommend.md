@@ -389,10 +389,10 @@ Recommendations maintain coherence across planning levels:
 ### Cached Command Processing
 ```bash
 # Called by /recommend slash command
-node scripts/intelligent-recommender.js "$context"
+node scripts/intelligent-recommender.cjs "$context"
 
 # Called by /recommend --update
-node scripts/intelligent-recommender.js --update "$context"
+node scripts/intelligent-recommender.cjs --update "$context"
 ```
 
 ### Cache Management
