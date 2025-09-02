@@ -27,6 +27,7 @@ const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
 const crypto = require('crypto');
+const { exec, execSync } = require('child_process');
 
 // Sydney timezone utilities
 function getSydneyDate(date = new Date()) {
@@ -561,9 +562,12 @@ class FractalPlanner {
         plan.status = 'active';
         PlanStorage.save(plan);
         
-        // Create TaskWarrior tasks for time blocks
+        // Create TaskWarrior project hierarchies for objectives
         if (isToday) {
-            console.log(`\n📋 Creating TaskWarrior tasks...`);
+            console.log(`\n🎯 Creating TaskWarrior project hierarchies for daily objectives...`);
+            await this.createProjectHierarchies(plan.objectives, defaultBlocks, identifiers.day);
+            
+            console.log(`\n📋 Creating TaskWarrior tasks for time blocks...`);
             await this.createTaskWarriorTasks(defaultBlocks, identifiers.day);
         }
         
@@ -615,6 +619,116 @@ class FractalPlanner {
                 note: 'completed window'
             };
         }
+    }
+
+    async createProjectHierarchies(objectives, blocks, date) {
+        try {
+            const projectManager = require('./taskwarrior-project-manager.js');
+            const pm = new projectManager();
+
+            for (const objective of objectives) {
+                // Create project based on objective
+                const projectData = {
+                    name: objective.title,
+                    description: objective.parentAlignment || 'Daily objective',
+                    project: 'daily.objectives',
+                    priority: objective.priority === 1 ? 'H' : objective.priority === 2 ? 'M' : 'L',
+                    subtasks: this.createSubtasksFromTimeBlocks(blocks, objective),
+                    dependencies: []
+                };
+
+                console.log(`  📋 Creating project hierarchy for: "${objective.title}"`);
+                
+                try {
+                    const result = await pm.createProject(projectData);
+                    console.log(`    ✅ Created project with UUID: ${result.projectUuid}`);
+                    console.log(`    📝 Created ${result.subtaskUuids.length} subtasks`);
+                    
+                    // Store project UUID in objective for tracking
+                    objective.projectUuid = result.projectUuid;
+                    objective.fractalUuid = result.fractalUuid;
+                    
+                } catch (projectError) {
+                    console.log(`    ⚠️  Project creation failed: ${projectError.message}`);
+                    // Continue with other objectives
+                }
+            }
+        } catch (error) {
+            console.log(`  ⚠️  TaskWarrior project manager not available: ${error.message}`);
+            console.log(`     Continuing with basic task creation...`);
+        }
+    }
+
+    createSubtasksFromTimeBlocks(blocks, objective) {
+        // Create relevant subtasks based on the objective and available time blocks
+        const subtasks = [];
+        
+        // Filter blocks that align with this objective
+        const relevantBlocks = blocks.filter(block => {
+            const alignmentMatch = this.doesBlockAlignWithObjective(block, objective);
+            return alignmentMatch;
+        });
+
+        relevantBlocks.forEach(block => {
+            subtasks.push({
+                description: `Execute ${block.activity} (${block.start}-${this.addMinutes(block.start, block.duration)})`,
+                estimatedHours: block.duration / 60,
+                priority: 'M',
+                blockType: block.type,
+                blockAlignment: block.alignment
+            });
+        });
+
+        // If no relevant blocks, create generic subtasks based on objective type
+        if (subtasks.length === 0) {
+            if (objective.title.includes('technical progress')) {
+                subtasks.push(
+                    { description: 'Work on AI/ML skill development', estimatedHours: 1.5 },
+                    { description: 'Complete technical project milestone', estimatedHours: 1.5 }
+                );
+            } else if (objective.title.includes('Document learnings')) {
+                subtasks.push(
+                    { description: 'Document key insights and breakthroughs', estimatedHours: 1 },
+                    { description: 'Update knowledge management system', estimatedHours: 0.5 }
+                );
+            } else if (objective.title.includes('momentum')) {
+                subtasks.push(
+                    { description: 'Complete structured time blocks', estimatedHours: 1 },
+                    { description: 'Track progress and adjustments', estimatedHours: 0.5 }
+                );
+            }
+        }
+
+        return subtasks;
+    }
+
+    doesBlockAlignWithObjective(block, objective) {
+        // Smart matching between time blocks and objectives
+        const blockActivity = block.activity.toLowerCase();
+        const blockAlignment = block.alignment.toLowerCase();
+        const objectiveTitle = objective.title.toLowerCase();
+        const objectiveAlignment = (objective.parentAlignment || '').toLowerCase();
+
+        // Direct alignment match
+        if (blockAlignment.includes(objectiveAlignment)) return true;
+        
+        // Activity-objective semantic matching
+        if (objectiveTitle.includes('technical') && 
+            (blockActivity.includes('ai') || blockActivity.includes('project') || blockActivity.includes('development'))) {
+            return true;
+        }
+        
+        if (objectiveTitle.includes('document') && 
+            (blockActivity.includes('research') || blockActivity.includes('documentation'))) {
+            return true;
+        }
+        
+        if (objectiveTitle.includes('momentum') && 
+            (block.type === 'admin' || block.type === 'buffer')) {
+            return true;
+        }
+
+        return false;
     }
 
     async createTaskWarriorTasks(blocks, date) {
