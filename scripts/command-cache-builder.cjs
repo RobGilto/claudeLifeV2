@@ -388,19 +388,42 @@ class CommandCacheBuilder {
      */
     needsRebuild() {
         const cache = this.loadCache();
-        if (!cache) return true;
+        if (!cache) {
+            console.log('📝 Cache does not exist - needs building');
+            return true;
+        }
 
         // Check if any command files are newer than cache
         const cacheTime = new Date(cache.buildTime);
         
         if (!fs.existsSync(this.commandsDir)) {
+            console.log('📁 Commands directory not found - needs building');
             return true;
         }
 
-        const files = fs.readdirSync(this.commandsDir)
+        // Get current files and cached commands
+        const currentFiles = fs.readdirSync(this.commandsDir)
             .filter(file => file.endsWith('.md'))
-            .map(file => path.join(this.commandsDir, file));
+            .map(file => path.basename(file, '.md'));
+        
+        const cachedCommands = Object.keys(cache.commands || {});
+        
+        // Check for new commands
+        const newCommands = currentFiles.filter(cmd => !cachedCommands.includes(cmd));
+        if (newCommands.length > 0) {
+            console.log(`🆕 New commands found: ${newCommands.join(', ')}`);
+            return true;
+        }
+        
+        // Check for removed commands
+        const removedCommands = cachedCommands.filter(cmd => !currentFiles.includes(cmd));
+        if (removedCommands.length > 0) {
+            console.log(`🗑️ Commands removed: ${removedCommands.join(', ')}`);
+            return true;
+        }
 
+        // Check for modified files
+        const files = currentFiles.map(file => path.join(this.commandsDir, file + '.md'));
         for (const file of files) {
             if (fs.statSync(file).mtime > cacheTime) {
                 console.log(`📝 Command file updated: ${path.basename(file)}`);
