@@ -51,8 +51,8 @@ Create or update a daily plan with time blocks aligned to higher-level objective
 
    # Daily Plan: YYYY-MM-DD
 
-   ## Time Block Schedule (ADD-Optimized: 4-5 blocks)
-   [List all time blocks with alignment]
+   ## Time Block Schedule (ADD-Optimized: 4-5 blocks + 1 buffer)
+   [List all time blocks with alignment, including 1.5hr buffer block]
 
    ## Daily Objectives (Max 3 for focus)
    [List objectives with parent alignment]

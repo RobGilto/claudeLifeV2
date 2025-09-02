@@ -440,11 +440,11 @@ class FractalPlanner {
         // Show parent context
         this.showParentContext(weekPlan, monthPlan, quarterPlan);
 
-        // Plan time blocks (4-5 blocks per day as per ADD optimization)
-        console.log(`\n⏰ Time Block Planning (4-5 blocks recommended for ADD-friendly workflow):`);
+        // Plan time blocks (4-5 blocks per day + buffer block for ADD optimization)
+        console.log(`\n⏰ Time Block Planning (4-5 focused blocks + buffer for ADD-friendly workflow):`);
         
         // Use smart defaults based on Robert's AI engineering goals and ADD-friendly structure
-        // Extended availability until 11 PM with ADD-optimized blocks
+        // Reduced to 5 focused blocks + 1 buffer block for flexibility when life happens
         const defaultBlocks = [
             { 
                 start: '09:00', 
@@ -455,45 +455,38 @@ class FractalPlanner {
             },
             { 
                 start: '11:00', 
-                duration: 60, 
-                activity: 'Communication, admin, and planning tasks',
-                alignment: 'Sustainable daily practice and organization',
-                type: 'admin'
-            },
-            { 
-                start: '14:00', 
                 duration: 90, 
                 activity: 'Technical project work or advanced learning',
                 alignment: 'Portfolio building and technical mastery',
                 type: 'deep-work'
             },
             { 
-                start: '16:00', 
-                duration: 60, 
+                start: '14:00', 
+                duration: 90, 
                 activity: 'Research, documentation, or skill practice',
                 alignment: 'Continuous learning and skill gap closure',
                 type: 'learning'
             },
             { 
-                start: '18:00', 
+                start: '16:00', 
                 duration: 90, 
                 activity: 'Evening project work or intensive study',
                 alignment: 'Accelerated skill development',
                 type: 'deep-work'
             },
             { 
-                start: '20:00', 
+                start: '19:00', 
                 duration: 90, 
-                activity: 'Advanced learning or portfolio development',
-                alignment: 'Professional development and practice',
-                type: 'learning'
+                activity: 'Admin, planning, and final work session',
+                alignment: 'Day completion and progress review',
+                type: 'admin'
             },
             { 
-                start: '21:30', 
+                start: '21:00', 
                 duration: 90, 
-                activity: 'Final work session or skill consolidation',
-                alignment: 'Day completion and progress review',
-                type: 'review'
+                activity: 'BUFFER BLOCK - Flexible time for overruns or catch-up',
+                alignment: 'Flexibility for when life happens - prevents schedule disruption',
+                type: 'buffer'
             }
         ];
 
