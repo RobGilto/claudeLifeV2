@@ -1,15 +1,60 @@
 # Smart Command Recommender
 
-Intelligently suggests the most appropriate slash commands based on time of day, strategic periods, and conversation context. Purely informative - provides smart suggestions without taking any actions.
+Intelligently suggests the most appropriate slash commands based on time of day, strategic periods, and conversation context. Uses cached command data for comprehensive analysis and scoring.
 
 ## Usage
 ```bash
-/recommend [context]
+/recommend [context]         # Get smart recommendations with optional context
+/recommend --update [context] # Force update command cache before recommending
 ```
+
+## Features
+- **Intelligent Caching**: Automatically builds and maintains command metadata cache
+- **Context-Aware Scoring**: Scores commands based on timing, user patterns, and missing activities
+- **Strategic Period Detection**: Automatically detects year-end, quarter-end, month-end periods
+- **Missing Activity Detection**: Identifies gaps in daily routines and suggests corrections
+- **Mission Alignment**: All recommendations align with AI engineering transformation goals
 
 ## Process
 
-### 1. Time and Context Analysis
+### 1. Command Cache System
+```bash
+# Build command cache (automatic)
+node scripts/command-cache-builder.js build
+
+# Check cache status
+node scripts/command-cache-builder.js check
+
+# View cache statistics
+node scripts/command-cache-builder.js stats
+```
+
+**Cache contains:**
+- Command metadata (name, description, category, priority)
+- Timing conditions (time of day, day of week, strategic periods)
+- Context triggers (keywords, situations, missing activities)
+- Integration points and prerequisites
+- Output files and data flows
+
+### 2. Intelligent Scoring Algorithm
+```bash
+# Generate recommendations with scoring
+node scripts/intelligent-recommender.js [context]
+
+# Force cache update and recommend
+node scripts/intelligent-recommender.js --update [context]
+```
+
+**Scoring factors:**
+- **Base Priority** (50-100): Command importance level
+- **Time Matching** (+25): Perfect time-of-day alignment
+- **Day Matching** (+20): Ideal day-of-week alignment
+- **Strategic Periods** (+30): Quarter/month/year-end bonuses
+- **Missing Activities** (+40/25/15): High/medium/low urgency gaps
+- **Context Keywords** (+15): Input keyword matching
+- **Category Boosts** (+20/15/10): Time-appropriate categories
+
+### 3. Time and Context Analysis
 ```bash
 # Get current Sydney time and date context
 ./scripts/sydney-time.sh checkin  # Current time
@@ -22,8 +67,10 @@ Analyze:
 - **Strategic periods** (month-end, quarter-end, year-end detection)
 - **Calendar context** from conversation history
 - **Recent activity patterns** from journal entries and planning data
+- **Missing activities** (no checkins, no plans, gaps in routines)
+- **User context** (Boot.dev streaks, task patterns, skill development)
 
-### 2. Strategic Period Detection
+### 4. Strategic Period Detection
 
 #### Year-End Planning (December 15-31)
 When in the last 2 weeks of the year, prioritize strategic foundation commands:
@@ -64,7 +111,7 @@ When in the last 2 weeks of the year, prioritize strategic foundation commands:
 4. /lessons-detect - Monthly learning extraction
 ```
 
-### 3. Time-Based Recommendations
+### 5. Time-Based Recommendations
 
 **Note:** Robert's actual schedule patterns based on journal analysis:
 - **Morning Checkin:** Usually occurs around noon (12:00 PM)
@@ -133,7 +180,7 @@ When in the last 2 weeks of the year, prioritize strategic foundation commands:
 7. /transcribe-brain-dump - Convert voice notes to insights
 ```
 
-### 4. Day-of-Week Patterns
+### 6. Day-of-Week Patterns
 
 #### Sunday - Strategic Planning Day
 ```
@@ -179,7 +226,7 @@ When in the last 2 weeks of the year, prioritize strategic foundation commands:
 5. /newsletter-research - Competitive analysis and content
 ```
 
-### 5. Context-Based Recommendations
+### 7. Context-Based Recommendations
 
 #### Mission and Goal Context
 When discussing goals, mission, or long-term vision:
@@ -241,7 +288,7 @@ When discussing planning or feeling scattered:
 5. /calendar-sync - Convert plans to calendar events
 ```
 
-### 6. Smart Detection Logic
+### 8. Smart Detection Logic
 
 #### Recent Activity Analysis
 The system analyzes:
@@ -273,52 +320,50 @@ The system analyzes:
 - **"tired", "energy", "motivation"** → `/ritual-status`, `/victory-review`
 - **"reflect", "review", "analyze"** → `/brain-dump`, `/performance-dashboard`
 
-### 7. Output Format
+### 9. Enhanced Output Format
 
 ```
 🎯 SMART COMMAND RECOMMENDATIONS
-Time: [Current Sydney Time and Date]
-Context: [Time period], [Day of week], [Strategic period if applicable]
+**Time:** [Sydney Date and Time]
+**Context:** [Time period], [Day of week], [Strategic period if applicable]
 
-📌 TOP RECOMMENDATIONS:
+## 🎯 STRATEGIC PERIOD DETECTED (if applicable)
+**[STRATEGIC PERIOD NAME]**
 
-1. /command-name ⭐⭐⭐⭐⭐
-   Why: [Specific reason based on time/context]
-   
-2. /command-name ⭐⭐⭐⭐
-   Why: [Specific reason based on analysis]
-   
-3. /command-name ⭐⭐⭐
-   Why: [Supporting rationale]
+## 📌 TOP RECOMMENDATIONS:
 
-[Strategic Period Section if applicable]
-🎯 Strategic Focus: [Period type]
-- [Specific strategic recommendations]
+### 1. `/command-name` ⭐⭐⭐⭐⭐
+**Why:** [Specific reason based on scoring algorithm]
+**Category:** [category] • **Score:** [score]/100
 
-💡 CONTEXT-BASED SUGGESTIONS:
-- If [condition] → /command-name
-- If [condition] → /command-name
-- If [condition] → /command-name
+### 2. `/command-name` ⭐⭐⭐⭐
+**Why:** [Specific reason based on analysis]
+**Category:** [category] • **Score:** [score]/100
 
-🔔 ACTIVITY REMINDERS:
-- [Missing activity] → /command-name
-- [Gap detected] → /command-name
+## 🔔 MISSING ACTIVITIES:
+- **[MISSING ACTIVITY TYPE]** → `/command-name` ([details if applicable])
 
-📅 UPCOMING STRATEGIC PERIODS:
-- [Date range]: [Period type] → [Recommended commands]
+## 💡 CONTEXT-BASED SUGGESTIONS:
+- **If feeling scattered** → `/brain-dump` - Capture racing thoughts
+- **If need structure** → `/executive-function` - ADD-optimized support
+- **If behind on goals** → `/skill-status` - Progress check
+- **If low energy** → `/victory-review` - Motivation boost
 
-🧠 AI ENGINEERING JOURNEY:
-- Days to 2026 goal: [calculation]
-- Current skill trajectory: [status]
-- Next milestone: [upcoming goal]
+## 📅 UPCOMING STRATEGIC PERIODS:
+- **[Next Sunday]**: Week-end → `/review-week`, `/plan-week`
+- **[Next Month-end]**: Month-end → `/review-month`, `/plan-month`
 
-✨ MISSION ALIGNMENT CHECK:
-- [How top recommendations serve your AI engineering mission]
-- [Values alignment verification]
-- [Role development opportunities]
+## ✨ MISSION ALIGNMENT CHECK:
+Your top recommendations serve your mission **"To achieve the rank of Senior AI Software Engineer through relentless daily dedication"**:
+
+- **`/command-name`** = [Mission alignment explanation]
+- **`/command-name`** = [Mission alignment explanation]
+
+**Days to mid-2026 goal:** ~[days] days remaining
+**Recommended sequence:** `/command-1` → `/command-2` → `/command-3`
 ```
 
-### 8. Integration with Mission and Values
+### 10. Integration with Mission and Values
 
 #### Mission Alignment
 Every recommendation includes how it serves Robert's mission:
@@ -339,4 +384,35 @@ Recommendations maintain coherence across planning levels:
 - **Monthly objectives** serving **quarterly milestones**
 - **Quarterly milestones** serving **yearly transformation goals**
 
-This comprehensive recommender system provides intelligent, context-aware guidance while maintaining strategic alignment with your AI engineering transformation journey and ADD-optimized workflow patterns.
+## Implementation
+
+### Cached Command Processing
+```bash
+# Called by /recommend slash command
+node scripts/intelligent-recommender.js "$context"
+
+# Called by /recommend --update
+node scripts/intelligent-recommender.js --update "$context"
+```
+
+### Cache Management
+- **Automatic Updates**: Cache rebuilds when command files are modified
+- **Performance**: Fast recommendations using pre-processed metadata
+- **Extensibility**: Easy to add new commands and conditions
+- **Maintenance**: Built-in cache validation and statistics
+
+### Data Files
+```
+planning/data/
+├── command-cache.json        # Main command metadata cache
+├── day-[date].json          # Daily planning data (checked for gaps)
+└── execution-[date].json    # Daily execution tracking
+
+journal/daily/
+└── daily-[date].md          # Daily journal entries (checked for checkins)
+
+tracking/
+└── bootdev-progress.json    # Boot.dev streak tracking
+```
+
+This enhanced recommender system provides intelligent, context-aware guidance using comprehensive caching and scoring algorithms while maintaining strategic alignment with your AI engineering transformation journey and ADD-optimized workflow patterns.
