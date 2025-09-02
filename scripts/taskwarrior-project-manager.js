@@ -889,12 +889,14 @@ Commands:
   create-project <json>     Create hierarchical project with subtasks
   break-down <uuid> <json>  Break existing task into subtasks  
   project-view <id>         Show project hierarchy and progress
+  dependency-analysis <id>  Analyze project dependencies and critical path
   link-calendar <uuid> <json> Link task to calendar event via UUID
   test                      Run test with sample project
 
 Examples:
   node taskwarrior-project-manager.js test
   node taskwarrior-project-manager.js project-view portfolio
+  node taskwarrior-project-manager.js dependency-analysis portfolio.showcase
   node taskwarrior-project-manager.js project-view abc123-def456-...
                 `);
         }
