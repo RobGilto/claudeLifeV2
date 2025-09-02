@@ -884,3 +884,5 @@ AI Solutions Engineer
 - when something goes wrong, and the user points it out, please fix the systems slash commands/scripts and try not just give the solution, because the user is more concerned about the system behaviour for the future
 - remember when updating the system please first consider updating the slash commands to improve it verses creating or modify a script, due to the high insights the llm will gather from the context. later down the track if the user detect a pattern that needs to be in a script maybe we can bake into scripts
 - before doing anything please check the time first, as this will inform you.
+
+- if its not on the google calendar then it will never be done. need to ensure that when the user ask for something temporally, please offer to add it to their google calendar with an appropriate time block

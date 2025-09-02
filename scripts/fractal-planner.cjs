@@ -880,6 +880,7 @@ class FractalPlanner {
             'learning': 'learning',
             'admin': 'admin',
             'review': 'planning',
+            'buffer': 'flexibility',
             'general': 'general'
         };
         return projectMap[type] || 'general';
@@ -910,6 +911,7 @@ class FractalPlanner {
             'learning': 'M', 
             'review': 'M',
             'admin': 'L',
+            'buffer': 'L',
             'general': 'L'
         };
         return priorityMap[type] || 'M';
