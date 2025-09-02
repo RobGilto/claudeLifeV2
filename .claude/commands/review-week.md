@@ -59,6 +59,35 @@ Automatically generates comprehensive weekly performance review from daily check
    - Best performance days: [days] (based on both mood and objective performance)
    - Challenging days: [days and reasons] (from both subjective challenges and objective low completion rates)
 
+   ## Newport Slow Productivity Metrics
+
+   ### Deep Work Analysis
+   - **Total Deep Work Hours**: X hours (from protected focus time blocks)
+   - **Deep Work Quality Score**: X/10 (effectiveness during focus blocks)
+   - **Interruption Rate**: X interruptions/day (during deep work periods)
+   - **Context Switch Frequency**: X/day (between different types of tasks)
+
+   ### Quality Over Quantity Assessment
+   - **Quality Focus Areas**: [What you did exceptionally well vs. just completed]
+   - **Depth vs. Surface Ratio**: X% deep work vs. Y% shallow tasks
+   - **Craft Investment**: [Time spent perfecting vs. rushing through work]
+   - **Standards Maintenance**: [Areas where quality standards were upheld/compromised]
+
+   ### Sustainable Pace Indicators
+   - **Overcommitment Score**: X/10 (1=sustainable, 10=unsustainable)
+   - **Recovery Time**: X% of week spent on restoration/renewal
+   - **Energy Trajectory**: [Increasing/Stable/Declining through the week]
+   - **Burnout Risk Factors**: [Warning signs of unsustainable pace]
+
+   ### Values Alignment Review
+   **Core Values Expression**:
+   - [Value 1]: [How it was honored this week]
+   - [Value 2]: [How it was honored this week]
+   - [Value 3]: [How it was honored this week]
+   
+   **Values Balance**: [Which values were over/under-emphasized]
+   **Values Conflicts**: [Any tensions between competing values]
+
    ## Weekly Insights
    [Key insights from the week - patterns, learnings, discoveries]
 

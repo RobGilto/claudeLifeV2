@@ -65,6 +65,31 @@ Conduct a daily reflection and performance review of completed time blocks and o
    - Average focus: X/10
    - Best performance time: [time period]
 
+   ## Newport Slow Productivity Assessment
+
+   ### Deep Work Quality
+   - **Deep Work Hours Today**: X hours (total time in focused, uninterrupted work)
+   - **Deep Work Effectiveness**: X/10 (quality of focus during deep blocks)
+   - **Interruption Count**: X interruptions (calls, messages, distractions during deep work)
+   - **Context Switches**: X times (switching between different types of work)
+
+   ### Quality Over Quantity
+   - **Craft Focus**: [What you did exceptionally well today vs. rushing through]
+   - **Standards Maintained**: [Areas where you upheld quality vs. compromised for speed]
+   - **Perfectionism Check**: [Balance between excellence and progress]
+   - **Meaningful Progress**: [Substantial advancement vs. busy work]
+
+   ### Sustainable Pace Check
+   - **Overcommitment Score**: X/10 (1=sustainable, 10=unsustainable)
+   - **Recovery Time**: X hours/minutes of restoration/break time
+   - **Energy Management**: [How well you worked with natural energy rhythms]
+   - **Tomorrow's Sustainability**: [Can this pace be maintained?]
+
+   ### Values Expression Today
+   - **Primary Value Lived**: [Which core value was most expressed today]
+   - **Values Alignment**: [How daily activities served your core values]
+   - **Values Neglected**: [Any values that need more attention]
+
    ## Accomplishments & Wins
    [What was achieved today]
 
