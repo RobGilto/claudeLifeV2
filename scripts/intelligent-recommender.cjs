@@ -46,23 +46,61 @@ class IntelligentRecommender {
      * Check if cache needs updating
      */
     needsCacheUpdate() {
-        if (!fs.existsSync(this.cacheFile)) return true;
+        if (!fs.existsSync(this.cacheFile)) {
+            console.log('📝 Cache file does not exist - rebuilding');
+            return true;
+        }
         
         try {
             const cache = JSON.parse(fs.readFileSync(this.cacheFile, 'utf8'));
             const cacheTime = new Date(cache.buildTime);
             const commandsDir = './.claude/commands';
             
-            if (!fs.existsSync(commandsDir)) return true;
+            if (!fs.existsSync(commandsDir)) {
+                console.log('📁 Commands directory not found - rebuilding');
+                return true;
+            }
             
-            const files = fs.readdirSync(commandsDir).filter(f => f.endsWith('.md'));
-            for (const file of files) {
-                if (fs.statSync(path.join(commandsDir, file)).mtime > cacheTime) {
+            // Get current command files
+            const currentFiles = fs.readdirSync(commandsDir)
+                .filter(f => f.endsWith('.md'))
+                .map(f => path.basename(f, '.md'));
+            
+            // Get cached command names
+            const cachedCommands = Object.keys(cache.commands || {});
+            
+            // Check for new commands
+            const newCommands = currentFiles.filter(cmd => !cachedCommands.includes(cmd));
+            if (newCommands.length > 0) {
+                console.log(`🆕 New commands detected: ${newCommands.join(', ')} - rebuilding`);
+                return true;
+            }
+            
+            // Check for removed commands
+            const removedCommands = cachedCommands.filter(cmd => !currentFiles.includes(cmd));
+            if (removedCommands.length > 0) {
+                console.log(`🗑️ Removed commands detected: ${removedCommands.join(', ')} - rebuilding`);
+                return true;
+            }
+            
+            // Check for modified files
+            for (const file of currentFiles) {
+                const filePath = path.join(commandsDir, file + '.md');
+                if (fs.statSync(filePath).mtime > cacheTime) {
+                    console.log(`📝 Modified command detected: ${file} - rebuilding`);
                     return true;
                 }
             }
+            
+            // Check if total count changed (safety check)
+            if (currentFiles.length !== cachedCommands.length) {
+                console.log(`🔢 Command count mismatch (current: ${currentFiles.length}, cached: ${cachedCommands.length}) - rebuilding`);
+                return true;
+            }
+            
             return false;
-        } catch {
+        } catch (error) {
+            console.log(`❌ Error reading cache: ${error.message} - rebuilding`);
             return true;
         }
     }
