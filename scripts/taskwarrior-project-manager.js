@@ -795,6 +795,53 @@ async function main() {
                 console.log(JSON.stringify(linkResult, null, 2));
                 break;
 
+            case 'dependency-analysis':
+                const depProjectId = args[1];
+                const dependencyAnalysis = await pm.analyzeDependencyChain(depProjectId);
+                
+                if (dependencyAnalysis.error) {
+                    console.log('Error:', dependencyAnalysis.error);
+                } else {
+                    // Format dependency analysis output
+                    console.log(`\n🔗 DEPENDENCY ANALYSIS: ${dependencyAnalysis.projectIdentifier}`);
+                    console.log(`📋 Total Tasks: ${dependencyAnalysis.totalTasks}`);
+                    
+                    console.log(`\n⚡ Critical Path:`);
+                    dependencyAnalysis.criticalPath.path.forEach((taskUuid, index) => {
+                        const task = dependencyAnalysis.dependencyGraph.get(taskUuid).task;
+                        const connector = index === dependencyAnalysis.criticalPath.path.length - 1 ? '└──' : '├──';
+                        console.log(`  ${connector} ${task.description}`);
+                    });
+                    console.log(`  📊 Estimated Hours: ${dependencyAnalysis.criticalPath.estimatedHours}`);
+                    
+                    if (dependencyAnalysis.blockers.length > 0) {
+                        console.log(`\n🚫 Current Blockers:`);
+                        dependencyAnalysis.blockers.forEach(blocker => {
+                            if (blocker.blockedTask) {
+                                console.log(`  ⏳ ${blocker.blockedTask.description} (blocked by ${blocker.blockingTasks.length} tasks)`);
+                            }
+                            if (blocker.blockerTask) {
+                                console.log(`  🚨 ${blocker.blockerTask.description} (blocking ${blocker.affectedTasks.length} tasks)`);
+                            }
+                        });
+                    }
+                    
+                    if (dependencyAnalysis.milestoneProgress.length > 0) {
+                        console.log(`\n🎯 Milestone Progress:`);
+                        dependencyAnalysis.milestoneProgress.forEach(milestone => {
+                            console.log(`  ${milestone.progress}% - ${milestone.milestone.description} (${milestone.riskLevel} risk)`);
+                        });
+                    }
+                    
+                    console.log(`\n⚠️  Risk Assessment: ${dependencyAnalysis.riskAssessment.level}`);
+                    if (dependencyAnalysis.riskAssessment.factors.length > 0) {
+                        dependencyAnalysis.riskAssessment.factors.forEach(factor => {
+                            console.log(`    • ${factor}`);
+                        });
+                    }
+                }
+                break;
+
             case 'test':
                 // Test with sample project
                 const sampleProject = {
