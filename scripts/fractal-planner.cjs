@@ -695,7 +695,8 @@ class FractalPlanner {
             let successCount = 0;
             let duplicateCount = 0;
             
-            for (const block of blocks) {
+            for (let i = 0; i < blocks.length; i++) {
+                const block = blocks[i];
                 const eventTitle = `${this.getBlockTypeIcon(block.type)} ${block.activity}`;
                 const startDateTime = `${date}T${block.start}:00`;
                 const endDateTime = `${date}T${this.addMinutes(block.start, block.duration)}:00`;
@@ -711,7 +712,7 @@ class FractalPlanner {
                         start: startDateTime,
                         end: endDateTime,
                         timeZone: 'Australia/Sydney',
-                        description: this.generateEventDescription(block),
+                        description: this.generateEventDescription(block, i),
                         colorId: this.getColorForBlockType(block.type),
                         reminders: {
                             useDefault: false,
@@ -749,7 +750,8 @@ class FractalPlanner {
     generateMcpCalendarCommands(blocks, date) {
         const commands = [];
         
-        for (const block of blocks) {
+        for (let i = 0; i < blocks.length; i++) {
+            const block = blocks[i];
             const eventTitle = `${this.getBlockTypeIcon(block.type)} ${block.activity}`;
             const startDateTime = `${date}T${block.start}:00`;
             const endDateTime = `${date}T${this.addMinutes(block.start, block.duration)}:00`;
@@ -762,7 +764,7 @@ class FractalPlanner {
                     start: startDateTime,
                     end: endDateTime,
                     timeZone: 'Australia/Sydney',
-                    description: this.generateEventDescription(block),
+                    description: this.generateEventDescription(block, i),
                     colorId: this.getColorForBlockType(block.type),
                     reminders: {
                         useDefault: false,
@@ -778,10 +780,21 @@ class FractalPlanner {
         return commands;
     }
     
-    generateEventDescription(block) {
-        const fractalUuid = crypto.randomUUID();
-        const eventUuid = crypto.randomUUID();
-        const trackingUuid = crypto.randomUUID();
+    generateEventDescription(block, blockIndex = 0) {
+        // Use pre-generated UUIDs if available (from TaskWarrior creation)
+        let fractalUuid, eventUuid, trackingUuid;
+        
+        if (this.uuidMappings && this.uuidMappings[blockIndex]) {
+            const mapping = this.uuidMappings[blockIndex];
+            fractalUuid = mapping.fractalUuid;
+            eventUuid = mapping.eventUuid;
+            trackingUuid = mapping.trackingUuid;
+        } else {
+            // Generate new UUIDs if mappings not available
+            fractalUuid = crypto.randomUUID();
+            eventUuid = crypto.randomUUID();
+            trackingUuid = crypto.randomUUID();
+        }
         
         // Generate executive instructions based on block type and activity
         let executiveInstructions = this.generateExecutiveInstructions(block);
@@ -792,7 +805,7 @@ class FractalPlanner {
 🚀 Values: ${this.getValuesForBlockType(block.type)}
 
 🔗 FRACTAL_UUID: ${fractalUuid}
-📊 FRACTAL_LEVEL: day
+📊 FRACTAL_LEVEL: day  
 ⚡ EVENT_UUID: ${eventUuid}
 🎯 LLM_TRACKING_ID: ${trackingUuid}
 
