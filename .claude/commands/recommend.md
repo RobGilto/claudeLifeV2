@@ -66,64 +66,71 @@ When in the last 2 weeks of the year, prioritize strategic foundation commands:
 
 ### 3. Time-Based Recommendations
 
-#### Early Morning (5:00-9:00 AM Sydney Time)
-**Perfect for**: Intention setting, planning, and fresh starts
+**Note:** Robert's actual schedule patterns based on journal analysis:
+- **Morning Checkin:** Usually occurs around noon (12:00 PM)
+- **Afternoon Checkin:** Usually occurs around 6:00 PM  
+- **Evening Checkin:** Usually occurs late evening before bed (11:00 PM+)
+
+#### Early Morning (5:00-12:00 PM Sydney Time)
+**Perfect for**: Deep work, skill development, focused execution before checkin time
 ```
 🌅 EARLY MORNING FOCUS
 ⭐ Top Recommendations:
-1. /morning-checkin - Set daily intentions and energy assessment
-2. /daily-brief - Get personalized news and career insights
-3. /plan-day - Create structured time blocks for success
-4. /ritual-status - Check daily ritual commitments
+1. /daily-brief - Get personalized news and career insights
+2. /plan-day - Create structured time blocks for success
+3. /pomodoro start - Begin focused work session
+4. /bootdev-done - Complete morning learning session
+5. /taskmaster-start - Execute daily time blocks
+```
+
+#### Midday Checkin Time (11:00 AM - 1:00 PM)
+**Perfect for**: Reflection, energy assessment, intention setting
+```
+🌤️ MIDDAY CHECKIN WINDOW
+⭐ Top Recommendations:
+1. /morning-checkin - Energy assessment and daily intentions (Robert's usual noon timing)
+2. /ritual-status - Check daily ritual commitments
+3. /skill-status - Review progress toward 2026 goals
+4. /executive-function - ADD-optimized productivity support
 5. /taskwarrior-ritual-sync - Sync rituals with TaskWarrior
 ```
 
-#### Morning (9:00-12:00 PM)
-**Perfect for**: Deep work, skill development, focused execution
-```
-🌤️ MORNING PRODUCTIVITY
-⭐ Top Recommendations:
-1. /pomodoro start - Begin focused work session
-2. /taskmaster-start - Execute daily time blocks
-3. /skill-status - Review progress toward 2026 goals
-4. /github-skill-scan - Analyze recent coding activity
-5. /bootdev-done - Complete morning learning session
-```
-
-#### Afternoon (12:00-17:00 PM)
-**Perfect for**: Mid-day reflection, break management, course correction
+#### Afternoon Work (1:00-6:00 PM)
+**Perfect for**: Continued execution, break management, course correction
 ```
 ☀️ AFTERNOON MOMENTUM
 ⭐ Top Recommendations:
-1. /afternoon-checkin - Mid-day energy and priority check
-2. /pomodoro break - Take strategic breaks for ADD optimization
-3. /brain-dump - Capture scattered thoughts and ideas
-4. /project-progress - Review current project status
-5. /executive-function - ADD-optimized productivity support
+1. /pomodoro start - Continue focused work sessions
+2. /brain-dump - Capture scattered thoughts and ideas
+3. /project-progress - Review current project status
+4. /github-skill-scan - Analyze recent coding activity
+5. /pomodoro break - Take strategic breaks for ADD optimization
 ```
 
-#### Evening (17:00-20:00 PM)
-**Perfect for**: Completion, reflection, victory celebration
+#### Evening Checkin Time (5:00-7:00 PM)
+**Perfect for**: Mid-day reflection, accomplishment review, energy check
 ```
-🌅 EVENING WRAP-UP
+🌅 EVENING CHECKIN WINDOW
 ⭐ Top Recommendations:
-1. /evening-checkin - Day reflection and tomorrow planning
-2. /bootdev-done - Complete evening coding practice
-3. /add-victory - Capture today's wins and progress
-4. /calendar-sync - Schedule tomorrow's time blocks
-5. /taskmaster-complete - Close out today's execution
+1. /afternoon-checkin - Mid-day energy and priority check (Robert's usual 6 PM timing)
+2. /add-victory - Capture day's wins and progress
+3. /bootdev-done - Complete evening coding practice
+4. /executive-function - ADD-optimized support if energy flagging
+5. /calendar-sync - Schedule remaining evening blocks
 ```
 
-#### Night (20:00-23:00 PM)
-**Perfect for**: Deep reflection, learning extraction, weekly review
+#### Late Evening/Night (7:00 PM - Bedtime)
+**Perfect for**: Final execution, deep reflection, day completion
 ```
-🌙 NIGHT REFLECTION
+🌙 EVENING EXECUTION & NIGHT REFLECTION
 ⭐ Top Recommendations:
-1. /review-day - Comprehensive daily performance review
-2. /victory-suggest - AI-powered victory detection
-3. /lessons-detect - Extract wisdom from challenges
-4. /brain-dump-analysis - Process stream-of-consciousness notes
-5. /transcribe-brain-dump - Convert voice notes to insights
+1. /evening-checkin - Day reflection and tomorrow planning (Robert's usual 11+ PM timing)
+2. /taskmaster-complete - Close out today's execution
+3. /review-day - Comprehensive daily performance review
+4. /victory-suggest - AI-powered victory detection
+5. /lessons-detect - Extract wisdom from challenges
+6. /brain-dump-analysis - Process stream-of-consciousness notes
+7. /transcribe-brain-dump - Convert voice notes to insights
 ```
 
 ### 4. Day-of-Week Patterns

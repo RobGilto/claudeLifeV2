@@ -109,6 +109,25 @@ Use conventional commit format:
 
 ## Intelligent Command Systems
 
+### Smart Command Recommender Protocol
+The `/recommend` command provides intelligent, context-aware suggestions for the most appropriate slash commands based on:
+
+- **Time-Based Intelligence**: Recommendations optimized for current Sydney time and day of week
+- **Strategic Period Detection**: Automatic detection of month-end, quarter-end, and year-end planning periods
+- **Mission Alignment**: All suggestions maintain coherence with AI engineering transformation goals
+- **Values Integration**: Incorporates foundation commands (`/define-values`, `/define-roles`, `/lifestyle-vision`) when appropriate
+- **Context Analysis**: Analyzes conversation topics and recent activity patterns for relevance
+- **ADD Optimization**: Prioritizes commands that support executive function and sustainable productivity
+
+**Year-End Strategic Focus (December 15-31)**: Automatically prioritizes strategic foundation commands like `/review-year`, `/plan-year`, `/lifestyle-vision`, and values/roles definition for comprehensive annual planning.
+
+**Smart Detection Logic**: 
+- Tracks missing daily activities (checkins, planning, skill updates)
+- Analyzes recent journal entries and planning data for context
+- Identifies gaps in ritual execution, victory tracking, and skill development
+- Provides keyword-triggered suggestions based on conversation content
+- Maintains strategic coherence across daily → weekly → monthly → quarterly → yearly planning levels
+
 ### Weekly Check-In Protocol
 The `/weekly-checkin` command will:
 1. Analyze project context to determine relevant metrics
