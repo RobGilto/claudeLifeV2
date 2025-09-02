@@ -181,11 +181,12 @@ Data feeds into:
 ## Implementation Details
 
 ### Script Execution
-The command interfaces with `/home/robert/Areas/Scripts/taskwarrior-pomodoro.sh` through:
-1. **Direct Execution**: Runs bash script with appropriate parameters
-2. **Parameter Passing**: Converts command arguments to script options
-3. **Output Processing**: Captures and formats script output for user
-4. **Error Handling**: Graceful error handling and user feedback
+The command uses the JavaScript wrapper `scripts/pomodoro.cjs` which interfaces with the original bash script through:
+1. **Command Processing**: JavaScript wrapper processes slash command arguments
+2. **TaskWarrior Integration**: Direct TaskWarrior API calls for better integration
+3. **Logging**: Comprehensive logging to `logs/pomodoro-YYYY-MM-DD.log`
+4. **System Integration**: Hooks into claudeLifeV2 planning and tracking systems
+5. **Fallback Support**: Can still use original bash script if needed
 
 ### File System Integration
 - **Counter Persistence**: `~/.pomodoro_count` maintains daily counter
@@ -215,6 +216,17 @@ Optional integration with Google Calendar:
 
 # Continue with next task
 /pomodoro start-interactive  # Select from menu
+```
+
+### Quick Command Reference
+```bash
+# Execute via Claude Code
+node scripts/pomodoro.cjs status              # Check today's progress
+node scripts/pomodoro.cjs start               # Start with active task
+node scripts/pomodoro.cjs start-no-task       # Start without task  
+node scripts/pomodoro.cjs start-interactive   # Interactive task selection
+node scripts/pomodoro.cjs break auto          # Take appropriate break
+node scripts/pomodoro.cjs reset               # Reset daily counter
 ```
 
 ### Project Sprint

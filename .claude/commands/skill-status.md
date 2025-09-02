@@ -4,38 +4,51 @@ Current progress dashboard and gap analysis for your AI engineering journey.
 
 ## Process:
 
-1. **Progress Dashboard**:
+1. **Boot.dev Progress Tracking**:
+   - Fetch live data from https://www.boot.dev/u/profusenegotiation88
+   - Current XP level and lessons completed
+   - Recent achievements and activity heatmap
+   - Course completion analysis vs AI engineering requirements
+   - Streak analysis from boot.dev activity
+
+2. **Progress Dashboard**:
    - Visual progress bars for each skill category
    - Days until 2026 target date
    - Current vs target percentages
-   - Weekly momentum indicators
+   - Weekly momentum indicators from boot.dev + GitHub
 
-2. **Priority Matrix**:
+3. **Priority Matrix**:
    - **Critical Path**: Skills blocking 2026 goal
    - **Quick Wins**: High-impact, achievable improvements  
    - **Maintenance**: Skills at target that need practice
    - **Backlog**: Lower priority skills
 
-3. **GitHub Activity Analysis**:
+4. **GitHub Activity Analysis**:
    - Recent commits across all repos using GitHub MCP
    - Language usage trends (Python, TypeScript, JavaScript)
    - Project complexity growth over time
    - Skill evidence from recent work
 
-4. **Weekly Trajectory**:
+5. **Boot.dev Course Recommendations**:
+   - Next courses to prioritize for AI engineering
+   - Estimated completion times based on current pace
+   - AI-specific course suggestions (Build AI Agent, etc.)
+   - Portfolio project alignment with 2026 goals
+
+6. **Weekly Trajectory**:
    - Improvement velocity per skill
-   - Practice time effectiveness
+   - Practice time effectiveness from boot.dev + GitHub
    - Skills at risk of decay (unused >4 weeks)
    - Projected completion dates
 
-5. **Context-Aware Recommendations**:
-   - Based on recent GitHub activity
+7. **Context-Aware Recommendations**:
+   - Based on recent GitHub + boot.dev activity
    - Aligned with current projects (RuneQuest, AI Portfolio Manager)
    - Considers ADD-friendly practice patterns
    - 2-hour session breakdowns
 
-6. **Streak Tracking**:
-   - Consecutive days of skill practice
+8. **Streak Tracking**:
+   - Boot.dev coding streaks and achievements
    - GitHub commit streaks by skill area
    - Victory pattern correlation
    - Momentum preservation strategies
