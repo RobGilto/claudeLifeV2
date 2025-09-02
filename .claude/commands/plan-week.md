@@ -6,21 +6,30 @@ Create or update a weekly plan with priorities and objectives aligned to monthly
 
 1. Read CLAUDE.md and current planning context to understand the user's strategic direction.
 
-2. Show hierarchical planning context:
+2. Show hierarchical planning context with values foundation:
    ```
    📅 Planning Week: YYYY-WXX
    📊 Context: Month YYYY-MM, Quarter YYYY-QX
+   🎯 Core Values Focus: [top 3 values from foundation]
+   🎭 Primary Roles This Week: [2-3 key roles to advance]
+   ✨ Vision Connection: [how this week serves lifestyle vision]
    📋 Parent Alignment:
    - Quarter Focus: [show from quarterly plan if exists]
    - Month Goals: [show from monthly plan if exists]
    ```
 
-3. Run the fractal planner command:
+3. Conduct Weekly Values Check:
+   - Identify which core values this week's priorities serve
+   - Check for values balance vs. over-focus on single values
+   - Ensure "slow productivity" principles (sustainable pace, quality focus)
+   - Verify role development balance
+
+4. Run the fractal planner command:
    ```bash
    node scripts/fractal-planner.cjs plan-week [week]
    ```
 
-4. After successful planning, generate a readable weekly plan report in `journal/planning/weekly-reviews/plan-YYYY-WXX.md`:
+5. After successful planning, generate a readable weekly plan report in `journal/planning/weekly-reviews/plan-YYYY-WXX.md`:
 
    ```markdown
    ---
@@ -42,7 +51,27 @@ Create or update a weekly plan with priorities and objectives aligned to monthly
    ## Weekly Objectives (Up to 8 objectives)
    [List objectives with strategic alignment]
 
-   ## Parent Alignment
+   ## Newport Multi-Scale Alignment
+
+   ### Values Integration
+   **Primary Values This Week**: [2-3 core values emphasized]
+   **Values Balance Check**: 
+   - Growth: [How this week develops capabilities]
+   - Excellence: [Quality focus areas]
+   - Balance: [Sustainability measures]
+   - [Other core values]: [How they're honored]
+
+   ### Role Development Focus
+   **Primary Role**: [Main role receiving development this week]
+   **Role Balance**: [How to serve multiple roles without conflict]
+   **Transition Support**: [Steps advancing AI engineer journey]
+
+   ### Slow Productivity Principles
+   - **Deep Work Blocks**: [Protected focus time this week]
+   - **Quality Over Quantity**: [What you'll do fewer of, but better]
+   - **Sustainable Pace**: [How you'll avoid overcommitment]
+
+   ## Parent Plan Alignment
    ### Monthly Goals Connection
    [Show how weekly priorities support monthly objectives]
    
