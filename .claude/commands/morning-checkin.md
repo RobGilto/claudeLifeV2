@@ -8,26 +8,39 @@ An early-day energy assessment and intention-setting checkpoint.
 
 2. First, understand the user's context by reading CLAUDE.md or any personal/business files to personalize the greeting and understand their work.
 
-3. Check if `/journal/daily/YYYY-MM-DD.md` exists (using today's actual Sydney date):
+3. **Check Calendar and Planning Context**:
+   - Check if `/planning/data/day-YYYY-MM-DD.json` exists for today's plan
+   - Use Google Calendar MCP to list today's events: `mcp__google-calendar__list-events`
+   - Use MCP TaskWarrior to get pending tasks: `mcp__taskwarrior__get_next_tasks`
+   - Analyze today's time blocks and objectives from planning data
+   - Present this context before asking morning questions
+
+4. Check if `/journal/daily/YYYY-MM-DD.md` exists (using today's actual Sydney date):
    - If exists: Read current content to see if morning session already completed
    - If morning session exists: Acknowledge and offer to update
    - If not exists: Create new file structure
 
-4. Greet them warmly and ask these questions:
+5. Greet them warmly with context-aware questions:
 
 🌄 Morning Check-in for [Today's Date] - [Current Time]
 
 Good morning! Let's set up your day for success:
 
+**📅 Today's Context:**
+[Show existing calendar events]
+[Show planned time blocks if they exist]  
+[Show key TaskWarrior tasks]
+
+**Morning Questions:**
 1. **What time did you wake up?**
 2. **Morning energy level:** (1-10 + brief description)
 3. **How was your sleep?** (quality/hours)
 4. **How does your body feel?** (physical state)
-5. **What are your intentions for today?**
-6. **Top 3 priorities for today:**
+5. **What are your intentions for today?** (considering the above commitments)
+6. **Top 3 priorities for today:** (aligned with calendar/planning)
 7. **What challenges might arise today?**
-8. **What's one thing you commit to completing?**
-9. Anything else to note?
+8. **What's one thing you commit to completing?** (from tasks or time blocks)
+9. **Anything else to note?**
 
 5. Save/append to `/journal/daily/YYYY-MM-DD.md` (using today's actual Sydney date) with structure:
    ```yaml

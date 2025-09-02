@@ -411,7 +411,10 @@ class FractalPlanner {
             });
             console.log('💡 Consider these conflicts when scheduling your time blocks or use /calendar-sync to avoid overlaps.\n');
         } else {
-            console.log('✅ No calendar conflicts detected\n');
+            console.log('⚠️ CALENDAR CHECK LIMITATION DETECTED');
+            console.log('   Node.js script cannot access Google Calendar MCP directly');
+            console.log('   This does NOT mean no events exist - manual verification required');
+            console.log('   Use Claude Code with Google Calendar MCP to verify availability before creating events\n');
         }
         
         console.log(`\n🗓️  Planning Day: ${identifiers.day}`);
@@ -1865,11 +1868,18 @@ Generated from daily review session on ${formatSydneyDateString()}
     async checkCalendarEvents(dateStr) {
         const events = [];
         try {
-            // This would be called through Claude's MCP system in a real implementation
-            // For now, return empty array as a fallback
+            // CRITICAL: This function cannot access Google Calendar MCP from Node.js script
+            // MCP integration only works within Claude Code environment
+            console.log('⚠️ Calendar check not available in Node.js script - MCP requires Claude Code');
+            console.log('📋 MANUAL VERIFICATION REQUIRED: Check Google Calendar manually before proceeding');
+            console.log(`   Use Google Calendar MCP in Claude Code to verify ${dateStr} availability`);
+            console.log('   Command: mcp__google-calendar__list-events with date range');
+            
+            // Return empty array but warn that manual check is required
             return events;
         } catch (error) {
             console.log('⚠️ Calendar check failed:', error.message);
+            console.log('📋 MANUAL VERIFICATION REQUIRED: Check Google Calendar manually before proceeding');
             return events;
         }
     }
