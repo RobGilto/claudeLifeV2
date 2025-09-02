@@ -142,14 +142,29 @@ Create or update a daily plan with time blocks aligned to higher-level objective
 
 ## Critical Safeguards
 
-**NEVER create calendar events without:**
-1. First checking existing calendar events manually via MCP
-2. Validating no conflicts exist between planned blocks and existing events  
-3. Adjusting time blocks to accommodate pre-existing commitments
+**AUTOMATED CALENDAR INTEGRATION REQUIREMENTS:**
+1. **MANDATORY**: First check existing calendar events via MCP (step 3)
+2. **MANDATORY**: Compare each generated time block against existing events (step 7b)  
+3. **MANDATORY**: Skip or modify conflicting time blocks (step 7b)
+4. **MANDATORY**: Only create events for validated, non-conflicting time blocks (step 7c)
+5. **MANDATORY**: Report integration results with conflict summary (step 7d)
 
-**If calendar check fails or returns empty results:**
-- Assume conflicts exist
-- Manually verify calendar availability
-- Do not proceed with automated calendar creation
+**Conflict Resolution Hierarchy:**
+1. **Skip conflicting blocks**: If overlap exists, skip calendar creation for that block
+2. **Modify times**: If minor adjustment (±30 minutes) resolves conflict, adjust and document
+3. **Split blocks**: If large block can be split around existing event, create split events
+4. **Manual override**: If too many conflicts, fall back to manual calendar creation
+
+**Error Handling:**
+- **If calendar check fails**: Assume conflicts exist, skip automated creation, provide manual instructions
+- **If MCP commands fail**: Report failure, provide alternative creation methods
+- **If conflict detection fails**: Default to conservative approach - skip automated creation
+
+**Success Criteria:**
+- All created events must have clear executive instructions
+- All created events must show strategic alignment  
+- All created events must use Australia/Sydney timezone
+- All created events must include appropriate reminders
+- All conflicts must be properly documented and resolved
 
 Remember: Daily plans should align with weekly priorities and support monthly goals through strategic time block allocation, while respecting existing calendar commitments.
