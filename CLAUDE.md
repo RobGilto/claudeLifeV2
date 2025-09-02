@@ -137,86 +137,16 @@ For detailed documentation on all command systems, see:
 
 ## MCP Integration and Setup
 
-### Google Calendar MCP Integration
-This repository integrates with Google Calendar through the MCP (Model Context Protocol) server for seamless calendar management and event creation.
+See [Calendar Integration Guide](docs/calendar-integration-guide.md) for complete Google Calendar MCP setup instructions, troubleshooting, and usage patterns.
 
-#### Initial Setup Process
-1. **Install Google Calendar MCP Server**
-   ```bash
-   npx @cocal/google-calendar-mcp --help  # Verify installation
-   ```
+### Quick Setup Summary
+1. Install: `npx @cocal/google-calendar-mcp`
+2. Configure OAuth credentials in repository root
+3. Authenticate via browser flow
+4. Add to Claude Code MCP configuration
+5. Verify with `/mcp` command
 
-2. **Configure OAuth Credentials**
-   - Obtain Google Calendar API credentials (`client_secret_google_calendar.json`)
-   - Place credentials file in repository root
-   - Add to `.gitignore` to prevent accidental commits:
-     ```gitignore
-     # Google API credentials
-     client_secret_google_calendar.json
-     ```
-
-3. **Authenticate with Google Calendar**
-   ```bash
-   GOOGLE_OAUTH_CREDENTIALS=./client_secret_google_calendar.json npx @cocal/google-calendar-mcp auth
-   ```
-   - Follow browser authentication flow
-   - Tokens saved to `~/.config/google-calendar-mcp/tokens.json`
-
-4. **Configure Claude Code MCP Integration**
-   - Add to `~/.config/claude/claude_desktop_config.json` (or project-specific config):
-   ```json
-   {
-     "mcpServers": {
-       "google-calendar": {
-         "command": "npx",
-         "args": ["@cocal/google-calendar-mcp"],
-         "env": {
-           "GOOGLE_OAUTH_CREDENTIALS": "/absolute/path/to/client_secret_google_calendar.json"
-         }
-       }
-     }
-   }
-   ```
-
-5. **Verify Integration**
-   - Restart Claude Code
-   - Run `/mcp` to confirm `google-calendar` server is loaded
-   - Test event creation to verify functionality
-
-#### Available Calendar Functions
-- **Event Management**: Create, update, delete calendar events
-- **Calendar Operations**: List calendars, search events, check free/busy status
-- **Time Zone Support**: Full Australia/Sydney timezone handling
-- **Reminder Configuration**: Email and popup reminders
-- **Recurring Events**: Support for recurring event patterns
-
-#### Integration with Planning Workflows
-- **Fractal Planning**: Automatically schedule time blocks from daily plans
-- **Task Management**: Convert planning sessions to calendar events
-- **Time Tracking**: Create events for focused work sessions
-- **Review Scheduling**: Automatically schedule weekly/monthly reviews
-
-#### Timezone Configuration
-All calendar operations use Australia/Sydney timezone by default to match user location (NSW, Australia).
-
-#### Common Usage Patterns
-```javascript
-// Create planning session event
-{
-  "calendarId": "primary",
-  "summary": "Deep Work - AI Learning",
-  "start": "2025-08-28T09:00:00",
-  "end": "2025-08-28T10:30:00", 
-  "timeZone": "Australia/Sydney",
-  "reminders": {"useDefault": false, "overrides": [{"method": "popup", "minutes": 10}]}
-}
-```
-
-#### Troubleshooting
-- **Authentication Issues**: Re-run auth flow if tokens expire
-- **MCP Not Loading**: Verify absolute paths in configuration
-- **Timezone Problems**: Ensure Australia/Sydney timezone is specified
-- **Permission Errors**: Check Google Calendar API scope permissions
+**Note**: All calendar operations use Australia/Sydney timezone by default.
 
 ## Quality Checks
 
