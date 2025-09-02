@@ -31,7 +31,7 @@ class IntelligentRecommender {
         if (forceUpdate || !fs.existsSync(this.cacheFile) || this.needsCacheUpdate()) {
             console.log('🔄 Updating command cache...');
             try {
-                execSync('node scripts/command-cache-builder.js build', { stdio: 'inherit' });
+                execSync('node scripts/command-cache-builder.cjs build', { stdio: 'inherit' });
             } catch (error) {
                 console.error('❌ Failed to build cache:', error.message);
                 throw error;

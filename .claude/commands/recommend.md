@@ -39,10 +39,10 @@ node scripts/command-cache-builder.js stats
 ### 2. Intelligent Scoring Algorithm
 ```bash
 # Generate recommendations with scoring
-node scripts/intelligent-recommender.js [context]
+node scripts/intelligent-recommender.cjs [context]
 
 # Force cache update and recommend
-node scripts/intelligent-recommender.js --update [context]
+node scripts/intelligent-recommender.cjs --update [context]
 ```
 
 **Scoring factors:**
