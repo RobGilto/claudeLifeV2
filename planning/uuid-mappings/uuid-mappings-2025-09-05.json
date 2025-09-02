@@ -1,0 +1,55 @@
+{
+  "date": "2025-09-05",
+  "generated": "2025-09-02T14:06:02.000Z",
+  "mappings": [
+    {
+      "blockIndex": 0,
+      "fractalUuid": "cd0895cc-60f7-4b23-bb9c-6f9fa9ac9d57",
+      "eventUuid": "f19f2349-abac-48e5-b95f-dafa0678d144",
+      "trackingUuid": "46b6a0c6-0d6d-47ba-9ffe-0c2c83d3eb02",
+      "activity": "AI/ML skill development - Boot.dev or project work",
+      "time": "09:00-10:30"
+    },
+    {
+      "blockIndex": 1,
+      "fractalUuid": "9a522f36-a069-4e86-8aaa-2a5ead69dd99",
+      "eventUuid": "f2c01258-18cf-44cb-b945-27165464a1e0",
+      "trackingUuid": "90510e1f-9b83-45f7-87aa-849f3b6ac27b",
+      "activity": "Technical project work or advanced learning",
+      "time": "11:00-12:30"
+    },
+    {
+      "blockIndex": 2,
+      "fractalUuid": "c8c486d0-09f9-4099-8de5-297d3c135146",
+      "eventUuid": "bd9e271d-9c3e-4705-9a97-7fd5303293e5",
+      "trackingUuid": "cfcffa93-855c-4ee9-9a52-49d58509209e",
+      "activity": "Research, documentation, or skill practice",
+      "time": "14:00-15:30"
+    },
+    {
+      "blockIndex": 3,
+      "fractalUuid": "fcdc91ab-bdd1-4e46-b3e9-3e9b69fe1193",
+      "eventUuid": "f2f91396-0229-41fc-b0ec-16bc2ee6bca9",
+      "trackingUuid": "df0495c5-8e64-477a-9001-e19c25e7a8da",
+      "activity": "Evening project work or intensive study",
+      "time": "16:00-17:30"
+    },
+    {
+      "blockIndex": 4,
+      "fractalUuid": "b30f8c52-c438-4a9a-a32b-d72e3459f7d9",
+      "eventUuid": "9aebcd02-d557-4248-a4e9-8b13936c53e7",
+      "trackingUuid": "d8eec48a-fd07-4989-9f8e-4efcf6000b3b",
+      "activity": "Admin, planning, and final work session",
+      "time": "19:00-20:30"
+    },
+    {
+      "blockIndex": 5,
+      "fractalUuid": "efdacf93-2654-4f62-ac27-56a7a7596f8d",
+      "eventUuid": "05949d2c-04f6-47bd-a4b5-23a4e714c99d",
+      "trackingUuid": "955af1b5-8200-48c4-8ead-44dac0375aaa",
+      "activity": "BUFFER BLOCK - Flexible time for overruns or catch-up",
+      "time": "21:00-22:30"
+    }
+  ],
+  "totalBlocks": 6
+}
