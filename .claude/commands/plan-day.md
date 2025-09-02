@@ -99,9 +99,10 @@ Create or update a daily plan with time blocks aligned to higher-level objective
 
 7. **AUTOMATIC CALENDAR INTEGRATION**: After plan validation, automatically create calendar events:
 
-   7a. **Load Generated MCP Commands**: Check if fractal planner saved MCP commands:
+   7a. **Load Generated Data**: Check if fractal planner saved MCP commands and UUID mappings:
    ```
    Read planning/analytics/calendar-sync-[date].json for generated MCP commands
+   Read planning/uuid-mappings/uuid-mappings-[date].json for TaskWarrior UUID cross-links
    ```
    
    7b. **Conflict Resolution**: Compare generated blocks with existing calendar events:
