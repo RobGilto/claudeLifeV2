@@ -2,6 +2,11 @@
 
 Create or update a weekly plan with priorities and objectives aligned to monthly and quarterly goals.
 
+## Usage
+```bash
+/plan-week [week] [--hitl]  # Add --hitl for Human in the Loop approval workflow
+```
+
 ## Process:
 
 1. Read CLAUDE.md and current planning context to understand the user's strategic direction.
@@ -24,7 +29,51 @@ Create or update a weekly plan with priorities and objectives aligned to monthly
    - Ensure "slow productivity" principles (sustainable pace, quality focus)
    - Verify role development balance
 
-4. Run the fractal planner command:
+4. **HITL (Human in the Loop) Decision Point**: If `--hitl` flag is used:
+   
+   4a. Run the fractal planner in DRAFT mode:
+   ```bash
+   node scripts/fractal-planner.cjs plan-week [week] --draft
+   ```
+   
+   4b. Present the draft plan to the user for approval:
+   ```
+   📋 DRAFT WEEKLY PLAN FOR APPROVAL
+   📅 Week: [week]
+   
+   ## Proposed Strategic Priorities:
+   [List all proposed priorities with monthly/quarterly alignment]
+   
+   ## Weekly Objectives:
+   [List proposed objectives with justification]
+   
+   ## Values & Role Focus:
+   [Show values emphasis and role development plan]
+   
+   ## Slow Productivity Implementation:
+   [Show sustainable pace and quality focus areas]
+   
+   ❓ **APPROVAL REQUIRED**: 
+   - Type "approve" to finalize the weekly plan
+   - Type "revise" with feedback to adjust the plan
+   - Type "cancel" to abort planning
+   
+   💡 **Feedback options**:
+   - Adjust priorities: "Focus more on skill development, less on admin"
+   - Change objectives: "Add portfolio project objective"
+   - Modify role balance: "More time for learning role, less for current job"
+   - Adjust pace: "This seems too ambitious, reduce scope"
+   ```
+   
+   4c. **Revision Loop**: If user requests changes:
+   - Incorporate feedback into strategic parameters
+   - Re-run fractal planner with adjustments
+   - Present updated draft for re-approval
+   - Continue until user approves or cancels
+   
+   4d. **Only proceed to step 5 after user approval**
+
+5. If NOT using `--hitl` OR after HITL approval, run the fractal planner command:
    ```bash
    node scripts/fractal-planner.cjs plan-week [week]
    ```
