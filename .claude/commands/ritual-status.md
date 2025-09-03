@@ -53,12 +53,13 @@ Show current ritual status using the advanced V2 system with UUID tracking and c
    🔄 18:00 - 19:00 - Boot.dev Daily Practice
 ```
 
-## Integration
+## V2 Integration Features
 
-- Calls `ritual-manager.js` for ritual data and availability calculation
-- Shows completion data from ritual tracking system
-- Calculates available time windows for planning
-- Identifies conflicts and scheduling issues
+- **UUID-Based Tracking**: Each ritual has unique identifier for cross-system linking
+- **Complex Frequency Patterns**: Supports daily, weekly, monthly, quarterly patterns
+- **Calendar Sync Ready**: Shows ritual calendar sync status
+- **Advanced Availability**: Enhanced time window calculation with context
+- **Cross-System Linking**: Integration with TaskWarrior and planning systems
 
 ## Related Commands
 
