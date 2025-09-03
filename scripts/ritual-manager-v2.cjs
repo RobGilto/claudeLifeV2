@@ -19,6 +19,23 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
+// Custom Exception Classes for Ritual Management
+class RitualConflictError extends Error {
+    constructor(message, conflicts = []) {
+        super(message);
+        this.name = 'RitualConflictError';
+        this.conflicts = conflicts;
+    }
+}
+
+class RitualValidationError extends Error {
+    constructor(message, validationIssues = []) {
+        super(message);
+        this.name = 'RitualValidationError';
+        this.validationIssues = validationIssues;
+    }
+}
+
 // Configuration
 const RITUALS_V2_DIR = path.join(__dirname, '..', 'rituals-v2');
 const RITUAL_DEFINITIONS_FILE = path.join(RITUALS_V2_DIR, 'ritual-definitions.json');

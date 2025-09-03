@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2025-09-03T03:58:57.373Z",
+  "lastUpdated": "2025-09-03T04:00:46.010Z",
   "rituals": [
     {
       "uuid": "29696612-cf9e-43a5-b592-36d2d7d2e4f3",
@@ -81,7 +81,69 @@
       ],
       "metadata": {},
       "created": "2025-09-03T03:58:57.373Z",
-      "updated": "2025-09-03T03:58:57.373Z",
+      "updated": "2025-09-03T04:00:14.705Z",
+      "active": false,
+      "tags": [],
+      "integrations": {
+        "taskwarrior": null,
+        "calendar": null,
+        "planning": null
+      }
+    },
+    {
+      "uuid": "ff30e5f6-ac16-4b34-ae9a-a685eafb1617",
+      "name": "Boot.dev Practice",
+      "type": "maintenance",
+      "description": "",
+      "priority": "medium",
+      "frequency": {
+        "type": "daily"
+      },
+      "timeBlocks": [
+        {
+          "startTime": "20:00",
+          "duration": 30,
+          "flexible": false,
+          "context": "general"
+        }
+      ],
+      "metadata": {},
+      "created": "2025-09-03T04:00:26.718Z",
+      "updated": "2025-09-03T04:00:30.145Z",
+      "active": false,
+      "tags": [],
+      "integrations": {
+        "taskwarrior": null,
+        "calendar": null,
+        "planning": null
+      }
+    },
+    {
+      "uuid": "ac254322-da57-4983-aeda-8b30f237513c",
+      "name": "Quarterly Review",
+      "type": "foundational",
+      "description": "",
+      "priority": "medium",
+      "frequency": {
+        "type": "quarterly",
+        "months": [
+          1
+        ],
+        "days": [
+          1
+        ]
+      },
+      "timeBlocks": [
+        {
+          "startTime": "09:00",
+          "duration": 240,
+          "flexible": false,
+          "context": "general"
+        }
+      ],
+      "metadata": {},
+      "created": "2025-09-03T04:00:46.010Z",
+      "updated": "2025-09-03T04:00:46.010Z",
       "active": true,
       "tags": [],
       "integrations": {
