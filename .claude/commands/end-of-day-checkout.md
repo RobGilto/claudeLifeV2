@@ -1,4 +1,4 @@
-# Evening Check-in with Smart Day Plan Integration
+# End-of-Day Checkout with Smart Day Plan Integration
 
 End-of-day reflection and tomorrow planning with optional day plan performance review.
 
@@ -13,20 +13,20 @@ End-of-day reflection and tomorrow planning with optional day plan performance r
    - Use MCP TaskWarrior to get today's completed/remaining tasks: `mcp__taskwarrior__get_next_tasks`
    - Analyze today's time blocks and objective completion from planning data
    - If day plan exists, ask: "I found a day plan for today! Would you like me to run the full performance review using the evening-checkin script? This will include time block analysis and objective completion tracking. (y/n)"
-   - If YES: Run `node scripts/evening-checkin.cjs` and stop here (script handles everything)
-   - If NO or no day plan: Continue with manual evening checkin with calendar context below
+   - If YES: Run `node scripts/end-of-day-checkout.cjs` and stop here (script handles everything)
+   - If NO or no day plan: Continue with manual end-of-day checkout with calendar context below
 
 4. Check if `/journal/daily/YYYY-MM-DD.md` exists (using today's actual Sydney date):
    - If exists: Read to see if afternoon session exists, append evening section
-   - Update metadata: `sessions: [afternoon, evening]` or `[evening]`
+   - Update metadata: `sessions: [afternoon, evening, end-of-day]` or `[end-of-day]`
    - Set `status: complete`
    - If not exists: Create new file (evening-only case)
 
 5. Greet them warmly with context-aware questions:
 
-🌙 **Evening Check-in for [Today's Date] - [Current Time]**
+🌙 **End-of-Day Checkout for [Today's Date] - [Current Time]**
 
-Good evening! Let's reflect on your day:
+Good evening! Let's reflect on your entire day:
 
 **📅 Today's Plan Review:**
 [Show planned time blocks and their intended completion status]
@@ -50,7 +50,7 @@ Good evening! Let's reflect on your day:
    - Append evening section:
 
    ```markdown
-   ## 🌙 Evening Check-in ([TIME])
+   ## 🌙 End-of-Day Checkout ([TIME])
    **Overall Day Feeling:** [response]
    **Today's Accomplishments:**
    1. [accomplishment 1]
@@ -92,7 +92,7 @@ Good evening! Let's reflect on your day:
 8. Create a visual summary and append to same file as `## 📊 Daily Analysis`
 
 9. **Victory Detection (Silent Background Process)**:
-   After saving the evening journal, scan ALL accomplishments (afternoon + evening) for victory patterns:
+   After saving the end-of-day journal, scan ALL accomplishments (afternoon + evening + end-of-day) for victory patterns:
    - Technical victories: "figured out", "built", "solved", "learned"
    - Personal victories: financial decisions, boundary setting, help-seeking
    - Discipline victories: "resisted", "stayed focused", "chose simple"
