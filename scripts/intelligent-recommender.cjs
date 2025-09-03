@@ -343,10 +343,16 @@ class IntelligentRecommender {
         }
         
         // Missing activity matching
+        if (command.name === 'start-of-day') {
+            console.log('🐛 DEBUG: Missing activities for scoring start-of-day:', userCtx.missingActivities.map(m => `${m.type}=>${m.recommendation}`));
+        }
         for (const missing of userCtx.missingActivities) {
             if (missing.recommendation === command.name) {
                 const bonus = missing.urgency === 'high' ? 40 : missing.urgency === 'medium' ? 25 : 15;
                 score += bonus;
+                if (command.name === 'start-of-day') {
+                    console.log(`🐛 DEBUG: Applied +${bonus} bonus to start-of-day, new score: ${score}`);
+                }
             }
         }
         
@@ -432,13 +438,26 @@ class IntelligentRecommender {
         
         // Score all commands
         const scoredCommands = Object.values(this.cache.commands)
-            .map(command => ({
-                ...command,
-                score: this.scoreCommand(command, timeCtx, userCtx, contextInput),
-                stars: '',
-                explanation: ''
-            }))
+            .map(command => {
+                const calculatedScore = this.scoreCommand(command, timeCtx, userCtx, contextInput);
+                if (command.name === 'start-of-day') {
+                    console.log(`🐛 DEBUG: Calculated score for ${command.name}: ${calculatedScore}`);
+                }
+                return {
+                    ...command,
+                    score: calculatedScore,
+                    stars: '',
+                    explanation: ''
+                };
+            })
             .sort((a, b) => b.score - a.score);
+            
+        // Debug: Show top 10 actual scores
+        console.log('🐛 DEBUG: Top 10 actual scores:');
+        for (let i = 0; i < Math.min(10, scoredCommands.length); i++) {
+            const cmd = scoredCommands[i];
+            console.log(`   ${i+1}. ${cmd.name}: ${cmd.score}`);
+        }
         
         // Add stars and explanations to top commands
         const topCommands = scoredCommands.slice(0, limit).map(cmd => ({
@@ -492,6 +511,7 @@ class IntelligentRecommender {
         
         // Missing activities section
         if (userContext.missingActivities.length > 0) {
+            console.log('🐛 DEBUG: Missing activities for display:', userContext.missingActivities.map(m => `${m.type}=>${m.recommendation}`));
             output += `## 🔔 MISSING ACTIVITIES:\n`;
             for (const missing of userContext.missingActivities) {
                 output += `- **${missing.type.replace(/-/g, ' ').toUpperCase()}** → \`/${missing.recommendation}\``;
