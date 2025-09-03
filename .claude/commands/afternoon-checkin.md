@@ -1,92 +1,109 @@
 # Afternoon Check-in
 
-An afternoon wrap-up checkpoint to review how the afternoon went (typically 5-6pm).
+A mid-day energy assessment and intention-setting checkpoint.
 
 ## Process:
 
-1. **CRITICAL - Get Current Sydney Time FIRST**: 
-   - ALWAYS use `./scripts/sydney-time.sh checkin` to get Sydney local time
-   - ALWAYS use `./scripts/sydney-time.sh date` for today's date 
-   - NEVER use MCP time tools - they return UTC not Sydney time
-   - This prevents showing wrong time zones to the user
+1. **Get Current Sydney Time**: Use `./scripts/sydney-time.sh checkin` to get Sydney local time and `./scripts/sydney-time.sh date` for today's date (consistent timezone handling).
 
 2. First, understand the user's context by reading CLAUDE.md or any personal/business files to personalize the greeting and understand their work.
 
 3. **Check Calendar and Planning Context**:
-   - Read `/planning/data/day-YYYY-MM-DD.json` using today's actual date to get time blocks and objectives
-   - Use MCP TaskWarrior to get current tasks: `mcp__taskwarrior__get_next_tasks`
-   - Review afternoon time blocks that should be completed by now
-   - Check what was planned vs what actually happened
+   - Check if `/planning/data/day-YYYY-MM-DD.json` exists for today's plan
+   - Use Google Calendar MCP to list today's events: `mcp__google-calendar__list-events`
+   - Use MCP TaskWarrior to get pending tasks: `mcp__taskwarrior__get_next_tasks`
+   - Analyze morning time blocks (starting before 12:00 PM) and objectives from planning data
+   - Present this context before asking morning questions
 
-4. Check if `/journal/daily/daily-YYYY-MM-DD.md` exists (using today's actual date):
-   - If exists: Read current content to see what sessions are already completed
-   - If afternoon session exists: Acknowledge and offer to update
+4. Check if `/journal/daily/YYYY-MM-DD.md` exists (using today's actual Sydney date):
+   - If exists: Read current content to see if morning session already completed
+   - If morning session exists: Acknowledge and offer to update
    - If not exists: Create new file structure
 
 5. Greet them warmly with context-aware questions:
 
-🌅 **Afternoon Check-in for [Today's Date] - [Current Time]**
+🌤️ Afternoon Check-in for [Today's Date] - [Current Time]
 
-Good afternoon! Let's review how your afternoon went:
+Good afternoon! Let's assess your mid-day energy and intentions:
 
-**📅 Today's Afternoon Time Blocks (Review):**
-[List completed afternoon time blocks and their outcomes]
+**📅 Today's Afternoon Context:**
+[Show existing calendar events]
+[Show afternoon time blocks - from 12:00 PM onwards]  
+[Show key TaskWarrior tasks]
 
-**📋 TaskWarrior Status:**
-[Show relevant pending tasks]
+**Afternoon Questions:**
+1. **What time did you wake up?**
+2. **Morning energy level:** (1-10 + brief description)
+3. **How was your sleep?** (quality/hours)
+4. **How does your body feel?** (physical state)
+5. **What are your intentions for today?** (considering the above commitments)
+6. **Top 3 priorities for today:** (aligned with calendar/planning)
+7. **What challenges might arise today?**
+8. **What's one thing you commit to completing?** (from tasks or time blocks)
+9. **Anything else to note?**
 
-**Check-in Questions:**
-1. **Current energy level:** (1-10 + how it compares to earlier)
-2. **How did your afternoon go overall?** (1-10 satisfaction rating)
-3. **Which time blocks/objectives did you complete?** (reference afternoon plan)
-4. **What worked well this afternoon?** (momentum, focus, energy management)
-5. **Any challenges or obstacles you faced?**
-6. **What would you do differently this afternoon?**
-7. **Any breakthroughs or wins worth celebrating?** (however small)
-8. **How are you feeling about tomorrow's priorities?**
-
-6. Save/append to `/journal/daily/daily-YYYY-MM-DD.md` (using today's actual date) with structure:
+6. Save/append to `/journal/daily/YYYY-MM-DD.md` (using today's actual Sydney date) with structure:
    ```yaml
    ---
    date: YYYY-MM-DD
    type: daily
-   sessions: [afternoon]
+   sessions: [morning]
    status: ongoing
    privacy: private
    ---
 
    # Daily Journal - [Full Date]
 
-   ## 🌅 Afternoon Check-in ([TIME])
-   **Current Energy:** [response]
-   **Afternoon Satisfaction:** [response] (1-10 rating)
-   **Completed Time Blocks/Objectives:** [response]
-   **What Worked Well:** [response]
-   **Challenges Faced:** [response]
-   **Would Do Differently:** [response]
-   **Wins/Breakthroughs:** [response]
-   **Tomorrow Outlook:** [response]
+   ## 🌤️ Afternoon Check-in ([TIME])
+   **Wake Time:** [response]
+   **Energy Level:** [response]
+   **Sleep Quality:** [response]
+   **Physical State:** [response]
    
-   **📅 Afternoon Plan Review:**
-   - Planned time blocks: [list from planning data with completion status]
-   - Key objectives status: [from planning data with outcomes]
-   - TaskWarrior tasks: [relevant tasks and progress]
+   **📅 Today's Afternoon Context:**
+   - Calendar Events: [list key events]
+   - Afternoon Time Blocks: [blocks from 12:00 PM onwards]
+   - Key Tasks: [from TaskWarrior]
+   
+   **Afternoon Intentions:**
+   [response - now informed by context]
+   
+   **Focus for Today:**
+   1. [priority 1 - aligned with schedule]
+   2. [priority 2 - aligned with schedule]
+   3. [priority 3 - aligned with schedule]
+   
+   **Potential Challenges:** [response]
+   **Commitment:** [response]
    ```
 
 7. **Victory Detection (Silent Background Process)**:
-   Scan completed objectives and breakthroughs for victory patterns:
-   - Technical victories: "figured out", "built", "solved", "learned"
-   - Personal victories: financial decisions, boundary setting, help-seeking
-   - Discipline victories: "resisted", "stayed focused", "chose simple"
-   - Self-awareness victories: "realized", "recognized", pattern insights
+   Scan intentions and commitments for victory patterns:
+   - Technical victories: "will figure out", "will build", "will solve", "will learn"
+   - Personal victories: boundary setting intentions, self-care plans
+   - Discipline victories: "will resist", "will stay focused", "will complete"
+   - Self-awareness victories: recognizing patterns, acknowledging needs
    
    Silently append detected victories to `/victories/victories-YYYY-MM.md` using the established format.
 
-8. NO full analysis yet - save that for evening when both sessions combine.
+8. NO full analysis yet - save that for evening when all sessions combine.
 
-9. **Context-Aware Encouragement**: 
-   - Reference specific completed afternoon accomplishments
-   - Acknowledge challenges faced and how they were handled
-   - Simple encouragement: "Great work today! Your afternoon progress shows [specific observation]. Looking forward to your evening reflection."
+9. Simple encouragement focusing on energy and intention:
+   - "Your intentions are set!"
+   - "Energy follows action"
+   - "Small wins compound"
 
-Remember: Be encouraging, empathetic, and focused on celebrating afternoon accomplishments while setting up for a good evening wrap-up.
+## Differences from Other Check-ins:
+- **Afternoon**: Mid-day forward-looking (intentions, priorities, commitments)
+- **Evening**: Late-day assessment (afternoon wins, evening focus, energy check)
+- **End-of-day**: Reflection and integration (full day review, analysis, tomorrow planning)
+
+## Script Integration:
+Run the JavaScript script at `/scripts/afternoon-checkin.js` which:
+- Prompts for all responses interactively
+- Saves to journal with proper formatting
+- Detects and logs victories automatically
+- Maintains session tracking metadata
+- Logs all activities to `/logs/afternoon-checkin-YYYY-MM-DD.log`
+
+Remember: Be encouraging, focus on possibility, and help them start the day with clarity and energy.

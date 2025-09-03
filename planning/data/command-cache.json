@@ -1,6 +1,6 @@
 {
-  "buildTime": "2025-09-03T01:48:49.594Z",
-  "totalCommands": 56,
+  "buildTime": "2025-09-03T23:03:03.379Z",
+  "totalCommands": 57,
   "categories": {
     "content": 3,
     "reflection": 4,
@@ -8,9 +8,9 @@
     "utilities": 5,
     "foundation": 3,
     "skills": 8,
-    "other": 1,
+    "other": 3,
     "performance": 3,
-    "planning": 6,
+    "planning": 5,
     "execution": 4,
     "projects": 5,
     "review": 5,
@@ -135,16 +135,19 @@
         "emotions": [],
         "workStates": []
       },
-      "prerequisites": [],
+      "prerequisites": [
+        "## Integration"
+      ],
       "outputs": [
         "- **Milestone Celebrations**: Special messages at 7, 14, and 30-day streaks",
         "- Logs activity to `logs/bootdev-done-YYYY-MM-DD.log`"
       ],
       "integrations": [
-        "- **Weekly Goals**: Updates boot.dev daily practice objective"
+        "- **Weekly Goals**: Updates boot.dev daily practice objective",
+        "- `node scripts/boot-dev-tracker.cjs status` - Show current streak"
       ],
       "priority": 50,
-      "lastModified": "2025-08-29T22:15:03.130Z"
+      "lastModified": "2025-09-03T10:49:19.798Z"
     },
     "brain-dump-analysis": {
       "name": "brain-dump-analysis",
@@ -828,62 +831,15 @@
       "priority": 50,
       "lastModified": "2025-08-28T01:01:07.005Z"
     },
-    "plan-day-aware": {
-      "name": "plan-day-aware",
-      "filePath": ".claude/commands/plan-day-aware.md",
-      "description": "Plan Day Aware Command",
-      "category": "planning",
-      "timingConditions": {
-        "timeOfDay": [
-          "morning",
-          "afternoon",
-          "evening"
-        ],
-        "dayOfWeek": [
-          "friday",
-          "saturday"
-        ],
-        "strategicPeriods": [],
-        "frequency": "daily"
-      },
-      "contextTriggers": {
-        "keywords": [
-          "stuck",
-          "planning",
-          "reflection",
-          "skills",
-          "productivity",
-          "goals",
-          "energy"
-        ],
-        "situations": [],
-        "missingActivities": [],
-        "emotions": [],
-        "workStates": []
-      },
-      "prerequisites": [],
-      "outputs": [
-        "🔄 Integrated with 3 rituals",
-        "## Usage",
-        "1. **Ritual Analysis**: Loading all rituals and commitments for the target date",
-        "**Planning Data** (`planning/data/day-YYYY-MM-DD.json`):",
-        "• Start execution: node scripts/taskmaster.js (when created)",
-        "📁 Saved to: planning/data/day-2025-08-30.json"
-      ],
-      "integrations": [
-        "⏰ Using 3 available time blocks",
-        "3. **Respect Energy**: Morning for deep work, evening for learning"
-      ],
-      "priority": 70,
-      "lastModified": "2025-08-30T01:45:30.284Z"
-    },
     "plan-day": {
       "name": "plan-day",
       "filePath": ".claude/commands/plan-day.md",
       "description": "Daily Planning",
       "category": "planning",
       "timingConditions": {
-        "timeOfDay": [],
+        "timeOfDay": [
+          "morning"
+        ],
         "dayOfWeek": [],
         "strategicPeriods": [
           "month-end",
@@ -906,23 +862,29 @@
         "workStates": []
       },
       "prerequisites": [
-        "5. **Validate planned time blocks against calendar events** before creating any calendar entries:",
+        "- Load all active rituals for the target date from ritual-manager-v2.js",
+        "- Type \"approve\" to proceed with calendar creation",
+        "6. **Validate planned time blocks against calendar events** before creating any calendar entries:",
         "**Description Template**:",
         "1. **MANDATORY**: First check existing calendar events via MCP (step 3)",
         "- All created events must show strategic alignment and values served"
       ],
       "outputs": [
-        "## Process:",
+        "## Usage",
+        "- Show ritual schedule in planning context display with UUID tracking",
         "```markdown",
-        "7a. **Load Generated Data**: Check if fractal planner saved MCP commands and UUID mappings:",
+        "## Daily Objectives (Max 3 for focus)",
+        "8a. **RITUAL BOOKING FIRST**: Create calendar events for all detected rituals:",
+        "- calendarId: \"primary\"",
         "```",
         "- calendarId: \"primary\"",
         "⚠️ Skipped: [N events] - [conflicts with existing events]",
-        "5. **MANDATORY**: Report integration results with conflict summary (step 7d)",
+        "8. **MANDATORY**: Report integration results with conflict summary (step 8e)",
         "4. **Manual override**: If too many conflicts, fall back to manual calendar creation",
         "- All created events must show strategic alignment and values served",
         "- All created events must include appropriate reminders",
         "- 🔗 FRACTAL_UUID: Links event to fractal planning system",
+        "- colorId: [Ritual type color - foundational=9(blue), work=10(green), life=5(yellow), maintenance=8(gray)]",
         "```",
         "Read planning/uuid-mappings/uuid-mappings-[date].json for TaskWarrior UUID cross-links",
         "```",
@@ -931,15 +893,15 @@
         "🎯 LLM_TRACKING_ID: [use from mappings OR generate new UUID for AI system tracking]",
         "- colorId: [Type-appropriate color - deep-work=11(red), learning=10(green), admin=7(blue), buffer=1(lavender)]",
         "```",
-        "3. **MANDATORY**: Skip or modify conflicting time blocks (step 7b)",
+        "5. **MANDATORY**: Compare each generated time block against existing events (step 8c)",
         "Remember: Daily plans should align with weekly priorities and support monthly goals through strategic time block allocation, while respecting existing calendar commitments."
       ],
       "integrations": [
         "- **Quality Focus**: [What you'll do exceptionally well vs. just completing]",
-        "📋 Parent Context:"
+        "🔄 Ritual Schedule:"
       ],
       "priority": 100,
-      "lastModified": "2025-09-02T14:05:54.004Z"
+      "lastModified": "2025-09-03T04:46:29.377Z"
     },
     "plan-month": {
       "name": "plan-month",
@@ -962,6 +924,7 @@
         "keywords": [
           "planning",
           "reflection",
+          "skills",
           "productivity",
           "goals",
           "energy"
@@ -972,18 +935,22 @@
         "workStates": []
       },
       "prerequisites": [
+        "[Time, energy, and support needed]",
+        "- Type \"approve\" to finalize the monthly plan",
         "[Time, energy, tools, or support needed]",
+        "## Strategic Alignment:",
         "## Weekly Breakdown Guidance"
       ],
       "outputs": [
-        "## Process:",
+        "## Usage",
         "```markdown"
       ],
       "integrations": [
+        "❓ **APPROVAL REQUIRED**:",
         "## Success Metrics"
       ],
       "priority": 70,
-      "lastModified": "2025-08-28T00:56:16.131Z"
+      "lastModified": "2025-09-03T01:59:53.553Z"
     },
     "plan-quarter": {
       "name": "plan-quarter",
@@ -1019,16 +986,20 @@
         "workStates": []
       },
       "prerequisites": [
+        "[Time, energy, financial, and human resources needed]",
+        "- Type \"approve\" to finalize the quarterly strategic plan",
         "## Success Metrics & KPIs",
+        "❓ **APPROVAL REQUIRED**:",
+        "```",
         "- **Conflicts**: [Any values tensions to manage]"
       ],
       "outputs": [
-        "## Process:",
+        "## Usage",
         "```markdown"
       ],
       "integrations": [],
       "priority": 70,
-      "lastModified": "2025-09-02T10:55:21.798Z"
+      "lastModified": "2025-09-03T02:00:26.057Z"
     },
     "plan-week": {
       "name": "plan-week",
@@ -1036,7 +1007,9 @@
       "description": "Weekly Planning",
       "category": "planning",
       "timingConditions": {
-        "timeOfDay": [],
+        "timeOfDay": [
+          "morning"
+        ],
         "dayOfWeek": [
           "sunday"
         ],
@@ -1058,16 +1031,18 @@
         "emotions": [],
         "workStates": []
       },
-      "prerequisites": [],
+      "prerequisites": [
+        "- Type \"approve\" to finalize the weekly plan"
+      ],
       "outputs": [
-        "## Process:",
+        "## Usage",
         "```markdown"
       ],
       "integrations": [
         "## Success Metrics"
       ],
       "priority": 70,
-      "lastModified": "2025-09-02T10:56:16.500Z"
+      "lastModified": "2025-09-03T01:59:23.472Z"
     },
     "plan-year": {
       "name": "plan-year",
@@ -1700,19 +1675,22 @@
     "ritual-add": {
       "name": "ritual-add",
       "filePath": ".claude/commands/ritual-add.md",
-      "description": "Ritual Add Command",
+      "description": "Ritual Add Command V2",
       "category": "rituals",
       "timingConditions": {
         "timeOfDay": [
-          "morning"
+          "morning",
+          "evening"
         ],
         "dayOfWeek": [
           "sunday",
           "monday",
           "wednesday",
-          "friday"
+          "friday",
+          "saturday"
         ],
         "strategicPeriods": [
+          "month-end",
           "week-end"
         ],
         "frequency": "daily"
@@ -1734,14 +1712,18 @@
         "- **Completion Tracking**: Optional streak and completion tracking"
       ],
       "outputs": [
-        "ID: 1693402341234",
-        "## Examples"
+        "```",
+        "📋 Ritual Details:",
+        "📅 Calendar sync: ⏳ Ready (use /ritual-sync)",
+        "## Examples",
+        "3. **Complex Frequency Patterns**: Support daily, interval, weekly, monthly, quarterly patterns",
+        "## Frequency Details:"
       ],
       "integrations": [
         "- Available for ritual-aware planning commands"
       ],
       "priority": 50,
-      "lastModified": "2025-08-30T01:44:20.828Z"
+      "lastModified": "2025-09-03T03:50:50.781Z"
     },
     "ritual-block": {
       "name": "ritual-block",
@@ -1786,7 +1768,7 @@
     "ritual-status": {
       "name": "ritual-status",
       "filePath": ".claude/commands/ritual-status.md",
-      "description": "Ritual Status Command",
+      "description": "Ritual Status Command V2",
       "category": "rituals",
       "timingConditions": {
         "timeOfDay": [
@@ -1818,7 +1800,60 @@
       ],
       "integrations": [],
       "priority": 50,
-      "lastModified": "2025-08-30T01:43:54.273Z"
+      "lastModified": "2025-09-03T03:51:07.220Z"
+    },
+    "ritual-sync": {
+      "name": "ritual-sync",
+      "filePath": ".claude/commands/ritual-sync.md",
+      "description": "Ritual Calendar Sync",
+      "category": "other",
+      "timingConditions": {
+        "timeOfDay": [
+          "morning"
+        ],
+        "dayOfWeek": [],
+        "strategicPeriods": [],
+        "frequency": null
+      },
+      "contextTriggers": {
+        "keywords": [
+          "planning",
+          "reflection",
+          "productivity",
+          "goals"
+        ],
+        "situations": [],
+        "missingActivities": [],
+        "emotions": [],
+        "workStates": []
+      },
+      "prerequisites": [
+        "**Rollback Support:**",
+        "## MCP Commands Preview:",
+        "## Created Events:",
+        "```",
+        "## Sync Session:"
+      ],
+      "outputs": [
+        "[List all ritual time blocks that will become calendar events]",
+        "⚠️  Conflicts Skipped: [N events]",
+        "[List each successfully created calendar event with UUID tracking]",
+        "## MCP Command Summary:",
+        "- Use /ritual-cleanup to remove expired ritual events",
+        "```",
+        "- Provide undo commands for accidental syncs",
+        "```",
+        "```",
+        "[Path to MCP commands file if manual execution needed]",
+        "## Error Handling"
+      ],
+      "integrations": [
+        ".",
+        "node scripts/ritual-cli-v2.js sync --period=[period] --date=[period-value] [options]",
+        "."
+      ],
+      "priority": 50,
+      "lastModified": "2025-09-03T03:49:09.416Z"
     },
     "skill-crafter": {
       "name": "skill-crafter",
@@ -2071,6 +2106,7 @@
       },
       "contextTriggers": {
         "keywords": [
+          "planning",
           "reflection",
           "skills",
           "productivity"
@@ -2089,7 +2125,7 @@
       ],
       "integrations": [],
       "priority": 50,
-      "lastModified": "2025-08-27T01:38:55.084Z"
+      "lastModified": "2025-09-03T12:05:28.559Z"
     },
     "taskmaster-block": {
       "name": "taskmaster-block",
@@ -2241,6 +2277,54 @@
       ],
       "priority": 50,
       "lastModified": "2025-08-30T01:54:52.968Z"
+    },
+    "training-challenge": {
+      "name": "training-challenge",
+      "filePath": ".claude/commands/training-challenge.md",
+      "description": "Training Challenge Command",
+      "category": "other",
+      "timingConditions": {
+        "timeOfDay": [
+          "morning",
+          "night"
+        ],
+        "dayOfWeek": [
+          "friday"
+        ],
+        "strategicPeriods": [],
+        "frequency": "daily"
+      },
+      "contextTriggers": {
+        "keywords": [
+          "planning",
+          "reflection",
+          "skills",
+          "productivity",
+          "energy"
+        ],
+        "situations": [
+          "high-stress"
+        ],
+        "missingActivities": [],
+        "emotions": [],
+        "workStates": []
+      },
+      "prerequisites": [],
+      "outputs": [
+        "```bash",
+        "**Process:**",
+        "4. Display challenge for user to copy to boot.dev",
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+        "```",
+        "Force wildcard: /training-challenge wildcard",
+        "node scripts/training-challenge.cjs wildcard          # Force wildcard"
+      ],
+      "integrations": [
+        "4. Maintains consistent user experience",
+        "Focus on data transformation and filtering operations with error handling for missing keys."
+      ],
+      "priority": 50,
+      "lastModified": "2025-09-03T13:03:38.388Z"
     },
     "transcribe-brain-dump": {
       "name": "transcribe-brain-dump",

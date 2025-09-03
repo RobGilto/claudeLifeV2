@@ -1,6 +1,6 @@
-# Evening Check-in with Smart Day Plan Integration
+# Morning Check-in
 
-End-of-day reflection and tomorrow planning with optional day plan performance review.
+An early-day energy assessment and intention-setting checkpoint.
 
 ## Process:
 
@@ -9,100 +9,101 @@ End-of-day reflection and tomorrow planning with optional day plan performance r
 2. First, understand the user's context by reading CLAUDE.md or any personal/business files to personalize the greeting and understand their work.
 
 3. **Check Calendar and Planning Context**:
-   - Check if `/planning/data/day-YYYY-MM-DD.json` exists (using today's actual Sydney date)
-   - Use MCP TaskWarrior to get today's completed/remaining tasks: `mcp__taskwarrior__get_next_tasks`
-   - Analyze today's time blocks and objective completion from planning data
-   - If day plan exists, ask: "I found a day plan for today! Would you like me to run the full performance review using the evening-checkin script? This will include time block analysis and objective completion tracking. (y/n)"
-   - If YES: Run `node scripts/evening-checkin.cjs` and stop here (script handles everything)
-   - If NO or no day plan: Continue with manual evening checkin with calendar context below
+   - Check if `/planning/data/day-YYYY-MM-DD.json` exists for today's plan
+   - Use Google Calendar MCP to list today's events: `mcp__google-calendar__list-events`
+   - Use MCP TaskWarrior to get pending tasks: `mcp__taskwarrior__get_next_tasks`
+   - Analyze morning time blocks (starting before 12:00 PM) and objectives from planning data
+   - Present this context before asking morning questions
 
 4. Check if `/journal/daily/YYYY-MM-DD.md` exists (using today's actual Sydney date):
-   - If exists: Read to see if afternoon session exists, append evening section
-   - Update metadata: `sessions: [afternoon, evening]` or `[evening]`
-   - Set `status: complete`
-   - If not exists: Create new file (evening-only case)
+   - If exists: Read current content to see if morning session already completed
+   - If morning session exists: Acknowledge and offer to update
+   - If not exists: Create new file structure
 
 5. Greet them warmly with context-aware questions:
 
-🌙 **Evening Check-in for [Today's Date] - [Current Time]**
+🌄 Morning Check-in for [Today's Date] - [Current Time]
 
-Good evening! Let's reflect on your day:
+Good morning! Let's set up your day for success:
 
-**📅 Today's Plan Review:**
-[Show planned time blocks and their intended completion status]
+**📅 Today's Morning Context:**
+[Show existing calendar events]
+[Show morning time blocks only - starting before 12:00 PM]  
+[Show key TaskWarrior tasks]
 
-**📋 TaskWarrior Status:**
-[Show completed vs remaining tasks from TaskWarrior]
+**Morning Questions:**
+1. **What time did you wake up?**
+2. **Morning energy level:** (1-10 + brief description)
+3. **How was your sleep?** (quality/hours)
+4. **How does your body feel?** (physical state)
+5. **What are your intentions for today?** (considering the above commitments)
+6. **Top 3 priorities for today:** (aligned with calendar/planning)
+7. **What challenges might arise today?**
+8. **What's one thing you commit to completing?** (from tasks or time blocks)
+9. **Anything else to note?**
 
-**Reflection Questions:**
-1. **How are you feeling about today overall?** (1-10 + description)
-2. **What are 3 things you accomplished today?** (Reference planned objectives and actual work)
-3. **How did your time blocks go?** (Which worked well, which didn't)
-4. **What's your #1 priority for tomorrow?**
-5. **End-of-day energy level:** (1-10)
-6. **Any challenges or blockers you faced?** 
-7. **What are you grateful for today?**
-8. **Any insights about your planning vs execution?**
-9. **Any other thoughts or reflections?**
+6. Save/append to `/journal/daily/YYYY-MM-DD.md` (using today's actual Sydney date) with structure:
+   ```yaml
+   ---
+   date: YYYY-MM-DD
+   type: daily
+   sessions: [morning]
+   status: ongoing
+   privacy: private
+   ---
 
-6. Update/save to `/journal/daily/YYYY-MM-DD.md` (using today's actual Sydney date):
-   - Update frontmatter: `sessions: [afternoon, evening]` and `status: complete`
-   - Append evening section:
+   # Daily Journal - [Full Date]
 
-   ```markdown
-   ## 🌙 Evening Check-in ([TIME])
-   **Overall Day Feeling:** [response]
-   **Today's Accomplishments:**
-   1. [accomplishment 1]
-   2. [accomplishment 2] 
-   3. [accomplishment 3]
+   ## 🌄 Morning Check-in ([TIME])
+   **Wake Time:** [response]
+   **Energy Level:** [response]
+   **Sleep Quality:** [response]
+   **Physical State:** [response]
    
-   **Tomorrow's Priority:** [response]
-   **End Energy Level:** [response]
-   **Challenges/Blockers:** [response]
-   **Gratitude:** [response]
-   **Planning Insights:** [response]
-   **Reflections:** [response]
+   **📅 Today's Morning Context:**
+   - Calendar Events: [list key events]
+   - Morning Time Blocks: [blocks starting before 12:00 PM]
+   - Key Tasks: [from TaskWarrior]
    
-   **📅 Today's Execution Review:**
-   - Planned time blocks: [list with completion status]
-   - Key objectives: [completion status from planning data]
-   - TaskWarrior tasks: [completed/remaining status]
+   **Morning Intentions:**
+   [response - now informed by context]
+   
+   **Focus for Today:**
+   1. [priority 1 - aligned with schedule]
+   2. [priority 2 - aligned with schedule]
+   3. [priority 3 - aligned with schedule]
+   
+   **Potential Challenges:** [response]
+   **Commitment:** [response]
    ```
 
-7. Launch the daily-reflection subagent with:
-   Analyze today's check-in:
-   [provide ALL responses from both afternoon AND evening if both exist]
-   [Include planning vs execution analysis from calendar data]
-   [Include TaskWarrior completion patterns]
-   
-   Also reference the last 3 days of entries if available.
-   
-   Generate:
-   - Mood and energy patterns (compare afternoon vs evening if both exist)
-   - Planning vs execution effectiveness analysis
-   - Time block success patterns
-   - Accomplishment momentum score
-   - TaskWarrior completion insights
-   - Insights about productivity patterns
-   - Gentle suggestions for tomorrow's planning
-   - Weekly trend if enough data
-   - Celebration of wins (however small)
-
-8. Create a visual summary and append to same file as `## 📊 Daily Analysis`
-
-9. **Victory Detection (Silent Background Process)**:
-   After saving the evening journal, scan ALL accomplishments (afternoon + evening) for victory patterns:
-   - Technical victories: "figured out", "built", "solved", "learned"
-   - Personal victories: financial decisions, boundary setting, help-seeking
-   - Discipline victories: "resisted", "stayed focused", "chose simple"
-   - Self-awareness victories: "realized", "recognized", pattern insights
+7. **Victory Detection (Silent Background Process)**:
+   Scan intentions and commitments for victory patterns:
+   - Technical victories: "will figure out", "will build", "will solve", "will learn"
+   - Personal victories: boundary setting intentions, self-care plans
+   - Discipline victories: "will resist", "will stay focused", "will complete"
+   - Self-awareness victories: recognizing patterns, acknowledging needs
    
    Silently append detected victories to `/victories/victories-YYYY-MM.md` using the established format.
-   
-   At the end of the check-in, add a single line:
-   "✓ Captured [X] victories today" (where X is the number detected from both sessions)
-   
-   NO prompts, NO questions, NO interruption to the flow.
 
-Remember: Be encouraging, empathetic, and focus on progress over perfection.
+8. NO full analysis yet - save that for evening when all sessions combine.
+
+9. Simple encouragement focusing on energy and intention:
+   - "Your intentions are set!"
+   - "Energy follows action"
+   - "Small wins compound"
+
+## Differences from Noon Check-in:
+- **Morning**: Forward-looking (intentions, priorities, commitments)
+- **Noon**: Mid-day assessment (morning wins, afternoon focus, energy check)
+- **Evening**: Reflection and integration (full day review, analysis, tomorrow planning)
+
+## Script Integration:
+Run the JavaScript script at `/scripts/morning-checkin.js` which:
+- Prompts for all responses interactively
+- Saves to journal with proper formatting
+- Detects and logs victories automatically
+- Maintains session tracking metadata
+- Logs all activities to `/logs/morning-checkin-YYYY-MM-DD.log`
+
+Remember: Be encouraging, focus on possibility, and help them start the day with clarity and energy.
