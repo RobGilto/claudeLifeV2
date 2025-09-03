@@ -19,6 +19,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { runJobMarketAnalysis } from './job-market-analyzer.js';
 import { getSydneyTime } from './sydney-time.js';
+import { loadInterests } from './manage-interests.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -101,22 +102,74 @@ function getCurrentSkills() {
 }
 
 /**
+ * Generate search queries from interests configuration
+ */
+function generateSearchQueries(interests) {
+    const queries = [];
+    
+    // Get priority settings
+    const priorities = interests.searchPriorities || {
+        HIGH: { limit: 3, weight: 1.0 },
+        MEDIUM: { limit: 2, weight: 0.7 },
+        LOW: { limit: 1, weight: 0.3 }
+    };
+    
+    // Group interests by priority
+    const interestsByPriority = { HIGH: [], MEDIUM: [], LOW: [] };
+    
+    for (const [categoryName, categoryData] of Object.entries(interests.interests)) {
+        const priority = categoryData.priority || 'MEDIUM';
+        const keywords = categoryData.keywords || [];
+        
+        keywords.forEach(keyword => {
+            interestsByPriority[priority].push({
+                query: keyword,
+                category: categoryName,
+                priority: priority,
+                weight: priorities[priority]?.weight || 0.5
+            });
+        });
+    }
+    
+    // Select queries based on priority limits
+    for (const [priority, interestQueries] of Object.entries(interestsByPriority)) {
+        const limit = priorities[priority]?.limit || 1;
+        const selectedQueries = interestQueries
+            .sort(() => Math.random() - 0.5) // Randomize selection
+            .slice(0, limit);
+        
+        queries.push(...selectedQueries);
+    }
+    
+    // Fallback queries if no interests are configured
+    if (queries.length === 0) {
+        queries.push(
+            { query: 'AI engineer jobs Australia Sydney 2025', priority: 'HIGH', category: 'career', weight: 1.0 },
+            { query: 'Python developer Australia salary 2025', priority: 'HIGH', category: 'career', weight: 1.0 }
+        );
+    }
+    
+    log(`Generated ${queries.length} search queries from interests configuration`);
+    return queries;
+}
+
+/**
  * Generate news briefing using firecrawl with proper pagination and filtering
  */
 async function generateNewsBriefing(dateStr) {
     log('Starting news search with firecrawl...');
+    
+    // Load interests configuration
+    const interests = loadInterests();
+    log(`Loaded interests configuration with ${Object.keys(interests.interests).length} categories`);
     
     // Calculate 7-day window for filtering
     const today = new Date(dateStr);
     const sevenDaysAgo = new Date(today);
     sevenDaysAgo.setDate(today.getDate() - 7);
     
-    const searchQueries = [
-        { query: 'AI engineer jobs Australia Sydney 2025', priority: 'HIGH' },
-        { query: 'Python developer Australia salary 2025', priority: 'HIGH' },
-        { query: 'machine learning careers NSW Australia', priority: 'MEDIUM' },
-        { query: 'software engineering market Australia 2025', priority: 'MEDIUM' }
-    ];
+    // Generate search queries from interests configuration
+    const searchQueries = generateSearchQueries(interests);
     
     const newsItems = [];
     
