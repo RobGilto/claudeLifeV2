@@ -301,6 +301,87 @@ function showWeeklyProgress() {
   }
 }
 
+async function verifyWithProfile() {
+  console.log(`${colors.cyan}🔍 Checking boot.dev profile for streak verification...${colors.reset}`);
+  
+  try {
+    const profileData = await fetchBootDevProfile();
+    const profileStreak = parseStreakFromProfile(profileData);
+    const localData = loadStreakData();
+    
+    console.log(`\n${colors.bright}📊 Profile vs Local Comparison${colors.reset}`);
+    console.log('═'.repeat(50));
+    
+    if (profileStreak.found) {
+      console.log(`${colors.cyan}Boot.dev Profile:${colors.reset} ${profileStreak.streakDays} days (achieved ${profileStreak.achievementDate})`);
+      console.log(`${colors.cyan}Local Tracking:${colors.reset} ${localData.currentStreak} days`);
+      
+      if (profileStreak.streakDays !== localData.currentStreak) {
+        console.log(`\n${colors.yellow}⚠️  MISMATCH DETECTED!${colors.reset}`);
+        console.log(`${colors.yellow}   Profile shows ${profileStreak.streakDays} days, local shows ${localData.currentStreak} days${colors.reset}`);
+        console.log(`${colors.yellow}   Consider running 'node scripts/boot-dev-tracker.js sync' to fix${colors.reset}`);
+        return false;
+      } else {
+        console.log(`\n${colors.green}✅ Profile and local data match!${colors.reset}`);
+        return true;
+      }
+    } else {
+      console.log(`${colors.red}❌ Could not find streak achievement in profile${colors.reset}`);
+      console.log(`${colors.yellow}   This might mean no streak yet or parsing failed${colors.reset}`);
+      return null;
+    }
+  } catch (error) {
+    console.log(`${colors.red}❌ Error checking profile: ${error.message}${colors.reset}`);
+    return null;
+  }
+}
+
+async function syncWithProfile() {
+  console.log(`${colors.cyan}🔄 Syncing with boot.dev profile...${colors.reset}`);
+  
+  try {
+    const profileData = await fetchBootDevProfile();
+    const profileStreak = parseStreakFromProfile(profileData);
+    
+    if (!profileStreak.found) {
+      console.log(`${colors.red}❌ Could not find streak data in profile${colors.reset}`);
+      return;
+    }
+    
+    const localData = loadStreakData();
+    const today = getToday();
+    
+    // Calculate what dates should be included based on the achievement
+    const achievementDate = new Date(profileStreak.achievementDate);
+    const streakDates = [];
+    
+    for (let i = profileStreak.streakDays - 1; i >= 0; i--) {
+      const date = new Date(achievementDate);
+      date.setDate(date.getDate() - i);
+      streakDates.push(date.toISOString().split('T')[0]);
+    }
+    
+    // Update local data
+    localData.currentStreak = profileStreak.streakDays;
+    localData.longestStreak = Math.max(localData.longestStreak, profileStreak.streakDays);
+    localData.totalDays = Math.max(localData.totalDays, profileStreak.streakDays);
+    localData.lastCompleted = profileStreak.achievementDate;
+    
+    // Merge streak dates (avoid duplicates)
+    const allDates = new Set([...localData.completedDates, ...streakDates]);
+    localData.completedDates = Array.from(allDates).sort();
+    
+    saveStreakData(localData);
+    
+    console.log(`${colors.green}✅ Successfully synced with profile!${colors.reset}`);
+    console.log(`${colors.cyan}   Updated streak: ${profileStreak.streakDays} days${colors.reset}`);
+    console.log(`${colors.cyan}   Achievement date: ${profileStreak.achievementDate}${colors.reset}`);
+    
+  } catch (error) {
+    console.log(`${colors.red}❌ Error syncing with profile: ${error.message}${colors.reset}`);
+  }
+}
+
 // Main execution
 const command = process.argv[2];
 
