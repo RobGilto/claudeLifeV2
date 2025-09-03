@@ -175,8 +175,12 @@ async function generateNewsBriefing(dateStr) {
     
     try {
         // Search with strict limits to avoid token overflow
-        for (const search of searchQueries.slice(0, 2)) { // Only top 2 searches to control token usage
-            log(`Searching for: ${search.query}`);
+        const prioritizedQueries = searchQueries
+            .sort((a, b) => (b.weight || 0.5) - (a.weight || 0.5))
+            .slice(0, 3); // Only top 3 searches to control token usage
+        
+        for (const search of prioritizedQueries) {
+            log(`Searching for: ${search.query} (${search.priority} priority, category: ${search.category})`);
             
             // Use MCP firecrawl_search with strict limits
             const searchCmd = `cl mcp call firecrawl search --query "${search.query}" --limit 3 --scrapeOptions.onlyMainContent true --scrapeOptions.formats markdown`;

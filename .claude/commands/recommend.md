@@ -276,6 +276,23 @@ When discussing learning, skills, or development:
 5. /skill-crafter - Link skills to portfolio projects
 ```
 
+#### Interests and News Context
+When discussing career interests, staying informed, or personalizing news:
+```
+📰 INTERESTS & NEWS
+⭐ Personalization Recommendations:
+1. /manage-interests list - View current interest configuration
+2. /manage-interests analyze - Discover interests from brain dumps
+3. /manage-interests add career "keyword" - Add specific career interests
+4. /daily-brief - Get personalized NSW news and AI career insights
+5. /manage-interests dedupe - Clean up duplicate interests
+```
+
+**Quick Examples:**
+- `/manage-interests add skills "FastAPI development"` - Track specific tech interests
+- `/manage-interests update-priority learning HIGH` - Boost learning content priority
+- `/manage-interests analyze` - Auto-detect interests from your brain dumps and code
+
 #### Planning and Organization Context
 When discussing planning or feeling scattered:
 ```
@@ -319,6 +336,7 @@ The system analyzes:
 - **"planning", "organize", "structure"** → `/plan-day`, `/plan-week`
 - **"tired", "energy", "motivation"** → `/ritual-status`, `/victory-review`
 - **"reflect", "review", "analyze"** → `/brain-dump`, `/performance-dashboard`
+- **"interests", "news", "personalize"** → `/manage-interests`, `/daily-brief`
 
 ### 9. Enhanced Output Format
 
@@ -348,6 +366,7 @@ The system analyzes:
 - **If need structure** → `/executive-function` - ADD-optimized support
 - **If behind on goals** → `/skill-status` - Progress check
 - **If low energy** → `/victory-review` - Motivation boost
+- **If want personalized news** → `/manage-interests list` then `/daily-brief` - Curated news based on your career goals
 
 ## 📅 UPCOMING STRATEGIC PERIODS:
 - **[Next Sunday]**: Week-end → `/review-week`, `/plan-week`
