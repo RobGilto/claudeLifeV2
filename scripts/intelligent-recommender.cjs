@@ -320,7 +320,7 @@ class IntelligentRecommender {
         
         // Category-specific boosts
         const categoryBoosts = {
-            'checkin': timeCtx.timeOfDay === 'early-morning' ? 20 : 0,
+            'checkin': (timeCtx.timeOfDay === 'early-morning' || timeCtx.timeOfDay === 'morning') ? 20 : 0,
             'planning': timeCtx.timeOfDay === 'morning' ? 15 : 0,
             'execution': timeCtx.timeOfDay === 'morning' || timeCtx.timeOfDay === 'afternoon' ? 10 : 0,
             'review': timeCtx.timeOfDay === 'evening' ? 15 : 0,

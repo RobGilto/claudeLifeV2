@@ -1,6 +1,6 @@
 {
-  "buildTime": "2025-09-03T23:16:35.580Z",
-  "totalCommands": 57,
+  "buildTime": "2025-09-03T23:30:29.865Z",
+  "totalCommands": 58,
   "categories": {
     "content": 3,
     "reflection": 4,
@@ -8,7 +8,7 @@
     "utilities": 5,
     "foundation": 3,
     "skills": 8,
-    "other": 3,
+    "other": 4,
     "performance": 3,
     "planning": 5,
     "execution": 4,
@@ -469,11 +469,12 @@
       "prerequisites": [],
       "outputs": [
         "```yaml",
+        "- Detects and logs victories automatically",
         "5. Greet them warmly with context-aware questions:"
       ],
       "integrations": [],
       "priority": 80,
-      "lastModified": "2025-09-03T23:14:08.645Z"
+      "lastModified": "2025-09-03T23:20:15.975Z"
     },
     "executive-function": {
       "name": "executive-function",
@@ -2125,6 +2126,71 @@
       "integrations": [],
       "priority": 50,
       "lastModified": "2025-09-03T12:05:28.559Z"
+    },
+    "start-of-day": {
+      "name": "start-of-day",
+      "filePath": ".claude/commands/start-of-day.md",
+      "description": "Start of Day Check-in",
+      "category": "other",
+      "timingConditions": {
+        "timeOfDay": [
+          "early-morning",
+          "morning",
+          "afternoon",
+          "evening",
+          "night"
+        ],
+        "dayOfWeek": [
+          "sunday",
+          "friday",
+          "saturday"
+        ],
+        "strategicPeriods": [],
+        "frequency": "daily"
+      },
+      "contextTriggers": {
+        "keywords": [
+          "scattered",
+          "planning",
+          "reflection",
+          "skills",
+          "productivity",
+          "goals",
+          "energy"
+        ],
+        "situations": [
+          "no-daily-plan",
+          "behind-schedule"
+        ],
+        "missingActivities": [],
+        "emotions": [],
+        "workStates": []
+      },
+      "prerequisites": [
+        "No daily plan detected for today. Let's create your strategic time blocks:",
+        "**If Behind on Learning**: `/bootdev-done` → `/skill-status`"
+      ],
+      "outputs": [
+        "```yaml",
+        "8. **Provide clear next actions** to prevent morning paralysis",
+        "**Recommended**: Run `/plan-day` now to:",
+        "- Align activities with weekly priorities",
+        "---",
+        "```",
+        "[AUTOMATICALLY trigger /plan-day if user confirms]",
+        "[Record top 3 recommendations and reasoning]"
+      ],
+      "integrations": [
+        "7. **Save context** to daily journal for continuity tracking",
+        "**Days to Mid-2026 Goal**: [Calculate remaining days] | **Current Phase**: [From quarterly/monthly context]",
+        "### Energy and Values Alignment",
+        "**Strategic Focus**: [Week/month priorities for today]",
+        "- Aligns recommendations with TaskWarrior project structure",
+        "- **Motivational Foundation**: Builds energy and clarity before task execution",
+        "4. **Build motivation** through recent victory analysis and momentum recognition"
+      ],
+      "priority": 50,
+      "lastModified": "2025-09-03T23:28:12.034Z"
     },
     "taskmaster-block": {
       "name": "taskmaster-block",
