@@ -1,6 +1,6 @@
-# Ritual Status Command
+# Ritual Status Command V2
 
-Show current ritual status, completions, and upcoming schedule.
+Show current ritual status using the advanced V2 system with UUID tracking and complex frequency patterns.
 
 ## Usage
 ```bash
@@ -10,13 +10,15 @@ Show current ritual status, completions, and upcoming schedule.
 ## Parameters
 - `date` (optional): Date to check status for (YYYY-MM-DD format). Defaults to today.
 
-## What it does
+## Process
 
-1. **Current Status**: Shows active rituals for the specified date
-2. **Completion Tracking**: Displays completion status and current streaks
-3. **Schedule Overview**: Shows today's ritual schedule with times
-4. **Available Time**: Calculates and shows available time windows
-5. **Next Actions**: Identifies incomplete rituals and suggests next steps
+1. **Load V2 ritual data**:
+   ```bash
+   # Use V2 CLI system for comprehensive status
+   node scripts/ritual-cli-v2.js status --date=[date]
+   ```
+
+2. **Display comprehensive ritual overview with UUID tracking and advanced patterns**
 
 ## Output Format
 

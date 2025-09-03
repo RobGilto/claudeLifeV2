@@ -33,11 +33,29 @@ Advanced ritual creation with natural language parsing and complex scheduling:
 - **life**: Personal commitments (family time, appointments)
 - **maintenance**: Regular tasks (shopping, cleaning, admin)
 
-## Frequency Options
+## Frequency Patterns V2
 
-- **daily**: Same time every day
-- **weekly**: Specific days of the week
-- **custom**: Custom patterns (future feature)
+**Daily Patterns:**
+- `daily` - Every day
+- `every other day` - Every 2 days  
+- `every 3 days` - Every N days (interval pattern)
+
+**Weekly Patterns:**
+- `weekly on monday,wednesday,friday` - Specific weekdays
+- `weekdays` - Monday through Friday
+- `weekend` - Saturday and Sunday
+
+**Monthly Patterns:**
+- `monthly on 1st` - First day of month
+- `monthly on 15th` - Specific date
+- `monthly on last` - Last day of month
+- `monthly first monday` - First Monday of month
+- `monthly second tuesday` - Second Tuesday of month
+
+**Quarterly Patterns:**
+- `quarterly first month` - First month of each quarter
+- `quarterly on 1st,15th` - Specific days in quarter months
+- `quarterly first monday` - First Monday of each quarter
 
 ## Process
 
