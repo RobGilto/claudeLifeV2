@@ -195,8 +195,47 @@ class RitualCLIV2 {
             config.frequency.endDate = args.endDate;
         }
         
-        // Create the ritual
-        const ritual = this.manager.addRitual(config);
+        // Create the ritual with conflict detection
+        let ritual;
+        try {
+            ritual = this.manager.addRitual(config);
+        } catch (error) {
+            if (error.name === 'RitualConflictError') {
+                console.log(`\n❌ Time Conflict Error: Cannot create ritual "${args.name}"`);
+                console.log(`${error.message}\n`);
+                
+                console.log(`🔍 Detected ${error.conflicts.length} conflict(s):`);
+                error.conflicts.forEach((conflict, index) => {
+                    console.log(`\n${index + 1}. Date: ${conflict.date}`);
+                    console.log(`   ⚠️  New ritual: ${conflict.newRitual.name} (${conflict.newRitual.type})`);
+                    console.log(`      Time: ${conflict.newRitual.timeBlock.startTime} - ${conflict.newRitual.timeBlock.endTime}`);
+                    console.log(`   💥 Conflicts with: ${conflict.conflictingRitual.name} (${conflict.conflictingRitual.type})`);
+                    console.log(`      Time: ${conflict.conflictingRitual.timeBlock.startTime} - ${conflict.conflictingRitual.timeBlock.endTime}`);
+                    console.log(`      UUID: ${conflict.conflictingRitual.uuid}`);
+                    console.log(`   🕐 Overlap: ${conflict.overlapPeriod.startTime} - ${conflict.overlapPeriod.endTime} (${conflict.overlapPeriod.duration} min)`);
+                });
+                
+                console.log(`\n💡 Suggestions to resolve conflicts:`);
+                console.log(`   1. Choose different times that don't overlap`);
+                console.log(`   2. Modify existing conflicting ritual: /ritual-edit <uuid>`);
+                console.log(`   3. Remove conflicting ritual: /ritual-remove <uuid>`);
+                console.log(`   4. Make one of the rituals flexible timing`);
+                
+                return; // Exit without creating ritual
+            } else if (error.name === 'RitualValidationError') {
+                console.log(`\n❌ Validation Error: Cannot create ritual "${args.name}"`);
+                console.log(`${error.message}\n`);
+                
+                error.validationIssues.forEach((issue, index) => {
+                    console.log(`${index + 1}. ${issue}`);
+                });
+                
+                return; // Exit without creating ritual
+            } else {
+                // Re-throw other errors
+                throw error;
+            }
+        }
         
         console.log(`\n✅ Ritual created successfully!`);
         console.log(`📋 Details:`);
