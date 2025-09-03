@@ -56,6 +56,8 @@ Create or update a daily plan with time blocks aligned to higher-level objective
    - Show ritual schedule in planning context display with UUID tracking
    - Prevent any conflicts with foundational habits and work schedule
    - Support complex frequency patterns (daily, weekly, monthly, quarterly)
+   
+   **💡 Ritual CLI Tutorial**: For comprehensive usage examples and advanced patterns, see [Ritual CLI V2 Tutorial](../docs/ritual-cli-v2-tutorial.md)
 
 4. **HITL (Human in the Loop) Decision Point**: If `--hitl` flag is used:
    

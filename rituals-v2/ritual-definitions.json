@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2025-09-03T04:03:49.696Z",
+  "lastUpdated": "2025-09-03T04:40:35.909Z",
   "rituals": [
     {
       "uuid": "29696612-cf9e-43a5-b592-36d2d7d2e4f3",
@@ -201,6 +201,62 @@
       "created": "2025-09-03T04:03:36.729Z",
       "updated": "2025-09-03T04:03:49.696Z",
       "active": false,
+      "tags": [],
+      "integrations": {
+        "taskwarrior": null,
+        "calendar": null,
+        "planning": null
+      }
+    },
+    {
+      "uuid": "cc8270fe-21d9-49e6-8b5f-dfbdc2ad6e04",
+      "name": "Walk Dog",
+      "type": "life",
+      "description": "",
+      "priority": "medium",
+      "frequency": {
+        "type": "daily"
+      },
+      "timeBlocks": [
+        {
+          "startTime": "08:00",
+          "duration": 30,
+          "flexible": false,
+          "context": "general"
+        }
+      ],
+      "metadata": {},
+      "created": "2025-09-03T04:40:29.693Z",
+      "updated": "2025-09-03T04:40:29.693Z",
+      "active": true,
+      "tags": [],
+      "integrations": {
+        "taskwarrior": null,
+        "calendar": null,
+        "planning": null
+      }
+    },
+    {
+      "uuid": "fc1d56d8-7f02-45e3-ab67-0c22d1d08781",
+      "name": "Shower",
+      "type": "life",
+      "description": "",
+      "priority": "medium",
+      "frequency": {
+        "type": "daily"
+      },
+      "timeBlocks": [
+        {
+          "startTime": "19:00",
+          "duration": 20,
+          "flexible": false,
+          "context": "general"
+        }
+      ],
+      "metadata": {},
+      "created": "2025-09-03T04:40:35.908Z",
+      "updated": "2025-09-03T04:40:35.908Z",
+      "active": true,
       "tags": [],
       "integrations": {
         "taskwarrior": null,
