@@ -78,7 +78,7 @@ Create or update a weekly plan with priorities and objectives aligned to monthly
    node scripts/fractal-planner.cjs plan-week [week]
    ```
 
-5. After successful planning, generate a readable weekly plan report in `journal/planning/weekly-reviews/plan-YYYY-WXX.md`:
+6. After successful planning, generate a readable weekly plan report in `journal/planning/weekly-reviews/plan-YYYY-WXX.md`:
 
    ```markdown
    ---
@@ -134,7 +134,7 @@ Create or update a weekly plan with priorities and objectives aligned to monthly
    [Guidance for breaking down weekly priorities into daily time blocks]
    ```
 
-5. Suggest next actions:
+7. Suggest next actions:
    - Daily planning: `/plan-day` for tomorrow
    - Review last week if not done: `/review-week`
    - Check overall planning status: `/performance-dashboard`
