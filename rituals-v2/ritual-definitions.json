@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2025-09-03T04:00:46.010Z",
+  "lastUpdated": "2025-09-03T04:03:49.696Z",
   "rituals": [
     {
       "uuid": "29696612-cf9e-43a5-b592-36d2d7d2e4f3",
@@ -145,6 +145,62 @@
       "created": "2025-09-03T04:00:46.010Z",
       "updated": "2025-09-03T04:00:46.010Z",
       "active": true,
+      "tags": [],
+      "integrations": {
+        "taskwarrior": null,
+        "calendar": null,
+        "planning": null
+      }
+    },
+    {
+      "uuid": "80765206-41e1-4b9e-8a9d-d02fa4620d54",
+      "name": "Safe Meeting",
+      "type": "work",
+      "description": "",
+      "priority": "medium",
+      "frequency": {
+        "type": "daily"
+      },
+      "timeBlocks": [
+        {
+          "startTime": "14:00",
+          "duration": 60,
+          "flexible": false,
+          "context": "general"
+        }
+      ],
+      "metadata": {},
+      "created": "2025-09-03T04:03:32.062Z",
+      "updated": "2025-09-03T04:03:46.013Z",
+      "active": false,
+      "tags": [],
+      "integrations": {
+        "taskwarrior": null,
+        "calendar": null,
+        "planning": null
+      }
+    },
+    {
+      "uuid": "b23da2d8-b91b-4e83-a852-b0fbcbeb416d",
+      "name": "Adjacent Meeting",
+      "type": "life",
+      "description": "",
+      "priority": "medium",
+      "frequency": {
+        "type": "daily"
+      },
+      "timeBlocks": [
+        {
+          "startTime": "15:00",
+          "duration": 60,
+          "flexible": false,
+          "context": "general"
+        }
+      ],
+      "metadata": {},
+      "created": "2025-09-03T04:03:36.729Z",
+      "updated": "2025-09-03T04:03:49.696Z",
+      "active": false,
       "tags": [],
       "integrations": {
         "taskwarrior": null,

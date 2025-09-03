@@ -970,7 +970,9 @@ module.exports = {
     RitualDefinition,
     FrequencyEngine,
     TimeUtils,
-    UUIDGenerator
+    UUIDGenerator,
+    RitualConflictError,
+    RitualValidationError
 };
 
 // CLI interface will be added in a separate file for modularity
