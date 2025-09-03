@@ -258,6 +258,13 @@ node scripts/ritual-cli-v2.cjs add \
 - Use preview mode for large syncs
 - Only sync periods you're actively planning
 
+### Ritual Removal Best Practices
+- **Always use UUID**: More precise than name-based removal
+- **Use cleanup flag**: `--delete-from-calendar` provides cleanup guidance
+- **Keep the UUID**: Note the RITUAL_UUID for manual calendar cleanup
+- **Check calendar**: Verify related events are removed from Google Calendar
+- **Test with temporary rituals**: Practice the removal process with test rituals
+
 ## Troubleshooting
 
 ### Common Issues
@@ -280,6 +287,25 @@ node scripts/ritual-cli-v2.cjs remove --uuid [duplicate-uuid]
 - Ensure Google Calendar MCP is configured
 - Check calendar permissions
 - Verify timezone settings (Sydney/Australia)
+
+**Calendar Cleanup After Ritual Removal:**
+```bash
+# Step 1: Remove ritual with cleanup flag
+node scripts/ritual-cli-v2.cjs 'ritual remove [uuid] --delete-from-calendar'
+
+# Step 2: Note the RITUAL_UUID provided in output
+# Step 3: In Claude Code, search for calendar events containing that UUID
+# Step 4: Manually delete matching events using MCP commands
+
+# Example MCP cleanup (in Claude Code):
+# mcp__google-calendar__list-events with search for RITUAL_UUID
+# mcp__google-calendar__delete-event for each matching event
+```
+
+**Why Two-Step Process:**
+- Node.js scripts cannot directly access Google Calendar MCP 
+- MCP commands only work in Claude Code environment
+- Future versions will include integrated cleanup automation
 
 ### Debug Commands
 
