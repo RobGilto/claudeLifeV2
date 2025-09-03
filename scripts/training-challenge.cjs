@@ -149,10 +149,9 @@ function updateAttentionWeight(concept, currentWeight, rating) {
 
 function processWildcardFeedback(challenge, rating, weights) {
   if (!challenge.feedback_history) challenge.feedback_history = [];
-  challenge.feedback_history.push(rating);
   
   const avgRating = challenge.feedback_history.reduce((a, b) => a + b, 0) / challenge.feedback_history.length;
-  const attempts = challenge.attempts || challenge.feedback_history.length;
+  const attempts = challenge.attempts;
   
   if (avgRating <= 3.0 && attempts >= 2) {
     // Easy mastery - add with moderate weight
