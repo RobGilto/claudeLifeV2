@@ -41,7 +41,7 @@ class CommandCacheBuilder {
             filePath: filePath,
             description: '',
             category: this.categorizeCommand(fileName),
-            timingConditions: this.extractTimingConditions(content),
+            timingConditions: this.extractTimingConditions(content, fileName),
             contextTriggers: this.extractContextTriggers(content),
             prerequisites: this.extractPrerequisites(content),
             outputs: this.extractOutputs(content),
@@ -109,9 +109,22 @@ class CommandCacheBuilder {
             'night': /night|20:00.*23:00|reflection|before.*bed/i
         };
 
-        for (const [time, pattern] of Object.entries(timePatterns)) {
-            if (pattern.test(content)) {
-                conditions.timeOfDay.push(time);
+        // Override timing conditions for specific commands based on their intended usage
+        const commandTimingOverrides = {
+            'afternoon-checkin': ['early-morning', 'morning'],  // Actually used in morning for energy assessment
+            'evening-checkin': ['evening'],                      // Used in evening
+            'end-of-day-checkout': ['night']                     // Used at end of day
+        };
+
+        // Check for command-specific timing overrides first
+        if (commandTimingOverrides[fileName]) {
+            conditions.timeOfDay = [...commandTimingOverrides[fileName]];
+        } else {
+            // Use pattern matching for other commands
+            for (const [time, pattern] of Object.entries(timePatterns)) {
+                if (pattern.test(content)) {
+                    conditions.timeOfDay.push(time);
+                }
             }
         }
 
