@@ -15,9 +15,11 @@
 
 const fs = require('fs');
 const path = require('path');
+const { spawn } = require('child_process');
 
 const PLANNING_DIR = path.join(__dirname, '..', 'planning', 'data');
 const STREAK_FILE = path.join(PLANNING_DIR, 'boot-dev-streak.json');
+const PROFILE_URL = 'https://www.boot.dev/u/profusenegotiation88';
 
 // ANSI color codes for terminal output
 const colors = {
@@ -41,6 +43,75 @@ function getWeekId() {
   const daysSinceStart = Math.floor((now - startOfYear) / (24 * 60 * 60 * 1000));
   const weekNumber = Math.ceil((daysSinceStart + startOfYear.getDay() + 1) / 7);
   return `${now.getFullYear()}-W${weekNumber.toString().padStart(2, '0')}`;
+}
+
+async function fetchBootDevProfile() {
+  return new Promise((resolve, reject) => {
+    const child = spawn('cl', ['mcp', 'run', 'firecrawl-mcp', 'firecrawl_scrape', '--url', PROFILE_URL, '--formats', '["markdown"]', '--onlyMainContent', 'true'], {
+      stdio: ['pipe', 'pipe', 'pipe'],
+      cwd: path.join(__dirname, '..')
+    });
+
+    let stdout = '';
+    let stderr = '';
+
+    child.stdout.on('data', (data) => {
+      stdout += data.toString();
+    });
+
+    child.stderr.on('data', (data) => {
+      stderr += data.toString();
+    });
+
+    child.on('close', (code) => {
+      if (code === 0) {
+        resolve(stdout);
+      } else {
+        reject(new Error(`Profile fetch failed: ${stderr}`));
+      }
+    });
+  });
+}
+
+function parseStreakFromProfile(profileData) {
+  try {
+    // Look for streak achievement pattern
+    const streakMatch = profileData.match(/Bronze: Streak.*?Study consistently for (\d+) days.*?(\w{3} \d+, \d{4})/s);
+    if (streakMatch) {
+      const streakDays = parseInt(streakMatch[1]);
+      const dateStr = streakMatch[2];
+      
+      // Parse the date (format: "Sep 2, 2025")
+      const achievementDate = new Date(dateStr);
+      const achievementDateStr = achievementDate.toISOString().split('T')[0];
+      
+      return {
+        streakDays,
+        achievementDate: achievementDateStr,
+        found: true
+      };
+    }
+    
+    // Look for higher tier streaks
+    const goldStreakMatch = profileData.match(/Gold: Streak.*?Study consistently for (\d+) days.*?(\w{3} \d+, \d{4})/s);
+    if (goldStreakMatch) {
+      const streakDays = parseInt(goldStreakMatch[1]);
+      const dateStr = goldStreakMatch[2];
+      const achievementDate = new Date(dateStr);
+      const achievementDateStr = achievementDate.toISOString().split('T')[0];
+      
+      return {
+        streakDays,
+        achievementDate: achievementDateStr,
+        found: true
+      };
+    }
+    
+    return { found: false };
+  } catch (error) {
+    console.error('Error parsing profile data:', error);
+    return { found: false };
+  }
 }
 
 function loadStreakData() {
