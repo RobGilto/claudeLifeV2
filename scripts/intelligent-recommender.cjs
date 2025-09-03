@@ -327,17 +327,9 @@ class IntelligentRecommender {
     scoreCommand(command, timeCtx, userCtx, contextInput = '') {
         let score = command.priority || 50;
         
-        // Debug logging for start-of-day
-        const isDebugTarget = command.name === 'start-of-day';
-        if (isDebugTarget) {
-            console.log(`\n🐛 DEBUG: Scoring ${command.name}`);
-            console.log(`   Base priority: ${score}`);
-        }
-        
         // Time of day matching
         if (command.timingConditions.timeOfDay.includes(timeCtx.timeOfDay)) {
             score += 25;
-            if (isDebugTarget) console.log(`   +25 time of day (${timeCtx.timeOfDay}): ${score}`);
         }
         
         // Day of week matching
@@ -355,7 +347,6 @@ class IntelligentRecommender {
             if (missing.recommendation === command.name) {
                 const bonus = missing.urgency === 'high' ? 40 : missing.urgency === 'medium' ? 25 : 15;
                 score += bonus;
-                if (isDebugTarget) console.log(`   +${bonus} missing activity (${missing.type}, ${missing.urgency}): ${score}`);
             }
         }
         
@@ -441,26 +432,13 @@ class IntelligentRecommender {
         
         // Score all commands
         const scoredCommands = Object.values(this.cache.commands)
-            .map(command => {
-                const score = this.scoreCommand(command, timeCtx, userCtx, contextInput);
-                if (command.name === 'start-of-day') {
-                    console.log(`🐛 DEBUG: Final scoring for ${command.name}: ${score}`);
-                }
-                return {
-                    ...command,
-                    score: score,
-                    stars: '',
-                    explanation: ''
-                };
-            })
+            .map(command => ({
+                ...command,
+                score: this.scoreCommand(command, timeCtx, userCtx, contextInput),
+                stars: '',
+                explanation: ''
+            }))
             .sort((a, b) => b.score - a.score);
-            
-        // Debug top 10 commands
-        console.log('\n🐛 DEBUG: Top 10 scored commands:');
-        for (let i = 0; i < Math.min(10, scoredCommands.length); i++) {
-            const cmd = scoredCommands[i];
-            console.log(`   ${i+1}. ${cmd.name}: ${cmd.score}`);
-        }
         
         // Add stars and explanations to top commands
         const topCommands = scoredCommands.slice(0, limit).map(cmd => ({
