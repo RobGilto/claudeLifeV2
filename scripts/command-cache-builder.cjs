@@ -69,7 +69,7 @@ class CommandCacheBuilder {
         const categories = {
             'planning': ['plan-day', 'plan-week', 'plan-month', 'plan-quarter', 'plan-year', 'plan-day-aware'],
             'review': ['review-day', 'review-week', 'review-month', 'review-quarter', 'review-year'],
-            'checkin': ['afternoon-checkin', 'evening-checkin', 'end-of-day-checkout', 'weekly-checkin'],
+            'checkin': ['start-of-day', 'afternoon-checkin', 'evening-checkin', 'end-of-day-checkout', 'weekly-checkin'],
             'skills': ['skill-status', 'skill-update', 'skill-review', 'skill-crafter', 'skill-investor', 'skill-salesman', 'skill-evidence', 'github-skill-scan'],
             'execution': ['taskmaster-start', 'taskmaster-block', 'taskmaster-complete', 'pomodoro'],
             'reflection': ['brain-dump-analysis', 'victory-suggest', 'victory-review', 'add-victory'],
@@ -111,9 +111,10 @@ class CommandCacheBuilder {
 
         // Override timing conditions for specific commands based on their intended usage
         const commandTimingOverrides = {
-            'afternoon-checkin': ['morning', 'afternoon'],       // Morning energy assessment and intention-setting (despite name)
-            'evening-checkin': ['evening'],                      // Used in evening
-            'end-of-day-checkout': ['night']                     // Used at end of day
+            'start-of-day': ['morning'],                         // Comprehensive morning brief and planning
+            'afternoon-checkin': ['afternoon'],                  // Midday checkin around noon (12:00 PM)
+            'evening-checkin': ['evening'],                      // Evening checkin around 6:00 PM
+            'end-of-day-checkout': ['night']                     // End-of-day checkout around 11:00 PM+
         };
 
         // Check for command-specific timing overrides first
@@ -296,7 +297,7 @@ class CommandCacheBuilder {
 
         // High priority commands
         const highPriorityCommands = [
-            'afternoon-checkin', 'evening-checkin', 'end-of-day-checkout',
+            'start-of-day', 'afternoon-checkin', 'evening-checkin', 'end-of-day-checkout',
             'plan-day', 'daily-brief', 'skill-status'
         ];
         

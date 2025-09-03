@@ -222,21 +222,29 @@ class IntelligentRecommender {
             
             // Check for missing daily checkin
             if (!fs.existsSync(todayFile)) {
-                // Only recommend afternoon-checkin if it's after 12:00 PM
-                if (timeCtx.timeOfDay === 'afternoon' || timeCtx.timeOfDay === 'evening' || timeCtx.timeOfDay === 'night') {
+                // Morning: recommend start-of-day
+                if (timeCtx.timeOfDay === 'morning') {
+                    context.missingActivities.push({
+                        type: 'no-start-of-day',
+                        urgency: 'high',
+                        recommendation: 'start-of-day'
+                    });
+                }
+                // After 12 PM: recommend afternoon-checkin
+                else if (timeCtx.timeOfDay === 'afternoon' || timeCtx.timeOfDay === 'evening' || timeCtx.timeOfDay === 'night') {
                     context.missingActivities.push({
                         type: 'no-daily-checkin',
                         urgency: 'high',
                         recommendation: 'afternoon-checkin'
                     });
-                } else {
-                    // Before 12 PM, suggest they wait or plan first
-                    context.missingActivities.push({
-                        type: 'no-daily-plan',
-                        urgency: 'medium',
-                        recommendation: 'plan-day'
-                    });
                 }
+                
+                // Also check for missing daily plan
+                context.missingActivities.push({
+                    type: 'no-daily-plan',
+                    urgency: 'medium',
+                    recommendation: 'plan-day'
+                });
             } else {
                 // Analyze existing checkin
                 const content = fs.readFileSync(todayFile, 'utf8');
