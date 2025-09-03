@@ -43,7 +43,13 @@
       "completed": false,
       "priority": "high",
       "alignment": "Python foundation prerequisite for Azure certification - elevated priority",
-      "urgency": "high"
+      "urgency": "high",
+      "progress": {
+        "completed_days": 3,
+        "total_days": 7,
+        "completion_rate": 43,
+        "days_completed": ["2025-09-01", "2025-09-02", "2025-09-03"]
+      }
     },
     {
       "id": "W36-5",

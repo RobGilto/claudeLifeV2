@@ -188,7 +188,7 @@ class GitHubMCPAnalyzer {
         progressionAnalysis.cross_repo_patterns = this.generateCrossRepoPatterns();
         progressionAnalysis.investment_opportunities = this.identifyInvestmentOpportunities();
         progressionAnalysis.crafting_readiness = this.identifyCraftingOpportunities();
-        progressionAnalysis.salesman_stories = this.generatePortfolioStories();
+        progressionAnalysis.salesman_stories = this.generatePortfolioStories(progressionAnalysis.bootdev_analysis);
 
         return progressionAnalysis;
     }
