@@ -2,6 +2,11 @@
 
 Create or update a daily plan with time blocks aligned to higher-level objectives.
 
+## Usage
+```bash
+/plan-day [date] [--hitl]  # Add --hitl for Human in the Loop approval workflow
+```
+
 ## Process:
 
 1. First read CLAUDE.md and any existing planning context to understand the user's current planning state.

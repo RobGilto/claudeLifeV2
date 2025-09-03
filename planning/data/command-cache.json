@@ -1,6 +1,6 @@
 {
-  "buildTime": "2025-09-02T22:20:17.301Z",
-  "totalCommands": 55,
+  "buildTime": "2025-09-03T01:48:49.594Z",
+  "totalCommands": 56,
   "categories": {
     "content": 3,
     "reflection": 4,
@@ -8,6 +8,7 @@
     "utilities": 5,
     "foundation": 3,
     "skills": 8,
+    "other": 1,
     "performance": 3,
     "planning": 6,
     "execution": 4,
@@ -585,6 +586,46 @@
       "priority": 75,
       "lastModified": "2025-09-02T10:53:52.561Z"
     },
+    "manage-interests": {
+      "name": "manage-interests",
+      "filePath": ".claude/commands/manage-interests.md",
+      "description": "Manage Interests",
+      "category": "other",
+      "timingConditions": {
+        "timeOfDay": [
+          "morning"
+        ],
+        "dayOfWeek": [
+          "saturday"
+        ],
+        "strategicPeriods": [
+          "month-end"
+        ],
+        "frequency": "daily"
+      },
+      "contextTriggers": {
+        "keywords": [
+          "reflection",
+          "skills"
+        ],
+        "situations": [],
+        "missingActivities": [],
+        "emotions": [],
+        "workStates": []
+      },
+      "prerequisites": [
+        "- `category` (conditional): Interest category name"
+      ],
+      "outputs": [
+        "- All operations include LLM-powered intelligence for relevance and deduplication",
+        "- Check for duplicates using similarity matching (threshold: 0.8)"
+      ],
+      "integrations": [
+        "## Usage Examples:"
+      ],
+      "priority": 50,
+      "lastModified": "2025-09-03T01:32:27.178Z"
+    },
     "morning-checkin": {
       "name": "morning-checkin",
       "filePath": ".claude/commands/morning-checkin.md",
@@ -1106,7 +1147,9 @@
         "emotions": [],
         "workStates": []
       },
-      "prerequisites": [],
+      "prerequisites": [
+        "### File System Integration"
+      ],
       "outputs": [
         "- **Break Reminders**: Calendar reminders for break periods",
         "."
@@ -1116,7 +1159,7 @@
         "."
       ],
       "priority": 60,
-      "lastModified": "2025-09-02T21:20:46.202Z"
+      "lastModified": "2025-09-02T22:51:08.135Z"
     },
     "project-breakdown": {
       "name": "project-breakdown",
@@ -1405,7 +1448,7 @@
         "```"
       ],
       "priority": 50,
-      "lastModified": "2025-09-02T21:53:28.016Z"
+      "lastModified": "2025-09-03T01:47:55.538Z"
     },
     "review-day": {
       "name": "review-day",
@@ -1978,7 +2021,9 @@
       "description": "Skill Status Command",
       "category": "skills",
       "timingConditions": {
-        "timeOfDay": [],
+        "timeOfDay": [
+          "morning"
+        ],
         "dayOfWeek": [
           "friday",
           "saturday"
@@ -1988,8 +2033,10 @@
       },
       "contextTriggers": {
         "keywords": [
+          "planning",
           "skills",
-          "productivity"
+          "productivity",
+          "goals"
         ],
         "situations": [],
         "missingActivities": [],
@@ -1997,12 +2044,14 @@
         "workStates": []
       },
       "prerequisites": [
-        "- **Backlog**: Lower priority skills"
+        "- Streak analysis from boot.dev activity",
+        "- **Backlog**: Lower priority skills",
+        "```"
       ],
       "outputs": [],
       "integrations": [],
       "priority": 80,
-      "lastModified": "2025-08-27T01:39:20.055Z"
+      "lastModified": "2025-09-02T23:08:31.912Z"
     },
     "skill-update": {
       "name": "skill-update",
