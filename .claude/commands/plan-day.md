@@ -124,8 +124,14 @@ Create or update a daily plan with time blocks aligned to higher-level objective
 
    # Daily Plan: YYYY-MM-DD
 
+   ## Ritual Schedule
+   [List all active rituals with times, durations, and types]
+   
+   ## Available Time Windows
+   [Show calculated available time between rituals]
+   
    ## Time Block Schedule (ADD-Optimized: 4-5 blocks + 1 buffer)
-   [List all time blocks with alignment, including 1.5hr buffer block]
+   [List all time blocks created within available windows, including 1.5hr buffer block]
 
    ## Daily Objectives (Max 3 for focus)
    [List objectives with parent alignment]
@@ -236,10 +242,12 @@ Create or update a daily plan with time blocks aligned to higher-level objective
 
 **AUTOMATED CALENDAR INTEGRATION REQUIREMENTS:**
 1. **MANDATORY**: First check existing calendar events via MCP (step 3)
-2. **MANDATORY**: Compare each generated time block against existing events (step 7b)  
-3. **MANDATORY**: Skip or modify conflicting time blocks (step 7b)
-4. **MANDATORY**: Only create events for validated, non-conflicting time blocks (step 7c)
-5. **MANDATORY**: Report integration results with conflict summary (step 7d)
+2. **MANDATORY**: Load and respect ritual constraints (step 3.5)
+3. **MANDATORY**: Only generate time blocks within available ritual windows
+4. **MANDATORY**: Compare each generated time block against existing events (step 8b)  
+5. **MANDATORY**: Skip or modify conflicting time blocks (step 8b)
+6. **MANDATORY**: Only create events for validated, non-conflicting time blocks (step 8c)
+7. **MANDATORY**: Report integration results with conflict summary (step 8d)
 
 **Conflict Resolution Hierarchy:**
 1. **Skip conflicting blocks**: If overlap exists, skip calendar creation for that block

@@ -22,6 +22,12 @@ This is Robert's personal AI engineering journey and life transformation reposit
 ### Directory Structure
 please refer to docs/directory-structure.md
 
+### Deprecated Components
+- **`/deprecated/commands/`** - Deprecated slash commands that have been superseded
+- **`/deprecated/scripts/`** - Deprecated scripts that have been integrated into main commands
+- **Notable Deprecations:**
+  - `plan-day-aware.md` - Ritual awareness has been integrated directly into `/plan-day` command
+
 
 ## File Management Standards
 
@@ -60,6 +66,18 @@ related: source-file.md        # For analysis files
 - Files marked `privacy: sensitive` should use placeholders for actual data
 
 ## Development Workflow
+
+### Planning System Integration
+**Daily Planning** (`/plan-day`):
+- **Ritual-Aware by Default**: Automatically integrates with `ritual-manager.js` to respect recurring commitments
+- **Available Time Windows**: Only creates time blocks within periods not blocked by rituals
+- **Foundational Habit Protection**: Prevents conflicts with foundational rituals and work schedule
+- **HITL Support**: Supports `--hitl` flag for human approval before calendar integration
+
+**Ritual Management**:
+- Active rituals are loaded from `scripts/ritual-manager.js`
+- Ritual types: foundational (habits), work (employment), flexible (moveable)
+- Availability calculation ensures realistic planning within actual free time
 
 ### Script Standards
 All scripts in `/scripts/` should:
