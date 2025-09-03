@@ -92,7 +92,7 @@ class CommandCacheBuilder {
     /**
      * Extract timing conditions from command content
      */
-    extractTimingConditions(content) {
+    extractTimingConditions(content, fileName) {
         const conditions = {
             timeOfDay: [],
             dayOfWeek: [],
@@ -111,7 +111,7 @@ class CommandCacheBuilder {
 
         // Override timing conditions for specific commands based on their intended usage
         const commandTimingOverrides = {
-            'afternoon-checkin': ['early-morning', 'morning'],  // Actually used in morning for energy assessment
+            'afternoon-checkin': ['afternoon'],                  // Used after 12:00 PM for mid-day check-in
             'evening-checkin': ['evening'],                      // Used in evening
             'end-of-day-checkout': ['night']                     // Used at end of day
         };
