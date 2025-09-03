@@ -114,9 +114,9 @@ When in the last 2 weeks of the year, prioritize strategic foundation commands:
 ### 5. Time-Based Recommendations
 
 **Note:** Robert's actual schedule patterns based on journal analysis:
-- **Morning Checkin:** Usually occurs around noon (12:00 PM)
-- **Afternoon Checkin:** Usually occurs around 6:00 PM  
-- **Evening Checkin:** Usually occurs late evening before bed (11:00 PM+)
+- **Afternoon Checkin:** Usually occurs around noon (12:00 PM)
+- **Evening Checkin:** Usually occurs around 6:00 PM  
+- **End-of-Day Checkout:** Usually occurs late evening before bed (11:00 PM+)
 
 #### Early Morning (5:00-12:00 PM Sydney Time)
 **Perfect for**: Deep work, skill development, focused execution before checkin time
@@ -135,7 +135,7 @@ When in the last 2 weeks of the year, prioritize strategic foundation commands:
 ```
 🌤️ MIDDAY CHECKIN WINDOW
 ⭐ Top Recommendations:
-1. /morning-checkin - Energy assessment and daily intentions (Robert's usual noon timing)
+1. /afternoon-checkin - Energy assessment and daily intentions (Robert's usual noon timing)
 2. /ritual-status - Check daily ritual commitments
 3. /skill-status - Review progress toward 2026 goals
 4. /executive-function - ADD-optimized productivity support
@@ -159,7 +159,7 @@ When in the last 2 weeks of the year, prioritize strategic foundation commands:
 ```
 🌅 EVENING CHECKIN WINDOW
 ⭐ Top Recommendations:
-1. /afternoon-checkin - Mid-day energy and priority check (Robert's usual 6 PM timing)
+1. /evening-checkin - Mid-day energy and priority check (Robert's usual 6 PM timing)
 2. /add-victory - Capture day's wins and progress
 3. /bootdev-done - Complete evening coding practice
 4. /executive-function - ADD-optimized support if energy flagging
@@ -171,7 +171,7 @@ When in the last 2 weeks of the year, prioritize strategic foundation commands:
 ```
 🌙 EVENING EXECUTION & NIGHT REFLECTION
 ⭐ Top Recommendations:
-1. /evening-checkin - Day reflection and tomorrow planning (Robert's usual 11+ PM timing)
+1. /end-of-day-checkout - Day reflection and tomorrow planning (Robert's usual 11+ PM timing)
 2. /taskmaster-complete - Close out today's execution
 3. /review-day - Comprehensive daily performance review
 4. /victory-suggest - AI-powered victory detection

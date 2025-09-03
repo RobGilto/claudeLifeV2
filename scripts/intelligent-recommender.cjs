@@ -515,14 +515,15 @@ class IntelligentRecommender {
      */
     getMissionAlignment(commandName) {
         const alignments = {
-            'morning-checkin': 'Architecting your mind for daily excellence',
+            'afternoon-checkin': 'Architecting your mind for daily excellence',
+            'evening-checkin': 'Building momentum through evening assessment',
+            'end-of-day-checkout': 'Reflecting on daily dedication and progress',
             'daily-brief': 'Staying informed on AI/tech job market trends',
             'plan-day': 'Structuring habits for maximum productivity',
             'skill-status': 'Tracking progress toward 2026 transformation',
             'bootdev-done': 'Building practical coding competency',
             'pomodoro': 'Deep work practice for complex problem solving',
-            'github-skill-scan': 'Evidence-based skill development tracking',
-            'evening-checkin': 'Reflecting on daily dedication and progress'
+            'github-skill-scan': 'Evidence-based skill development tracking'
         };
         
         return alignments[commandName] || 'Supporting your strategic AI engineering journey';

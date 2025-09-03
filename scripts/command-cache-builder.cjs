@@ -69,7 +69,7 @@ class CommandCacheBuilder {
         const categories = {
             'planning': ['plan-day', 'plan-week', 'plan-month', 'plan-quarter', 'plan-year', 'plan-day-aware'],
             'review': ['review-day', 'review-week', 'review-month', 'review-quarter', 'review-year'],
-            'checkin': ['morning-checkin', 'afternoon-checkin', 'evening-checkin', 'daily-checkin', 'weekly-checkin'],
+            'checkin': ['afternoon-checkin', 'evening-checkin', 'end-of-day-checkout', 'daily-checkin', 'weekly-checkin'],
             'skills': ['skill-status', 'skill-update', 'skill-review', 'skill-crafter', 'skill-investor', 'skill-salesman', 'skill-evidence', 'github-skill-scan'],
             'execution': ['taskmaster-start', 'taskmaster-block', 'taskmaster-complete', 'pomodoro'],
             'reflection': ['brain-dump-analysis', 'victory-suggest', 'victory-review', 'add-victory'],
@@ -283,7 +283,7 @@ class CommandCacheBuilder {
 
         // High priority commands
         const highPriorityCommands = [
-            'morning-checkin', 'evening-checkin', 'daily-checkin',
+            'afternoon-checkin', 'evening-checkin', 'end-of-day-checkout', 'daily-checkin',
             'plan-day', 'daily-brief', 'skill-status'
         ];
         

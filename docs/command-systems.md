@@ -32,15 +32,15 @@ Early-day energy assessment and intention-setting:
 - One commitment declaration
 - Silent victory detection from intentions
 
-### `/afternoon-checkin` Command
-Mid-day energy and planning checkpoint:
-- Morning energy assessment and sleep quality check
-- Afternoon priority setting (top 3 focus areas)
-- Early wins celebration and momentum tracking
+### `/evening-checkin` Command
+Evening energy and planning checkpoint:
+- Evening energy assessment and progress check
+- Evening priority setting (focus areas for remaining day)
+- Evening wins celebration and momentum tracking
 - Focus/energy challenge identification
 - Quick encouragement without full analysis
 
-### `/evening-checkin` Command  
+### `/end-of-day-checkout` Command  
 End-of-day reflection and tomorrow planning with optional day plan integration:
 - Overall day feeling and accomplishment review
 - Challenge and blocker identification
