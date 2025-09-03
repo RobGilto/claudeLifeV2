@@ -222,26 +222,50 @@ class IntelligentRecommender {
             
             // Check for missing daily checkin
             if (!fs.existsSync(todayFile)) {
-                context.missingActivities.push({
-                    type: 'no-daily-checkin',
-                    urgency: 'high',
-                    recommendation: 'afternoon-checkin'
-                });
+                // Only recommend afternoon-checkin if it's after 12:00 PM
+                if (timeCtx.timeOfDay === 'afternoon' || timeCtx.timeOfDay === 'evening' || timeCtx.timeOfDay === 'night') {
+                    context.missingActivities.push({
+                        type: 'no-daily-checkin',
+                        urgency: 'high',
+                        recommendation: 'afternoon-checkin'
+                    });
+                } else {
+                    // Before 12 PM, suggest they wait or plan first
+                    context.missingActivities.push({
+                        type: 'no-daily-plan',
+                        urgency: 'medium',
+                        recommendation: 'plan-day'
+                    });
+                }
             } else {
                 // Analyze existing checkin
                 const content = fs.readFileSync(todayFile, 'utf8');
-                if (!content.includes('## Afternoon Check-in')) {
+                
+                // Only recommend afternoon checkin if it's afternoon or later
+                if (!content.includes('## Afternoon Check-in') && 
+                    (timeCtx.timeOfDay === 'afternoon' || timeCtx.timeOfDay === 'evening' || timeCtx.timeOfDay === 'night')) {
                     context.missingActivities.push({
                         type: 'no-afternoon-checkin',
                         urgency: 'high',
                         recommendation: 'afternoon-checkin'
                     });
                 }
+                
+                // Only recommend evening checkin during evening time
                 if (!content.includes('## Evening Check-in') && timeCtx.timeOfDay === 'evening') {
                     context.missingActivities.push({
                         type: 'no-evening-checkin',
                         urgency: 'medium',
                         recommendation: 'evening-checkin'
+                    });
+                }
+                
+                // Only recommend end-of-day checkout during night time
+                if (!content.includes('## End-of-Day Checkout') && timeCtx.timeOfDay === 'night') {
+                    context.missingActivities.push({
+                        type: 'no-end-of-day-checkout',
+                        urgency: 'medium',
+                        recommendation: 'end-of-day-checkout'
                     });
                 }
             }
@@ -320,7 +344,7 @@ class IntelligentRecommender {
         
         // Category-specific boosts
         const categoryBoosts = {
-            'checkin': (timeCtx.timeOfDay === 'early-morning' || timeCtx.timeOfDay === 'morning') ? 20 : 0,
+            'checkin': (timeCtx.timeOfDay === 'afternoon' || timeCtx.timeOfDay === 'evening' || timeCtx.timeOfDay === 'night') ? 20 : 0,
             'planning': timeCtx.timeOfDay === 'morning' ? 15 : 0,
             'execution': timeCtx.timeOfDay === 'morning' || timeCtx.timeOfDay === 'afternoon' ? 10 : 0,
             'review': timeCtx.timeOfDay === 'evening' ? 15 : 0,
