@@ -2,6 +2,11 @@
 
 Create or update a quarterly plan with strategic priorities and major initiatives aligned to yearly vision.
 
+## Usage
+```bash
+/plan-quarter [quarter] [--hitl]  # Add --hitl for Human in the Loop approval workflow
+```
+
 ## Process:
 
 1. Read CLAUDE.md and yearly planning context to understand transformation goals.
@@ -24,7 +29,63 @@ Create or update a quarterly plan with strategic priorities and major initiative
    - Identify potential values conflicts or gaps
    - Suggest adjustments to improve alignment
 
-4. Execute quarterly planning:
+4. **HITL (Human in the Loop) Decision Point**: If `--hitl` flag is used:
+   
+   4a. Run the fractal planner in DRAFT mode:
+   ```bash
+   node scripts/fractal-planner.cjs plan-quarter [quarter] --draft
+   ```
+   
+   4b. Present the draft plan to the user for approval:
+   ```
+   📋 DRAFT QUARTERLY PLAN FOR APPROVAL
+   📅 Quarter: [quarter]
+   
+   ## Proposed Quarterly Theme:
+   [Central strategic focus for the 3-month period]
+   
+   ## Strategic Priorities:
+   [3-5 major focus areas with yearly alignment]
+   
+   ## Quarterly Objectives:
+   [6-10 specific measurable outcomes]
+   
+   ## Major Milestones:
+   [Up to 6 significant achievements with timelines]
+   
+   ## Values Alignment Analysis:
+   [Values scoring and alignment check results]
+   
+   ## Role Development Focus:
+   [Primary role focus and integration strategy]
+   
+   ## Resource Requirements:
+   [Time, energy, financial, and human resources needed]
+   
+   ❓ **APPROVAL REQUIRED**: 
+   - Type "approve" to finalize the quarterly strategic plan
+   - Type "revise" with feedback to adjust the plan
+   - Type "cancel" to abort planning
+   
+   💡 **Feedback options**:
+   - Adjust strategic scope: "This quarter seems overambitious, reduce priorities"
+   - Change focus areas: "Prioritize portfolio development over administrative improvements"
+   - Modify timeline: "Move milestone 3 to next quarter"
+   - Address values conflicts: "Priority 2 conflicts with work-life balance, adjust"
+   - Resource concerns: "I don't have bandwidth for objective 4 with my current job"
+   - Role balance: "Too focused on learning role, need more current job stability"
+   ```
+   
+   4c. **Revision Loop**: If user requests changes:
+   - Incorporate feedback into quarterly strategic parameters
+   - Re-run values alignment check with adjustments
+   - Re-run fractal planner with updated priorities
+   - Present updated draft for re-approval
+   - Continue until user approves or cancels
+   
+   4d. **Only proceed to step 5 after user approval**
+
+5. If NOT using `--hitl` OR after HITL approval, execute quarterly planning:
    ```bash
    node scripts/fractal-planner.cjs plan-quarter [quarter]
    ```

@@ -73,7 +73,7 @@ Create or update a monthly plan with objectives and milestones aligned to quarte
    node scripts/fractal-planner.cjs plan-month [month]
    ```
 
-4. Generate comprehensive monthly plan report in `journal/planning/monthly-reviews/plan-YYYY-MM.md`:
+5. Generate comprehensive monthly plan report in `journal/planning/monthly-reviews/plan-YYYY-MM.md`:
 
    ```markdown
    ---
@@ -116,7 +116,7 @@ Create or update a monthly plan with objectives and milestones aligned to quarte
    [Potential challenges and mitigation strategies]
    ```
 
-5. Provide planning cascade recommendations:
+6. Provide planning cascade recommendations:
    - Weekly planning: `/plan-week` to break down monthly objectives
    - Review previous month: `/review-month` if not completed
    - Strategic alignment check: `/performance-dashboard`
