@@ -326,47 +326,58 @@ class GitHubMCPAnalyzer {
 
     async analyzeBootdevProfile() {
         try {
-            // This would use Claude's Firecrawl MCP to scrape the profile
-            // For now, return structure with placeholder data
-            // In actual implementation, this would call Firecrawl MCP
+            // Import and use the dedicated bootdev profile scraper
+            const { BootdevProfileAnalyzer } = await import('./bootdev-profile-scraper.js');
+            const analyzer = new BootdevProfileAnalyzer();
             
-            const profileData = {
-                current_streak: 8,
-                total_lessons_completed: 0, // Would be scraped
-                courses_in_progress: [], // Would be scraped
-                completed_courses: [], // Would be scraped
+            // Scrape profile data
+            const profileData = await analyzer.scrapeProfile();
+            const evidence = analyzer.analyzeSkillEvidence();
+            const recommendations = analyzer.generateSkillUpdateRecommendations();
+            
+            // Transform to format expected by skill analyzer
+            const transformedData = {
+                current_streak: profileData.streak_info.current_streak,
+                total_lessons_completed: profileData.learning_metrics.total_lessons_completed,
+                courses_in_progress: profileData.courses.in_progress,
+                completed_courses: profileData.courses.completed,
                 skill_evidence: {
                     python_fundamentals: {
-                        lessons_completed: 0, // Would be scraped
-                        difficulty_progression: 'beginner', // Would be analyzed
-                        learning_velocity: '1 lesson/day', // Would be calculated
-                        evidence_strength: 'medium'
+                        lessons_completed: profileData.learning_metrics.total_lessons_completed,
+                        difficulty_progression: profileData.skill_indicators.python_proficiency,
+                        learning_velocity: `${profileData.learning_metrics.average_lessons_per_day} lesson/day`,
+                        evidence_strength: evidence.python_skill_boost.current_evidence_strength
                     },
                     problem_solving: {
-                        challenges_completed: 0, // Would be scraped
-                        success_rate: 0, // Would be calculated
-                        evidence_strength: 'low'
+                        challenges_completed: 0, // Would be extracted from courses
+                        success_rate: 0, // Would be calculated from course progress
+                        evidence_strength: evidence.debugging_skill_boost.current_evidence_strength
                     }
                 },
                 skill_boosts: {
                     python: {
-                        suggested_increase: 2,
-                        evidence: 'Daily practice streak, consistent engagement'
+                        suggested_increase: evidence.python_skill_boost.suggested_increase,
+                        evidence: evidence.python_skill_boost.evidence_details.join(', ')
                     },
                     debugging: {
-                        suggested_increase: 1,
-                        evidence: 'Problem-solving challenges completed'
+                        suggested_increase: evidence.debugging_skill_boost.suggested_increase,
+                        evidence: evidence.debugging_skill_boost.evidence_details.join(', ')
+                    },
+                    learning_efficiency: {
+                        suggested_increase: evidence.learning_efficiency_boost.suggested_increase,
+                        evidence: evidence.learning_efficiency_boost.evidence_details.join(', ')
                     }
                 },
                 learning_patterns: {
-                    consistency: 'high', // 8-day streak
-                    engagement_depth: 'medium', // Would analyze time per lesson
-                    progression_rate: 'steady' // Would track difficulty increases
-                }
+                    consistency: profileData.skill_indicators.consistency_score,
+                    engagement_depth: profileData.skill_indicators.engagement_depth,
+                    progression_rate: 'steady'
+                },
+                recommendations: recommendations
             };
 
-            log('Boot.dev profile analysis completed');
-            return profileData;
+            log('Boot.dev profile analysis completed via dedicated scraper');
+            return transformedData;
             
         } catch (error) {
             log(`Error analyzing boot.dev profile: ${error.message}`);
