@@ -1,21 +1,30 @@
-# Ritual Add Command
+# Ritual Add Command V2
 
-Add a new recurring commitment or ritual to the system.
+Add a new recurring commitment or ritual using the advanced V2 system with complex frequency patterns and UUID-based tracking.
 
 ## Usage
 ```bash
-/ritual-add
+/ritual-add [natural language command]
+```
+
+## Examples
+```bash
+/ritual-add "Morning Exercise" daily at 07:00 for 30 minutes foundational
+/ritual-add "Team Meeting" weekly on monday at 10:00 for 60 minutes work
+/ritual-add "Monthly Review" monthly on 1st at 19:00 for 120 minutes foundational  
+/ritual-add "Quarterly Planning" quarterly first monday at 09:00 for 4 hours foundational
+/ritual-add Boot.dev Practice --daily --time=18:00 --duration=60 --type=foundational
 ```
 
 ## What it does
 
-Interactive ritual creation that guides you through:
+Advanced ritual creation with natural language parsing and complex scheduling:
 
-1. **Basic Information**: Name, type, frequency, description
-2. **Time Scheduling**: Define when the ritual occurs
-3. **Flexibility Options**: Set whether timing can be adjusted
-4. **Tracking Settings**: Configure completion tracking and streaks
-5. **Priority Level**: Set importance for conflict resolution
+1. **Natural Language Parsing**: Parse complex frequency patterns from natural language
+2. **UUID-Based System**: Generate unique identifiers for cross-system tracking
+3. **Complex Frequency Patterns**: Support daily, interval, weekly, monthly, quarterly patterns
+4. **Calendar Integration**: Prepare for selective calendar synchronization
+5. **Cross-System Linking**: Enable integration with TaskWarrior and planning systems
 
 ## Ritual Types
 
@@ -30,31 +39,46 @@ Interactive ritual creation that guides you through:
 - **weekly**: Specific days of the week
 - **custom**: Custom patterns (future feature)
 
-## Interactive Flow
+## Process
 
-```
-🔄 Adding New Ritual
-===================
+1. **Parse natural language or use interactive mode**:
+   ```bash
+   # Use V2 CLI system with advanced parsing
+   node scripts/ritual-cli-v2.js add "[natural language command]"
+   ```
 
-Ritual name: Boot.dev Daily Practice
-Type (work/foundational/life/maintenance): foundational
-Frequency (daily/weekly/custom): daily
-Description: 1 hour of Python learning and coding practice
+2. **Display parsed configuration**:
+   ```
+   🔄 Creating New Ritual V2
+   ========================
+   
+   📝 Name: [extracted name]
+   🔁 Frequency: [parsed frequency pattern with details]
+   ⏰ Time: [start time] - [end time] ([duration] minutes)
+   🏷️ Type: [foundational|work|life|maintenance]
+   📊 Priority: [high|medium|low]
+   🎯 UUID: [generated UUID]
+   
+   ## Frequency Details:
+   [Show exactly when this ritual will occur - next few instances]
+   ```
 
-⏰ Define Time Blocks:
-Start time (HH:MM): 18:00
-Duration (minutes): 60
-Flexible timing? (y/n): n
-
-Priority (high/medium/low): high
-Track completions? (y/n): y
-
-✅ Ritual created successfully!
-   ID: 1693402341234
-   Name: Boot.dev Daily Practice
-   Type: foundational
-   Time blocks: 1
-```
+3. **Create ritual with V2 system**:
+   ```
+   ✅ Ritual Created Successfully!
+   
+   📋 Ritual Details:
+   UUID: [full-uuid]
+   Name: [ritual name]
+   Type: [type] | Priority: [priority]
+   Frequency: [frequency description]
+   Time Blocks: [count]
+   
+   ## Integration Status:
+   🔄 Ritual system: ✅ Created
+   📅 Calendar sync: ⏳ Ready (use /ritual-sync)
+   📋 TaskWarrior: ⏳ Ready (use /task-add when executing)
+   ```
 
 ## Features
 
