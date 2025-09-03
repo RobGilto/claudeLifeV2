@@ -1,0 +1,37 @@
+{
+  "wildcard_thresholds": {
+    "mastery_zone": 0.10,
+    "comfort_zone": 0.25,
+    "learning_zone": 0.50
+  },
+  "wildcard_probabilities": {
+    "mastery": 0.40,
+    "comfort": 0.25,
+    "learning": 0.15,
+    "foundation": 0.05
+  },
+  "weight_adjustments": {
+    "very_hard": 0.30,
+    "challenging": 0.15,
+    "just_right": 0.00,
+    "getting_easy": -0.10,
+    "too_easy": -0.25
+  },
+  "uuid_format": "UUID-YYYY-MM-DD-###",
+  "wildcard_prefix": "W",
+  "spaced_repetition": {
+    "time_multipliers": {
+      "0": 1.0,
+      "1": 1.2,
+      "2": 1.5,
+      "3": 1.8,
+      "4+": 2.0
+    }
+  },
+  "integration": {
+    "auto_integrate_wildcards": true,
+    "easy_mastery_threshold": 3.0,
+    "challenging_threshold": 7.0,
+    "min_attempts_for_integration": 1
+  }
+}
