@@ -1,5 +1,5 @@
 {
-  "buildTime": "2025-09-03T23:03:03.379Z",
+  "buildTime": "2025-09-03T23:16:35.580Z",
   "totalCommands": 57,
   "categories": {
     "content": 3,
@@ -77,13 +77,13 @@
       "category": "checkin",
       "timingConditions": {
         "timeOfDay": [
+          "early-morning",
           "morning",
           "afternoon",
           "evening",
           "night"
         ],
         "dayOfWeek": [
-          "friday",
           "saturday"
         ],
         "strategicPeriods": [],
@@ -96,19 +96,24 @@
           "productivity",
           "energy"
         ],
-        "situations": [],
+        "situations": [
+          "no-checkin"
+        ],
         "missingActivities": [],
         "emotions": [],
         "workStates": []
       },
-      "prerequisites": [],
+      "prerequisites": [
+        "Silently append detected victories to `/victories/victories-YYYY-MM.md` using the established format."
+      ],
       "outputs": [
         "```yaml",
+        "- Detects and logs victories automatically",
         "5. Greet them warmly with context-aware questions:"
       ],
       "integrations": [],
-      "priority": 50,
-      "lastModified": "2025-09-01T07:45:12.259Z"
+      "priority": 80,
+      "lastModified": "2025-09-03T23:13:12.790Z"
     },
     "bootdev-done": {
       "name": "bootdev-done",
@@ -386,10 +391,10 @@
       "priority": 75,
       "lastModified": "2025-09-02T10:50:41.402Z"
     },
-    "evening-checkin": {
-      "name": "evening-checkin",
-      "filePath": ".claude/commands/evening-checkin.md",
-      "description": "Evening Check-in with Smart Day Plan Integration",
+    "end-of-day-checkout": {
+      "name": "end-of-day-checkout",
+      "filePath": ".claude/commands/end-of-day-checkout.md",
+      "description": "End-of-Day Checkout with Smart Day Plan Integration",
       "category": "checkin",
       "timingConditions": {
         "timeOfDay": [
@@ -415,9 +420,7 @@
           "productivity",
           "energy"
         ],
-        "situations": [
-          "no-checkin"
-        ],
+        "situations": [],
         "missingActivities": [],
         "emotions": [],
         "workStates": []
@@ -431,7 +434,46 @@
       ],
       "integrations": [],
       "priority": 80,
-      "lastModified": "2025-09-01T07:33:31.746Z"
+      "lastModified": "2025-09-03T23:14:24.700Z"
+    },
+    "evening-checkin": {
+      "name": "evening-checkin",
+      "filePath": ".claude/commands/evening-checkin.md",
+      "description": "Evening Check-in",
+      "category": "checkin",
+      "timingConditions": {
+        "timeOfDay": [
+          "morning",
+          "evening",
+          "night"
+        ],
+        "dayOfWeek": [
+          "friday",
+          "saturday"
+        ],
+        "strategicPeriods": [],
+        "frequency": "daily"
+      },
+      "contextTriggers": {
+        "keywords": [
+          "planning",
+          "reflection",
+          "productivity",
+          "energy"
+        ],
+        "situations": [],
+        "missingActivities": [],
+        "emotions": [],
+        "workStates": []
+      },
+      "prerequisites": [],
+      "outputs": [
+        "```yaml",
+        "5. Greet them warmly with context-aware questions:"
+      ],
+      "integrations": [],
+      "priority": 80,
+      "lastModified": "2025-09-03T23:14:08.645Z"
     },
     "executive-function": {
       "name": "executive-function",
@@ -628,49 +670,6 @@
       ],
       "priority": 50,
       "lastModified": "2025-09-03T01:32:27.178Z"
-    },
-    "morning-checkin": {
-      "name": "morning-checkin",
-      "filePath": ".claude/commands/morning-checkin.md",
-      "description": "Morning Check-in",
-      "category": "checkin",
-      "timingConditions": {
-        "timeOfDay": [
-          "early-morning",
-          "morning",
-          "afternoon",
-          "evening",
-          "night"
-        ],
-        "dayOfWeek": [
-          "saturday"
-        ],
-        "strategicPeriods": [],
-        "frequency": "daily"
-      },
-      "contextTriggers": {
-        "keywords": [
-          "planning",
-          "reflection",
-          "productivity",
-          "energy"
-        ],
-        "situations": [],
-        "missingActivities": [],
-        "emotions": [],
-        "workStates": []
-      },
-      "prerequisites": [
-        "Silently append detected victories to `/victories/victories-YYYY-MM.md` using the established format."
-      ],
-      "outputs": [
-        "```yaml",
-        "- Detects and logs victories automatically",
-        "5. Greet them warmly with context-aware questions:"
-      ],
-      "integrations": [],
-      "priority": 80,
-      "lastModified": "2025-09-02T22:20:14.557Z"
     },
     "newsletter-research": {
       "name": "newsletter-research",
@@ -1423,7 +1422,7 @@
         "```"
       ],
       "priority": 50,
-      "lastModified": "2025-09-03T01:47:55.538Z"
+      "lastModified": "2025-09-03T23:16:07.337Z"
     },
     "review-day": {
       "name": "review-day",

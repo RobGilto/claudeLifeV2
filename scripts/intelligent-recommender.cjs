@@ -225,7 +225,7 @@ class IntelligentRecommender {
                 context.missingActivities.push({
                     type: 'no-daily-checkin',
                     urgency: 'high',
-                    recommendation: 'morning-checkin'
+                    recommendation: 'afternoon-checkin'
                 });
             } else {
                 // Analyze existing checkin
