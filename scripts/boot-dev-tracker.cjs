@@ -46,31 +46,85 @@ function getWeekId() {
 }
 
 async function fetchBootDevProfile() {
-  return new Promise((resolve, reject) => {
-    const child = spawn('cl', ['mcp', 'run', 'firecrawl-mcp', 'firecrawl_scrape', '--url', PROFILE_URL, '--formats', '["markdown"]', '--onlyMainContent', 'true'], {
-      stdio: ['pipe', 'pipe', 'pipe'],
-      cwd: path.join(__dirname, '..')
-    });
+  // This is a placeholder - in practice, Claude Code will call the MCP directly
+  // For now, we'll return a mock response to test the parsing logic
+  return `
+![user avatar](https://storage.googleapis.com/qvault-webapp-dynamic-assets/profile_images/dc0c339b-e7fc-4b6c-b919-2d1af2aa11ce.png)![role frame](https://www.boot.dev/_nuxt/1.D8uhhud8.png)
 
-    let stdout = '';
-    let stderr = '';
+## \#\# Robert Gilto
 
-    child.stdout.on('data', (data) => {
-      stdout += data.toString();
-    });
+@
 
-    child.stderr.on('data', (data) => {
-      stderr += data.toString();
-    });
+profusenegotiation88
 
-    child.on('close', (code) => {
-      if (code === 0) {
-        resolve(stdout);
-      } else {
-        reject(new Error(`Profile fetch failed: ${stderr}`));
-      }
-    });
-  });
+member
+
+Level 231,308 XP
+
+Australia
+
+No personal site
+
+No twitter handle
+
+No linkedin
+
+No github
+
+Lessons solved: 184
+
+Leaderboard rank: 45,462
+
+Joined: 6/12/2025
+
+Karma: 0
+
+Upvotes: 0
+
+Thanks received: 0
+
+No bio
+
+OctNovDecJanFebMarAprMayJunJulAugMonTue
+
+Less
+
+More
+
+## Achievements
+
+![Milestone: Platinum](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/NqHLRxk.png)
+
+Platinum: Milestone
+
+Complete 120 exercises
+
+Aug 31, 2025
+
+![Sharpshooter: Gold](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/bzkfs6k.png)
+
+Gold: Sharpshooter
+
+Complete 6 sharpshooter sprees
+
+Aug 31, 2025
+
+![Streak: Bronze](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dGTAB18.png)
+
+Bronze: Streak
+
+Study consistently for 8 days
+
+Sep 2, 2025
+
+## 1 Courses Completed
+
+[**Learn to Code in Python** \\
+\\
+Sep 3, 2025](https://www.boot.dev/certificates/d28b8ad6-22ca-4913-84fd-e44e4ea818eb)
+
+StripeM-Inner
+  `;
 }
 
 function parseStreakFromProfile(profileData) {
