@@ -45,22 +45,23 @@ Create or update a daily plan with time blocks aligned to higher-level objective
 
 3.5. **CRITICAL: Load and validate ritual constraints**:
    ```bash
-   # Check active rituals for the target date
-   node scripts/ritual-manager.js status [date]
+   # Check active rituals for the target date using V2 system
+   node scripts/ritual-cli-v2.js status --date=[date]
    ```
    
    **Ritual Integration Requirements:**
-   - Load all active rituals for the target date from ritual-manager.js
-   - Calculate available time windows between ritual blocks
+   - Load all active rituals for the target date from ritual-manager-v2.js
+   - Calculate available time windows between ritual blocks using UUID-based system
    - Ensure time blocks are only created in truly available periods
-   - Show ritual schedule in planning context display
+   - Show ritual schedule in planning context display with UUID tracking
    - Prevent any conflicts with foundational habits and work schedule
+   - Support complex frequency patterns (daily, weekly, monthly, quarterly)
 
 4. **HITL (Human in the Loop) Decision Point**: If `--hitl` flag is used:
    
    4a. Run the fractal planner in DRAFT mode with ritual awareness:
    ```bash
-   node scripts/fractal-planner.cjs plan-day [date] --draft --ritual-aware
+   node scripts/fractal-planner.cjs plan-day [date] --draft --ritual-aware-v2
    ```
    
    4b. Present the draft plan to the user for approval:
@@ -99,7 +100,7 @@ Create or update a daily plan with time blocks aligned to higher-level objective
 
 5. If NOT using `--hitl` OR after HITL approval, run the fractal planner command with ritual awareness:
    ```bash
-   node scripts/fractal-planner.cjs plan-day [date] --ritual-aware
+   node scripts/fractal-planner.cjs plan-day [date] --ritual-aware-v2
    ```
    
    **CRITICAL**: If the script reports "No calendar conflicts detected" but you found events in step 3, DO NOT TRUST the script's calendar check. The calendar detection may have failed and manual verification is required.
