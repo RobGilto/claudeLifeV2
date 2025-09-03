@@ -1,0 +1,128 @@
+{
+  "lastUpdated": "2025-09-03T00:00:00+11:00",
+  "version": "1.0.0",
+  "interests": {
+    "career": {
+      "priority": "HIGH",
+      "keywords": [
+        "AI engineer jobs Australia",
+        "machine learning careers NSW",
+        "Python developer Australia salary",
+        "software engineering market Australia",
+        "AI implementation roles Sydney",
+        "data science jobs NSW",
+        "Azure AI certification"
+      ],
+      "description": "Career transition to AI engineering by mid-2026"
+    },
+    "skills": {
+      "priority": "HIGH", 
+      "keywords": [
+        "Python programming",
+        "machine learning libraries",
+        "Azure AI services",
+        "Docker containerization",
+        "Git version control",
+        "API development",
+        "data processing",
+        "neural networks",
+        "scikit-learn",
+        "pandas",
+        "numpy",
+        "tensorflow",
+        "pytorch"
+      ],
+      "description": "Technical skills for AI engineering competency"
+    },
+    "certification": {
+      "priority": "MEDIUM",
+      "keywords": [
+        "Microsoft Azure AI Engineer Associate",
+        "Azure Data Scientist Associate", 
+        "Databricks Generative AI Engineer",
+        "Azure Data Engineer Associate",
+        "AWS Machine Learning Specialty",
+        "Google Cloud Professional ML Engineer"
+      ],
+      "description": "Strategic certifications to bypass degree requirements"
+    },
+    "industry": {
+      "priority": "MEDIUM",
+      "keywords": [
+        "AI startup funding Australia",
+        "enterprise AI adoption",
+        "generative AI business applications",
+        "AI ethics regulations",
+        "Australian tech industry trends",
+        "AI transformation case studies"
+      ],
+      "description": "Industry trends and business context for AI implementation"
+    },
+    "learning": {
+      "priority": "MEDIUM",
+      "keywords": [
+        "boot.dev progress",
+        "AI portfolio projects",
+        "RuneQuest programming examples",
+        "practical AI implementations",
+        "coding bootcamp outcomes",
+        "self-taught developer success"
+      ],
+      "description": "Learning resources and educational pathways"
+    },
+    "financial": {
+      "priority": "LOW",
+      "keywords": [
+        "tech salary negotiation Australia",
+        "freelance AI development rates",
+        "mortgage refinancing options",
+        "investment property planning",
+        "financial planning for career change"
+      ],
+      "description": "Financial planning and optimization during career transition"
+    }
+  },
+  "searchPriorities": {
+    "HIGH": {
+      "limit": 3,
+      "weight": 1.0
+    },
+    "MEDIUM": {
+      "limit": 2, 
+      "weight": 0.7
+    },
+    "LOW": {
+      "limit": 1,
+      "weight": 0.3
+    }
+  },
+  "filters": {
+    "dateRange": 7,
+    "minRelevanceScore": 0.6,
+    "excludeKeywords": [
+      "cryptocurrency",
+      "blockchain",
+      "NFT",
+      "trading",
+      "gambling"
+    ],
+    "preferredSources": [
+      "linkedin.com",
+      "github.com",
+      "stackoverflow.com",
+      "medium.com",
+      "dev.to",
+      "techcrunch.com",
+      "wired.com",
+      "ars-technica.com",
+      "seek.com.au",
+      "indeed.com.au"
+    ]
+  },
+  "metadata": {
+    "autoUpdateFromBrainDumps": true,
+    "learningFromUserFeedback": true,
+    "maxKeywordsPerCategory": 20,
+    "deduplicationThreshold": 0.8
+  }
+}
