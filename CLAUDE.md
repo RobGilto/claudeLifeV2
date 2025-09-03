@@ -26,13 +26,13 @@ please refer to docs/directory-structure.md
 - **`/deprecated/commands/`** - Deprecated slash commands that have been superseded
 - **`/deprecated/scripts/`** - Deprecated scripts that have been integrated into main commands
 - **Notable Deprecations:**
+  - `daily-checkin.md` - Generic daily checkin superseded by time-specific checkins
   - `plan-day-aware.md` - Ritual awareness has been integrated directly into `/plan-day` command
 
 
 ## File Management Standards
 
 ### Naming Conventions
-- Daily Checkin: `daily-YYYY-MM-DD.md`
 - Weekly Review: `weekly-YYYY-WW.md`  
 - Victory Log: `victories-YYYY-MM.md`
 - Brain Dump: `braindump-YYYY-MM-DD-HHMM-[topic].md`
@@ -140,10 +140,12 @@ For detailed documentation on all command systems, see:
 ### Quick Reference - Core Commands
 
 #### Essential Daily Commands
-- `/morning-checkin` - Energy assessment and daily intentions
+- `/start-of-day` - Comprehensive morning brief and strategic alignment
+- `/afternoon-checkin` - Midday energy assessment and daily intentions (around noon)
+- `/evening-checkin` - Evening wrap-up and progress review (around 6 PM)
+- `/end-of-day-checkout` - Final reflection and tomorrow planning (around 11 PM)
 - `/plan-day` - Create 4-5 time blocks for ADD-optimized workflow
 - `/taskmaster-start` - Execute daily time blocks with focus tracking
-- `/evening-checkin` - End-of-day reflection with smart day plan integration
 - `/add-victory` - Quick victory entry to fight the Mimic
 
 #### Key Planning Commands  

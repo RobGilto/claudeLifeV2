@@ -492,7 +492,6 @@ class IntelligentRecommender {
         
         // Missing activities section
         if (userContext.missingActivities.length > 0) {
-            console.log('🐛 DEBUG: Missing activities for display:', userContext.missingActivities.map(m => `${m.type}=>${m.recommendation}`));
             output += `## 🔔 MISSING ACTIVITIES:\n`;
             for (const missing of userContext.missingActivities) {
                 output += `- **${missing.type.replace(/-/g, ' ').toUpperCase()}** → \`/${missing.recommendation}\``;
