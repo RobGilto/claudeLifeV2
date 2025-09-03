@@ -38,7 +38,48 @@ Create or update a daily plan with time blocks aligned to higher-level objective
    - Note any recurring events or patterns
    ```
 
-4. Run the fractal planner command:
+4. **HITL (Human in the Loop) Decision Point**: If `--hitl` flag is used:
+   
+   4a. Run the fractal planner in DRAFT mode:
+   ```bash
+   node scripts/fractal-planner.cjs plan-day [date] --draft
+   ```
+   
+   4b. Present the draft plan to the user for approval:
+   ```
+   📋 DRAFT DAILY PLAN FOR APPROVAL
+   📅 Date: [date]
+   
+   ## Proposed Time Blocks:
+   [List all proposed time blocks with descriptions and strategic alignment]
+   
+   ## Daily Objectives:
+   [List proposed objectives]
+   
+   ## Values & Alignment:
+   [Show values served and role development]
+   
+   ❓ **APPROVAL REQUIRED**: 
+   - Type "approve" to proceed with calendar creation
+   - Type "revise" with feedback to adjust the plan
+   - Type "cancel" to abort planning
+   
+   💡 **Feedback options**:
+   - Adjust specific time blocks: "Move deep work to 9 AM"  
+   - Change priorities: "Focus more on coding, less on admin"
+   - Modify duration: "Make learning blocks longer"
+   - Add/remove activities: "Add exercise block at 6 PM"
+   ```
+   
+   4c. **Revision Loop**: If user requests changes:
+   - Incorporate feedback into plan parameters
+   - Re-run fractal planner with adjustments
+   - Present updated draft for re-approval
+   - Continue until user approves or cancels
+   
+   4d. **Only proceed to step 5 after user approval**
+
+5. If NOT using `--hitl` OR after HITL approval, run the fractal planner command:
    ```bash
    node scripts/fractal-planner.cjs plan-day [date]
    ```
