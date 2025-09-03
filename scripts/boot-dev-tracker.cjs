@@ -385,20 +385,35 @@ async function syncWithProfile() {
 // Main execution
 const command = process.argv[2];
 
-switch (command) {
-  case 'complete':
-    markComplete();
-    break;
-  case 'status':
-    showStatus();
-    break;
-  case 'week':
-    showWeeklyProgress();
-    break;
-  default:
-    console.log(`${colors.bright}Boot.dev Tracker${colors.reset}`);
-    console.log('\nUsage:');
-    console.log('  node scripts/boot-dev-tracker.js complete   # Mark today as complete');
-    console.log('  node scripts/boot-dev-tracker.js status     # Show current streak');
-    console.log('  node scripts/boot-dev-tracker.js week       # Show weekly progress');
+async function main() {
+  switch (command) {
+    case 'complete':
+      markComplete();
+      // Auto-verify after completing
+      console.log('');
+      await verifyWithProfile();
+      break;
+    case 'status':
+      showStatus();
+      break;
+    case 'week':
+      showWeeklyProgress();
+      break;
+    case 'verify':
+      await verifyWithProfile();
+      break;
+    case 'sync':
+      await syncWithProfile();
+      break;
+    default:
+      console.log(`${colors.bright}Boot.dev Tracker${colors.reset}`);
+      console.log('\nUsage:');
+      console.log('  node scripts/boot-dev-tracker.js complete   # Mark today as complete');
+      console.log('  node scripts/boot-dev-tracker.js status     # Show current streak');
+      console.log('  node scripts/boot-dev-tracker.js week       # Show weekly progress');
+      console.log('  node scripts/boot-dev-tracker.js verify     # Check profile vs local data');
+      console.log('  node scripts/boot-dev-tracker.js sync       # Sync local data with profile');
+  }
 }
+
+main().catch(console.error);
