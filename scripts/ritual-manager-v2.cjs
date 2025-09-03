@@ -590,13 +590,24 @@ class RitualManagerV2 {
             return existingRitual;
         }
         
-        const ritual = new RitualDefinition(config);
-        this.rituals.set(ritual.uuid, ritual);
+        // Create ritual instance to check for conflicts
+        const newRitual = new RitualDefinition(config);
+        
+        // Check for time conflicts before adding
+        const conflicts = this.detectTimeConflicts(newRitual);
+        if (conflicts.length > 0) {
+            throw new RitualConflictError(
+                `Time conflicts detected for ritual "${newRitual.name}". Cannot create ritual with overlapping time blocks.`,
+                conflicts
+            );
+        }
+        
+        this.rituals.set(newRitual.uuid, newRitual);
         this.saveRitualDefinitions();
         this.clearAvailabilityCache();
         
-        console.log(`✅ Added ritual: ${ritual.name} (UUID: ${ritual.uuid})`);
-        return ritual;
+        console.log(`✅ Added ritual: ${newRitual.name} (UUID: ${newRitual.uuid})`);
+        return newRitual;
     }
     
     findRitualByNameAndType(name, type) {
@@ -606,6 +617,87 @@ class RitualManagerV2 {
             }
         }
         return null;
+    }
+    
+    detectTimeConflicts(newRitual) {
+        const conflicts = [];
+        const sampleDates = this.generateSampleDates(30); // Check next 30 days
+        
+        for (const dateStr of sampleDates) {
+            // Get new ritual's time blocks for this date
+            const newRitualBlocks = newRitual.getTimeBlocksForDate(dateStr);
+            if (newRitualBlocks.length === 0) continue;
+            
+            // Get existing rituals for this date
+            const existingRituals = this.getRitualsForDate(dateStr);
+            
+            for (const newBlock of newRitualBlocks) {
+                const newStart = TimeUtils.parseTime(newBlock.startTime);
+                const newEnd = TimeUtils.parseTime(TimeUtils.addMinutes(newBlock.startTime, newBlock.duration));
+                
+                for (const { ritual: existingRitual, timeBlocks: existingBlocks } of existingRituals) {
+                    // Skip if same ritual (for updates)
+                    if (existingRitual.uuid === newRitual.uuid) continue;
+                    
+                    for (const existingBlock of existingBlocks) {
+                        const existingStart = TimeUtils.parseTime(existingBlock.startTime);
+                        const existingEnd = TimeUtils.parseTime(TimeUtils.addMinutes(existingBlock.startTime, existingBlock.duration));
+                        
+                        // Check for overlap
+                        if (this.timeBlocksOverlap(newStart, newEnd, existingStart, existingEnd)) {
+                            conflicts.push({
+                                date: dateStr,
+                                newRitual: {
+                                    name: newRitual.name,
+                                    type: newRitual.type,
+                                    timeBlock: {
+                                        startTime: newBlock.startTime,
+                                        endTime: TimeUtils.addMinutes(newBlock.startTime, newBlock.duration),
+                                        duration: newBlock.duration
+                                    }
+                                },
+                                conflictingRitual: {
+                                    name: existingRitual.name,
+                                    type: existingRitual.type,
+                                    uuid: existingRitual.uuid,
+                                    timeBlock: {
+                                        startTime: existingBlock.startTime,
+                                        endTime: TimeUtils.addMinutes(existingBlock.startTime, existingBlock.duration),
+                                        duration: existingBlock.duration
+                                    }
+                                },
+                                overlapPeriod: {
+                                    startTime: TimeUtils.formatTime(Math.max(newStart, existingStart)),
+                                    endTime: TimeUtils.formatTime(Math.min(newEnd, existingEnd)),
+                                    duration: Math.min(newEnd, existingEnd) - Math.max(newStart, existingStart)
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        }
+        
+        return conflicts;
+    }
+    
+    timeBlocksOverlap(start1, end1, start2, end2) {
+        // Two time blocks overlap if one starts before the other ends
+        // and the other starts before the first one ends
+        return start1 < end2 && start2 < end1;
+    }
+    
+    generateSampleDates(days = 30) {
+        const dates = [];
+        const today = new Date();
+        
+        for (let i = 0; i < days; i++) {
+            const date = new Date(today);
+            date.setDate(today.getDate() + i);
+            dates.push(TimeUtils.getDateString(date));
+        }
+        
+        return dates;
     }
     
     updateRitual(uuid, updates) {
