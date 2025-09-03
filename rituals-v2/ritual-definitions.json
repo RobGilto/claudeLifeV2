@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2025-09-03T04:40:35.909Z",
+  "lastUpdated": "2025-09-03T04:51:27.451Z",
   "rituals": [
     {
       "uuid": "29696612-cf9e-43a5-b592-36d2d7d2e4f3",
@@ -227,8 +227,8 @@
       ],
       "metadata": {},
       "created": "2025-09-03T04:40:29.693Z",
-      "updated": "2025-09-03T04:40:29.693Z",
-      "active": true,
+      "updated": "2025-09-03T04:48:05.076Z",
+      "active": false,
       "tags": [],
       "integrations": {
         "taskwarrior": null,
@@ -255,8 +255,36 @@
       ],
       "metadata": {},
       "created": "2025-09-03T04:40:35.908Z",
-      "updated": "2025-09-03T04:40:35.908Z",
-      "active": true,
+      "updated": "2025-09-03T04:48:12.372Z",
+      "active": false,
+      "tags": [],
+      "integrations": {
+        "taskwarrior": null,
+        "calendar": null,
+        "planning": null
+      }
+    },
+    {
+      "uuid": "9fe02c5c-0df7-40f1-a8e2-486b8cbeee97",
+      "name": "Test Ritual",
+      "type": "maintenance",
+      "description": "",
+      "priority": "medium",
+      "frequency": {
+        "type": "daily"
+      },
+      "timeBlocks": [
+        {
+          "startTime": "14:00",
+          "duration": 30,
+          "flexible": false,
+          "context": "general"
+        }
+      ],
+      "metadata": {},
+      "created": "2025-09-03T04:51:23.543Z",
+      "updated": "2025-09-03T04:51:27.451Z",
+      "active": false,
       "tags": [],
       "integrations": {
         "taskwarrior": null,

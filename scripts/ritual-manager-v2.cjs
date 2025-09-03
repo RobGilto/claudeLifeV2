@@ -734,6 +734,12 @@ class RitualManagerV2 {
         if (deleteFromCalendar) {
             // This would trigger calendar cleanup
             console.log(`📅 Calendar cleanup requested for ritual: ${ritual.name}`);
+            console.log(`💡 Note: Calendar cleanup requires MCP integration in Claude Code`);
+            console.log(`   Use the ritual UUID to search and delete calendar events:`);
+            console.log(`   Search for events with RITUAL_UUID: ${uuid}`);
+            
+            // TODO: When MCP integration is available, implement:
+            // this.cleanupCalendarEvents(uuid);
         }
         
         return ritual;

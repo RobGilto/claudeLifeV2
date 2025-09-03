@@ -119,15 +119,22 @@ node scripts/ritual-cli-v2.cjs edit --name "Old Habit" --active false
 #### Removing Rituals
 
 ```bash
-# Remove by name
-node scripts/ritual-cli-v2.cjs remove --name "Outdated Meeting"
+# Remove by UUID (recommended method)
+node scripts/ritual-cli-v2.cjs 'ritual remove ac254322-da57-4983-aeda-8b30f237513c'
 
-# Remove by UUID (safer for duplicates)
-node scripts/ritual-cli-v2.cjs remove --uuid "ac254322-da57-4983-aeda-8b30f237513c"
+# Remove with automatic calendar cleanup guidance
+node scripts/ritual-cli-v2.cjs 'ritual remove ac254322-da57-4983-aeda-8b30f237513c --delete-from-calendar'
 
-# Confirm removal (adds safety check)
-node scripts/ritual-cli-v2.cjs remove --name "Important Ritual" --confirm
+# Remove by name (less precise, may match multiple rituals)
+node scripts/ritual-cli-v2.cjs 'ritual remove --name "Outdated Meeting"'
 ```
+
+**⚠️ Important Notes on Ritual Removal:**
+- **System Only**: Regular removal only deactivates the ritual definition
+- **Calendar Cleanup**: `--delete-from-calendar` flag provides UUID guidance for manual cleanup
+- **Two-Step Process**: Currently requires manual deletion of calendar events via MCP
+- **Search Pattern**: Use the provided RITUAL_UUID to find and delete related calendar events
+- **Future Enhancement**: Full automatic calendar cleanup will be added in future versions
 
 ### Calendar Integration
 
