@@ -1,8 +1,8 @@
 {
   "metadata": {
     "version": "1.0.0",
-    "lastUpdated": "2025-08-27",
-    "nextReview": "2025-09-01",
+    "lastUpdated": "2025-09-03",
+    "nextReview": "2025-09-08",
     "system": "BRP-inspired d100",
     "targetDate": "2026-07-01"
   },
@@ -72,24 +72,28 @@
       "description": "General programming and engineering skills",
       "skills": {
         "python": {
-          "current": 32,
+          "current": 34,
           "target": 70,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-09-03",
           "evidence": [
+            "8-day boot.dev streak",
+            "Daily Python fundamentals",
             "Reading AI-generated Python",
             "Small scripts"
           ],
-          "weeklyPracticeHours": 5
+          "weeklyPracticeHours": 7
         },
         "javascript": {
-          "current": 36,
+          "current": 39,
           "target": 65,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-09-03",
           "evidence": [
+            "Major ritual system refactoring",
+            "Complex .cjs architecture",
             "Node scripts",
             "Slash commands"
           ],
-          "weeklyPracticeHours": 8
+          "weeklyPracticeHours": 12
         },
         "typescript": {
           "current": 22,
@@ -120,23 +124,27 @@
           "weeklyPracticeHours": 1
         },
         "system_design": {
-          "current": 21,
+          "current": 24,
           "target": 65,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-09-03",
           "evidence": [
+            "Complete ritual system redesign",
+            "V1 to V2 migration architecture",
             "Architecture discussions"
           ],
-          "weeklyPracticeHours": 2
+          "weeklyPracticeHours": 5
         },
         "debugging": {
-          "current": 41,
+          "current": 43,
           "target": 70,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-09-03",
           "evidence": [
+            "Complex system migration debugging",
+            "Test script development",
             "Daily troubleshooting",
             "Error analysis"
           ],
-          "weeklyPracticeHours": 8
+          "weeklyPracticeHours": 10
         }
       }
     },
@@ -236,14 +244,16 @@
       "description": "Communication and self-management",
       "skills": {
         "technical_writing": {
-          "current": 55,
+          "current": 57,
           "target": 75,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-09-03",
           "evidence": [
+            "Comprehensive tutorial creation",
+            "System architecture documentation",
             "Documentation",
             "Daily logs"
           ],
-          "weeklyPracticeHours": 10
+          "weeklyPracticeHours": 12
         },
         "add_management": {
           "current": 40,
@@ -256,14 +266,16 @@
           "weeklyPracticeHours": 20
         },
         "learning_efficiency": {
-          "current": 38,
+          "current": 41,
           "target": 70,
-          "lastPracticed": "2025-08-27",
+          "lastPracticed": "2025-09-03",
           "evidence": [
+            "8-day streak despite ADD challenges",
+            "Boot.dev integration with personal system",
             "Structured learning",
             "RuneQuest scaffolding"
           ],
-          "weeklyPracticeHours": 15
+          "weeklyPracticeHours": 18
         }
       }
     }

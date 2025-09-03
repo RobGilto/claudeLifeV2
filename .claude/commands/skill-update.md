@@ -12,6 +12,7 @@ Quick skill level adjustments and evidence tracking.
 2. **Evidence Addition**: 
    - Add specific evidence for recent work
    - GitHub commit analysis with MCP integration
+   - **Boot.dev profile scraping with Firecrawl integration**
    - Project completion bonuses
    - External validation (course completion, certifications)
 
@@ -33,12 +34,21 @@ Quick skill level adjustments and evidence tracking.
    - Anti-inflation: harder improvements at higher levels
    - Practice time must align with evidence
 
-## GitHub Evidence Types:
+## Evidence Sources:
+
+### GitHub Evidence Types:
 - **Python commits**: Auto-detect .py files, complexity analysis
 - **TypeScript/JS**: Framework usage, API integrations
 - **System Design**: Architecture decisions, documentation
 - **Testing**: Test file patterns, coverage improvements
 - **AI Engineering**: Prompt templates, model integrations
+
+### Boot.dev Profile Evidence:
+- **Python fundamentals**: Lesson completion, streak consistency
+- **Problem solving**: Challenge completions, success rates
+- **Learning velocity**: Lessons per day, difficulty progression
+- **Skill consistency**: Streak maintenance, engagement patterns
+- **Structured learning**: Course progress, systematic practice
 
 ## Output:
 Updates `skills/skill-matrix.json` with evidence timestamps and saves incremental history to `skills/skill-history/`.
