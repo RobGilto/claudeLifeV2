@@ -1,10 +1,10 @@
 {
-  "buildTime": "2025-09-03T23:36:03.111Z",
-  "totalCommands": 58,
+  "buildTime": "2025-09-03T23:41:41.426Z",
+  "totalCommands": 57,
   "categories": {
     "content": 3,
     "reflection": 4,
-    "checkin": 5,
+    "checkin": 4,
     "utilities": 5,
     "foundation": 3,
     "skills": 8,
@@ -253,48 +253,6 @@
       "integrations": [],
       "priority": 80,
       "lastModified": "2025-08-27T21:43:57.282Z"
-    },
-    "daily-checkin": {
-      "name": "daily-checkin",
-      "filePath": ".claude/commands/daily-checkin.md",
-      "description": "Daily Check-in",
-      "category": "checkin",
-      "timingConditions": {
-        "timeOfDay": [
-          "morning",
-          "afternoon",
-          "evening",
-          "night"
-        ],
-        "dayOfWeek": [],
-        "strategicPeriods": [
-          "month-end",
-          "week-end"
-        ],
-        "frequency": "daily"
-      },
-      "contextTriggers": {
-        "keywords": [
-          "planning",
-          "reflection",
-          "productivity",
-          "energy"
-        ],
-        "situations": [],
-        "missingActivities": [],
-        "emotions": [],
-        "workStates": []
-      },
-      "prerequisites": [],
-      "outputs": [
-        "4. Launch the daily-reflection subagent with:",
-        "6. **Victory Detection (Silent Background Process)**:",
-        "6. **Victory Detection (Silent Background Process)**:",
-        "- Mood and energy patterns"
-      ],
-      "integrations": [],
-      "priority": 80,
-      "lastModified": "2025-08-23T12:34:12.861Z"
     },
     "define-roles": {
       "name": "define-roles",
