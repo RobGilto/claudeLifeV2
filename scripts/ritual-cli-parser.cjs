@@ -15,7 +15,7 @@
  * - Batch operation parsing
  */
 
-const { FrequencyEngine } = require('./ritual-manager-v2.js');
+const { FrequencyEngine } = require('./ritual-manager-v2.cjs');
 
 class RitualCLIParser {
     constructor() {

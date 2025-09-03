@@ -564,6 +564,15 @@ class RitualManagerV2 {
     
     // Core ritual management methods
     addRitual(config) {
+        // Check for existing ritual with same name and type
+        const existingRitual = this.findRitualByNameAndType(config.name, config.type);
+        if (existingRitual) {
+            console.log(`⚠️ Ritual with same name and type already exists: ${config.name} (${config.type})`);
+            console.log(`   Existing UUID: ${existingRitual.uuid}`);
+            console.log(`   Use updateRitual() or provide a different name to avoid duplicates`);
+            return existingRitual;
+        }
+        
         const ritual = new RitualDefinition(config);
         this.rituals.set(ritual.uuid, ritual);
         this.saveRitualDefinitions();
@@ -571,6 +580,15 @@ class RitualManagerV2 {
         
         console.log(`✅ Added ritual: ${ritual.name} (UUID: ${ritual.uuid})`);
         return ritual;
+    }
+    
+    findRitualByNameAndType(name, type) {
+        for (const ritual of this.rituals.values()) {
+            if (ritual.active && ritual.name === name && ritual.type === type) {
+                return ritual;
+            }
+        }
+        return null;
     }
     
     updateRitual(uuid, updates) {

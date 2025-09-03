@@ -17,7 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { RitualManagerV2, TimeUtils, UUIDGenerator } = require('./ritual-manager-v2.js');
+const { RitualManagerV2, TimeUtils, UUIDGenerator } = require('./ritual-manager-v2.cjs');
 
 // Configuration
 const SYNC_CONFIG_DIR = path.join(__dirname, '..', 'rituals-v2', 'sync');

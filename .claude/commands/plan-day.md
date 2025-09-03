@@ -46,7 +46,7 @@ Create or update a daily plan with time blocks aligned to higher-level objective
 3.5. **CRITICAL: Load and validate ritual constraints**:
    ```bash
    # Check active rituals for the target date using V2 system
-   node scripts/ritual-cli-v2.js status --date=[date]
+   node scripts/ritual-cli-v2.cjs status --date=[date]
    ```
    
    **Ritual Integration Requirements:**

@@ -16,9 +16,9 @@
  */
 
 const readline = require('readline');
-const { RitualManagerV2, TimeUtils, UUIDGenerator } = require('./ritual-manager-v2.js');
-const { CalendarSyncManager } = require('./calendar-sync-manager.js');
-const { RitualCLIParser } = require('./ritual-cli-parser.js');
+const { RitualManagerV2, TimeUtils, UUIDGenerator, FrequencyEngine } = require('./ritual-manager-v2.cjs');
+const { CalendarSyncManager } = require('./calendar-sync-manager.cjs');
+const { RitualCLIParser } = require('./ritual-cli-parser.cjs');
 
 class RitualCLIV2 {
     constructor() {

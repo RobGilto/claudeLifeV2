@@ -1,0 +1,94 @@
+{
+  "version": "2.0.0",
+  "lastUpdated": "2025-09-03T03:58:57.373Z",
+  "rituals": [
+    {
+      "uuid": "29696612-cf9e-43a5-b592-36d2d7d2e4f3",
+      "name": "Boot.dev Practice",
+      "type": "foundational",
+      "description": "",
+      "priority": "medium",
+      "frequency": {
+        "type": "daily"
+      },
+      "timeBlocks": [
+        {
+          "startTime": "18:00",
+          "duration": 60,
+          "flexible": false,
+          "context": "general"
+        }
+      ],
+      "metadata": {},
+      "created": "2025-09-03T03:56:13.105Z",
+      "updated": "2025-09-03T03:56:13.105Z",
+      "active": true,
+      "tags": [],
+      "integrations": {
+        "taskwarrior": null,
+        "calendar": null,
+        "planning": null
+      }
+    },
+    {
+      "uuid": "2f8ad6ce-a078-4b86-9765-203446436223",
+      "name": "Team Meeting",
+      "type": "work",
+      "description": "",
+      "priority": "medium",
+      "frequency": {
+        "type": "weekly",
+        "days": [
+          "monday",
+          "wednesday"
+        ]
+      },
+      "timeBlocks": [
+        {
+          "startTime": "10:00",
+          "duration": 60,
+          "flexible": false,
+          "context": "general"
+        }
+      ],
+      "metadata": {},
+      "created": "2025-09-03T03:56:28.359Z",
+      "updated": "2025-09-03T03:56:28.359Z",
+      "active": true,
+      "tags": [],
+      "integrations": {
+        "taskwarrior": null,
+        "calendar": null,
+        "planning": null
+      }
+    },
+    {
+      "uuid": "147fbb1e-82e8-4f4c-b610-4a032da2a3b0",
+      "name": "Boot.dev Practice",
+      "type": "foundational",
+      "description": "",
+      "priority": "medium",
+      "frequency": {
+        "type": "daily"
+      },
+      "timeBlocks": [
+        {
+          "startTime": "18:00",
+          "duration": 60,
+          "flexible": false,
+          "context": "general"
+        }
+      ],
+      "metadata": {},
+      "created": "2025-09-03T03:58:57.373Z",
+      "updated": "2025-09-03T03:58:57.373Z",
+      "active": true,
+      "tags": [],
+      "integrations": {
+        "taskwarrior": null,
+        "calendar": null,
+        "planning": null
+      }
+    }
+  ]
+}
