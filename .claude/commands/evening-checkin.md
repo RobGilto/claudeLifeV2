@@ -89,4 +89,12 @@ Good evening! Let's review how your evening went:
    - Acknowledge challenges faced and how they were handled
    - Simple encouragement: "Great work this evening! Your evening progress shows [specific observation]. Looking forward to your end-of-day reflection."
 
+## Script Integration:
+Run the JavaScript script at `/scripts/evening-checkin.js` which:
+- Prompts for all responses interactively
+- Saves to journal with proper formatting
+- Detects and logs victories automatically
+- Maintains session tracking metadata
+- Logs all activities to `/logs/evening-checkin-YYYY-MM-DD.log`
+
 Remember: Be encouraging, empathetic, and focused on celebrating evening accomplishments while setting up for a good end-of-day wrap-up.

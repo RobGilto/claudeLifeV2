@@ -230,11 +230,11 @@ class IntelligentRecommender {
             } else {
                 // Analyze existing checkin
                 const content = fs.readFileSync(todayFile, 'utf8');
-                if (!content.includes('## Morning Check-in')) {
+                if (!content.includes('## Afternoon Check-in')) {
                     context.missingActivities.push({
-                        type: 'no-morning-checkin',
+                        type: 'no-afternoon-checkin',
                         urgency: 'high',
-                        recommendation: 'morning-checkin'
+                        recommendation: 'afternoon-checkin'
                     });
                 }
                 if (!content.includes('## Evening Check-in') && timeCtx.timeOfDay === 'evening') {
