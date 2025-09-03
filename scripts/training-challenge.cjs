@@ -212,7 +212,7 @@ function generateChallenge(forceWildcard = false) {
     concept = wildcardResult.category;
     prompt = wildcardResult.prompt;
     console.log(`Challenge ${uuid}\\n`);
-    console.log(prompt);
+    console.log(`Please add '${uuid}' to the title of the challenge\\n\\n${prompt}`);
     console.log('\\n🎲 This is a wildcard challenge designed to push your AI engineering skills!');
     
   } else {
@@ -230,7 +230,7 @@ function generateChallenge(forceWildcard = false) {
     prompt = generateConceptPrompt(concept);
     
     console.log(`Challenge ${uuid}\\n`);
-    console.log(prompt);
+    console.log(`Please add '${uuid}' to the title of the challenge\\n\\n${prompt}`);
   }
   
   console.log('\\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');

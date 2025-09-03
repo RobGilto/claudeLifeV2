@@ -257,11 +257,11 @@ Format: `UUID-YYYY-MM-DD-[W]###`
 ### Script Execution
 ```bash
 # Direct script execution
-node scripts/training-challenge.js                    # Generate challenge
-node scripts/training-challenge.js wildcard          # Force wildcard  
-node scripts/training-challenge.js feedback UUID 7   # Process feedback
-node scripts/training-challenge.js status            # Show status
-node scripts/training-challenge.js config            # View configuration
+node scripts/training-challenge.cjs                    # Generate challenge
+node scripts/training-challenge.cjs wildcard          # Force wildcard  
+node scripts/training-challenge.cjs feedback UUID 7   # Process feedback
+node scripts/training-challenge.cjs status            # Show status
+node scripts/training-challenge.cjs config            # View configuration
 ```
 
 ### Slash Command Integration
