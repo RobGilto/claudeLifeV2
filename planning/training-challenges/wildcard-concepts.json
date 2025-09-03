@@ -1,0 +1,58 @@
+{
+  "llm-fundamentals": [
+    "Implement attention score calculations with softmax normalization for transformer models",
+    "Build positional encoding mechanisms for sequence data processing",
+    "Create token embedding systems with vocabulary management",
+    "Design multi-head attention mechanisms with parallel processing",
+    "Implement layer normalization and residual connections in neural networks"
+  ],
+  "prompt-engineering": [
+    "Design prompt validation systems to detect injection attempts",
+    "Implement few-shot learning examples with optimal token efficiency",
+    "Create chain-of-thought reasoning patterns for complex problems",
+    "Build prompt optimization algorithms using reinforcement learning",
+    "Design context window management for long conversations"
+  ],
+  "rag-implementation": [
+    "Create document chunking algorithms with semantic overlap handling",
+    "Implement vector similarity search using cosine distance optimization",
+    "Build embedding pipeline with batch processing and caching",
+    "Design reranking algorithms for relevance score improvement",
+    "Create knowledge graph integration for enhanced retrieval"
+  ],
+  "neural-networks": [
+    "Implement backpropagation algorithms with gradient optimization",
+    "Design custom activation functions with derivative calculations",
+    "Build regularization techniques to prevent overfitting",
+    "Create batch normalization layers for training stability",
+    "Implement dropout mechanisms with adaptive probability"
+  ],
+  "vector-operations": [
+    "Implement cosine similarity calculations efficiently for high-dimensional data",
+    "Build dimensionality reduction using principal component analysis",
+    "Create approximate nearest neighbor search algorithms",
+    "Design vector quantization techniques for memory optimization",
+    "Implement semantic search with embedding space navigation"
+  ],
+  "ml-pipelines": [
+    "Build automated data preprocessing pipelines with validation",
+    "Create feature extraction systems for unstructured data",
+    "Design model evaluation frameworks with cross-validation",
+    "Implement A/B testing infrastructure for model comparison",
+    "Build real-time inference systems with low-latency requirements"
+  ],
+  "ai-deployment": [
+    "Design scalable model serving infrastructure with load balancing",
+    "Implement model versioning and rollback systems",
+    "Create monitoring systems for model performance and drift detection",
+    "Build containerized AI applications with Docker optimization",
+    "Design API gateways for AI service orchestration"
+  ],
+  "data-engineering": [
+    "Build streaming data pipelines with Apache Kafka integration",
+    "Create data quality validation systems with automated testing",
+    "Design ETL processes for large-scale data transformation",
+    "Implement data lineage tracking for governance compliance",
+    "Build real-time analytics systems with distributed processing"
+  ]
+}

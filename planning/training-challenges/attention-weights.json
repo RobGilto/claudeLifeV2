@@ -1,0 +1,16 @@
+{
+  "python-basics": 0.20,
+  "python-functions": 0.15,
+  "python-data-structures": 0.25,
+  "python-oop": 0.30,
+  "algorithms": 0.35,
+  "debugging": 0.20,
+  "testing": 0.40,
+  "system-design": 0.45,
+  "javascript-fundamentals": 0.22,
+  "web-development": 0.18,
+  "database-design": 0.28,
+  "api-development": 0.32,
+  "version-control": 0.12,
+  "problem-solving": 0.38
+}
