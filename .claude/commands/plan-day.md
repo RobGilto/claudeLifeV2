@@ -18,6 +18,11 @@ Create or update a daily plan with time blocks aligned to higher-level objective
    🎯 Daily Values Focus: [1-2 core values to emphasize today]
    🎭 Primary Role Today: [main role to advance today]
    ✨ Vision Connection: [how today serves lifestyle vision]
+   
+   🔄 Ritual Schedule:
+   [Show active rituals for the day with times and durations]
+   ⏰ Available Time: [X hours Y minutes] | Windows: [N]
+   
    📋 Parent Context:
    - Week Priorities: [show from week plan if exists]
    - Month Goals: [show from month plan if exists]
@@ -38,11 +43,24 @@ Create or update a daily plan with time blocks aligned to higher-level objective
    - Note any recurring events or patterns
    ```
 
+3.5. **CRITICAL: Load and validate ritual constraints**:
+   ```bash
+   # Check active rituals for the target date
+   node scripts/ritual-manager.js status [date]
+   ```
+   
+   **Ritual Integration Requirements:**
+   - Load all active rituals for the target date from ritual-manager.js
+   - Calculate available time windows between ritual blocks
+   - Ensure time blocks are only created in truly available periods
+   - Show ritual schedule in planning context display
+   - Prevent any conflicts with foundational habits and work schedule
+
 4. **HITL (Human in the Loop) Decision Point**: If `--hitl` flag is used:
    
-   4a. Run the fractal planner in DRAFT mode:
+   4a. Run the fractal planner in DRAFT mode with ritual awareness:
    ```bash
-   node scripts/fractal-planner.cjs plan-day [date] --draft
+   node scripts/fractal-planner.cjs plan-day [date] --draft --ritual-aware
    ```
    
    4b. Present the draft plan to the user for approval:
@@ -79,9 +97,9 @@ Create or update a daily plan with time blocks aligned to higher-level objective
    
    4d. **Only proceed to step 5 after user approval**
 
-5. If NOT using `--hitl` OR after HITL approval, run the fractal planner command:
+5. If NOT using `--hitl` OR after HITL approval, run the fractal planner command with ritual awareness:
    ```bash
-   node scripts/fractal-planner.cjs plan-day [date]
+   node scripts/fractal-planner.cjs plan-day [date] --ritual-aware
    ```
    
    **CRITICAL**: If the script reports "No calendar conflicts detected" but you found events in step 3, DO NOT TRUST the script's calendar check. The calendar detection may have failed and manual verification is required.

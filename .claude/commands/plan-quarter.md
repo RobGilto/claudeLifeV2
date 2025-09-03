@@ -90,7 +90,7 @@ Create or update a quarterly plan with strategic priorities and major initiative
    node scripts/fractal-planner.cjs plan-quarter [quarter]
    ```
 
-5. Create comprehensive quarterly strategic plan in `journal/planning/quarterly-reviews/plan-YYYY-QX.md`:
+6. Create comprehensive quarterly strategic plan in `journal/planning/quarterly-reviews/plan-YYYY-QX.md`:
 
    ```markdown
    ---
@@ -168,7 +168,7 @@ Create or update a quarterly plan with strategic priorities and major initiative
    [How success will be measured and reviewed]
    ```
 
-5. Strategic planning recommendations:
+7. Strategic planning recommendations:
    - Monthly cascade: `/plan-month` to implement quarterly strategies
    - Previous quarter review: `/review-quarter` if pending  
    - Yearly alignment check: `/performance-trend quarter 4`
