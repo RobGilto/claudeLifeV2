@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2025-09-03T04:51:27.451Z",
+  "lastUpdated": "2025-09-03T05:37:10.252Z",
   "rituals": [
     {
       "uuid": "29696612-cf9e-43a5-b592-36d2d7d2e4f3",
@@ -284,6 +284,34 @@
       "metadata": {},
       "created": "2025-09-03T04:51:23.543Z",
       "updated": "2025-09-03T04:51:27.451Z",
+      "active": false,
+      "tags": [],
+      "integrations": {
+        "taskwarrior": null,
+        "calendar": null,
+        "planning": null
+      }
+    },
+    {
+      "uuid": "d64f503e-955e-4c4e-b400-efedb66140e7",
+      "name": "Test Daily Coffee",
+      "type": "life",
+      "description": "",
+      "priority": "medium",
+      "frequency": {
+        "type": "daily"
+      },
+      "timeBlocks": [
+        {
+          "startTime": "06:00",
+          "duration": 15,
+          "flexible": false,
+          "context": "general"
+        }
+      ],
+      "metadata": {},
+      "created": "2025-09-03T05:36:50.192Z",
+      "updated": "2025-09-03T05:37:10.252Z",
       "active": false,
       "tags": [],
       "integrations": {

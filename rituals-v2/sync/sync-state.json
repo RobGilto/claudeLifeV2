@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "activePeriods": {
+    "day-2025-09-03": {
+      "periodType": "day",
+      "periodValue": "2025-09-03",
+      "syncedAt": "2025-09-03T05:37:17.737Z",
+      "sessionUuid": "79c6c825-0f84-4887-83c2-4da282033bd0",
+      "eventCount": 2,
+      "conflictCount": 0
+    }
+  },
+  "syncedEvents": {},
+  "lastUpdated": "2025-09-03T05:37:17.737Z"
+}
