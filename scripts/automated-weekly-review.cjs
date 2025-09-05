@@ -351,7 +351,7 @@ function analyzeObjectiveCompletion(weekPlan, dailyDataArray) {
         let actualCompleted = obj.completed || 0;
         
         // Try to detect actual completion from accomplishments
-        const description = obj.description.toLowerCase();
+        const description = (obj.description || '').toLowerCase();
         const evidenceFound = [];
         
         // Check for boot.dev practice
