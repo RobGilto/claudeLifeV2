@@ -1,14 +1,14 @@
 {
-  "buildTime": "2025-09-03T23:43:29.798Z",
-  "totalCommands": 57,
+  "buildTime": "2025-09-05T21:17:45.353Z",
+  "totalCommands": 58,
   "categories": {
     "content": 3,
     "reflection": 4,
     "checkin": 5,
+    "other": 4,
     "utilities": 5,
     "foundation": 3,
     "skills": 8,
-    "other": 3,
     "performance": 3,
     "planning": 5,
     "execution": 4,
@@ -110,6 +110,36 @@
       "integrations": [],
       "priority": 80,
       "lastModified": "2025-09-03T23:13:12.790Z"
+    },
+    "bash": {
+      "name": "bash",
+      "filePath": ".claude/commands/bash.md",
+      "description": "/bash - Execute Bash Commands",
+      "category": "other",
+      "timingConditions": {
+        "timeOfDay": [
+          "morning"
+        ],
+        "dayOfWeek": [],
+        "strategicPeriods": [],
+        "frequency": null
+      },
+      "contextTriggers": {
+        "keywords": [],
+        "situations": [],
+        "missingActivities": [],
+        "emotions": [],
+        "workStates": []
+      },
+      "prerequisites": [
+        "- For complex multi-step operations, consider using the Bash tool directly"
+      ],
+      "outputs": [
+        "- Use this for quick command execution when you need bash functionality"
+      ],
+      "integrations": [],
+      "priority": 50,
+      "lastModified": "2025-09-04T20:26:33.658Z"
     },
     "bootdev-done": {
       "name": "bootdev-done",

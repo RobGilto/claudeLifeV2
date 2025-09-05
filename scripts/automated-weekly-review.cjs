@@ -311,7 +311,7 @@ function analyzeObjectiveCompletion(weekPlan, dailyDataArray) {
     
     // Look for evidence of objective completion in daily accomplishments
     const allAccomplishments = dailyDataArray
-        .filter(d => d && d.accomplishments)
+        .filter(d => d && d.accomplishments && Array.isArray(d.accomplishments))
         .flatMap(d => d.accomplishments.map(a => ({ text: a.toLowerCase(), date: d.date })));
     
     const objectives = weekPlan.objectives.map(obj => {
