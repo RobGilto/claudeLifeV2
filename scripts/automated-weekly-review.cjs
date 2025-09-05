@@ -137,11 +137,26 @@ function loadDailyJournal(date) {
     
     // Parse content sections
     let currentSection = '';
-    for (const line of lines) {
+    let inWinsSection = false;
+    
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        
         // Section headers
         if (line.includes('Morning Check-in')) currentSection = 'morning';
         else if (line.includes('Noon Check-in')) currentSection = 'noon';
         else if (line.includes('Evening Check-in')) currentSection = 'evening';
+        
+        // Track wins section
+        if (line.includes("Today's Wins:")) {
+            inWinsSection = true;
+            continue;
+        }
+        
+        // End wins section on new major heading
+        if (inWinsSection && line.match(/^\*\*[A-Z]/)) {
+            inWinsSection = false;
+        }
         
         // Extract data based on patterns
         if (line.includes('Overall Day Feeling:')) {
@@ -158,9 +173,17 @@ function loadDailyJournal(date) {
             }
         }
         
-        // Accomplishments (numbered list after "Accomplishments:")
+        // Accomplishments (numbered list after "Accomplishments:" or bullet list after "Today's Wins:")
         if (line.match(/^\d+\.\s+(.+)/) && currentSection) {
             const accomplishment = line.replace(/^\d+\.\s+/, '').trim();
+            if (accomplishment && !data.accomplishments.includes(accomplishment)) {
+                data.accomplishments.push(accomplishment);
+            }
+        }
+        
+        // Handle "Today's Wins:" format with bullet points
+        if (inWinsSection && line.match(/^-\s+(.+)/)) {
+            const accomplishment = line.replace(/^-\s+/, '').trim();
             if (accomplishment && !data.accomplishments.includes(accomplishment)) {
                 data.accomplishments.push(accomplishment);
             }
@@ -311,8 +334,17 @@ function analyzeObjectiveCompletion(weekPlan, dailyDataArray) {
     
     // Look for evidence of objective completion in daily accomplishments
     const allAccomplishments = dailyDataArray
-        .filter(d => d && d.accomplishments && Array.isArray(d.accomplishments))
-        .flatMap(d => d.accomplishments.map(a => ({ text: a.toLowerCase(), date: d.date })));
+        .filter(d => {
+            if (!d || !d.accomplishments) return false;
+            if (!Array.isArray(d.accomplishments)) {
+                console.log(`Warning: accomplishments not array for ${d.date}:`, typeof d.accomplishments);
+                return false;
+            }
+            return true;
+        })
+        .flatMap(d => d.accomplishments
+            .filter(a => a && typeof a === 'string')
+            .map(a => ({ text: a.toLowerCase(), date: d.date })));
     
     const objectives = weekPlan.objectives.map(obj => {
         // Start with what was tracked in the plan
