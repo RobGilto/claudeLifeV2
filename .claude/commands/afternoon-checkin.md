@@ -106,9 +106,9 @@ Good afternoon! Let's assess your mid-day energy and intentions:
    
    Silently append detected victories to `/victories/victories-YYYY-MM.md` using the established format.
 
-8. NO full analysis yet - save that for evening when all sessions combine.
+10. NO full analysis yet - save that for evening when all sessions combine.
 
-9. Simple encouragement focusing on energy and intention:
+11. Simple encouragement focusing on energy and intention:
    - "Your intentions are set!"
    - "Energy follows action"
    - "Small wins compound"

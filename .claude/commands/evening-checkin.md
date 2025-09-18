@@ -18,12 +18,18 @@ An evening wrap-up checkpoint to review how the evening went (typically 6-8pm).
    - Review evening time blocks that should be completed by now
    - Check what was planned vs what actually happened
 
-4. Check if `/journal/daily/daily-YYYY-MM-DD.md` exists (using today's actual date):
+4. **Task Advisory (Human-in-the-Loop)**:
+   - Provide intelligent suggestions for remaining evening tasks
+   - Recommend tasks for wind-down and tomorrow preparation
+   - Show exact TaskWarrior commands for suggested tasks
+   - Focus on administrative and reflection tasks suitable for evening energy
+
+5. Check if `/journal/daily/daily-YYYY-MM-DD.md` exists (using today's actual date):
    - If exists: Read current content to see what sessions are already completed
    - If evening session exists: Acknowledge and offer to update
    - If not exists: Create new file structure
 
-5. Greet them warmly with context-aware questions:
+6. Greet them warmly with context-aware questions:
 
 🌆 **Evening Check-in for [Today's Date] - [Current Time]**
 
@@ -45,7 +51,20 @@ Good evening! Let's review how your evening went:
 7. **Any breakthroughs or wins worth celebrating?** (however small)
 8. **How are you feeling about tomorrow's priorities?**
 
-6. Save/append to `/journal/daily/daily-YYYY-MM-DD.md` (using today's actual date) with structure:
+7. **Evening Task Recommendations**: After gathering context, provide evening-specific task suggestions:
+   ```
+   🌆 EVENING TASK RECOMMENDATIONS
+   
+   📝 Administrative & Reflection:
+   • [Specific task] - [Reasoning]
+     → task add "description" project:X priority:L due:today
+   
+   📅 Tomorrow Preparation:
+   • [Task planning/setup tasks]
+   • [Calendar review tasks]
+   ```
+
+8. Save/append to `/journal/daily/daily-YYYY-MM-DD.md` (using today's actual date) with structure:
    ```yaml
    ---
    date: YYYY-MM-DD
@@ -73,7 +92,7 @@ Good evening! Let's review how your evening went:
    - TaskWarrior tasks: [relevant tasks and progress]
    ```
 
-7. **Victory Detection (Silent Background Process)**:
+9. **Victory Detection (Silent Background Process)**:
    Scan completed objectives and breakthroughs for victory patterns:
    - Technical victories: "figured out", "built", "solved", "learned"
    - Personal victories: financial decisions, boundary setting, help-seeking
