@@ -101,9 +101,9 @@ Good evening! Let's review how your evening went:
    
    Silently append detected victories to `/victories/victories-YYYY-MM.md` using the established format.
 
-8. NO full analysis yet - save that for end-of-day when all sessions combine.
+10. NO full analysis yet - save that for end-of-day when all sessions combine.
 
-9. **Context-Aware Encouragement**: 
+11. **Context-Aware Encouragement**: 
    - Reference specific completed evening accomplishments
    - Acknowledge challenges faced and how they were handled
    - Simple encouragement: "Great work this evening! Your evening progress shows [specific observation]. Looking forward to your end-of-day reflection."

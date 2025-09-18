@@ -16,13 +16,19 @@ End-of-day reflection and tomorrow planning with optional day plan performance r
    - If YES: Run `node scripts/end-of-day-checkout.cjs` and stop here (script handles everything)
    - If NO or no day plan: Continue with manual end-of-day checkout with calendar context below
 
-4. Check if `/journal/daily/YYYY-MM-DD.md` exists (using today's actual Sydney date):
+4. **Task Advisory (Human-in-the-Loop)**:
+   - Provide tomorrow preparation task suggestions
+   - Recommend planning and setup tasks for tomorrow
+   - Show exact TaskWarrior commands for suggested tasks
+   - Focus on low-energy administrative tasks suitable for end-of-day
+
+5. Check if `/journal/daily/YYYY-MM-DD.md` exists (using today's actual Sydney date):
    - If exists: Read to see if afternoon session exists, append evening section
    - Update metadata: `sessions: [afternoon, evening, end-of-day]` or `[end-of-day]`
    - Set `status: complete`
    - If not exists: Create new file (evening-only case)
 
-5. Greet them warmly with context-aware questions:
+6. Greet them warmly with context-aware questions:
 
 🌙 **End-of-Day Checkout for [Today's Date] - [Current Time]**
 
@@ -45,7 +51,20 @@ Good evening! Let's reflect on your entire day:
 8. **Any insights about your planning vs execution?**
 9. **Any other thoughts or reflections?**
 
-6. Update/save to `/journal/daily/YYYY-MM-DD.md` (using today's actual Sydney date):
+7. **End-of-Day Task Recommendations**: After gathering context, provide tomorrow-focused task suggestions:
+   ```
+   🌙 END-OF-DAY TASK RECOMMENDATIONS
+   
+   📅 Tomorrow Preparation:
+   • [Planning tasks] - [Reasoning]
+     → task add "description" project:Planning priority:L due:tomorrow
+   
+   📝 Administrative Wrap-up:
+   • [Low-energy admin tasks]
+   • [Calendar/email review tasks]
+   ```
+
+8. Update/save to `/journal/daily/YYYY-MM-DD.md` (using today's actual Sydney date):
    - Update frontmatter: `sessions: [afternoon, evening]` and `status: complete`
    - Append evening section:
 
@@ -70,7 +89,7 @@ Good evening! Let's reflect on your entire day:
    - TaskWarrior tasks: [completed/remaining status]
    ```
 
-7. Launch the daily-reflection subagent with:
+9. Launch the daily-reflection subagent with:
    Analyze today's check-in:
    [provide ALL responses from both afternoon AND evening if both exist]
    [Include planning vs execution analysis from calendar data]
