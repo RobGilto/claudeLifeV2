@@ -170,7 +170,7 @@ Create or update a daily plan with time blocks aligned to higher-level objective
    [Any additional planning notes]
    ```
 
-8. **AUTOMATIC CALENDAR INTEGRATION**: After plan validation, automatically create calendar events:
+8. **MANUAL CALENDAR INTEGRATION ADVISORY**: After plan validation, provide suggestions for manual calendar entry:
 
    8a. **RITUAL CALENDAR ADVISORY**: Provide manual calendar entry suggestions for rituals:
    ```
