@@ -13,14 +13,20 @@ A mid-day energy assessment and intention-setting checkpoint.
    - Use Google Calendar MCP to list today's events: `mcp__google-calendar__list-events`
    - Use MCP TaskWarrior to get pending tasks: `mcp__taskwarrior__get_next_tasks`
    - Analyze morning time blocks (starting before 12:00 PM) and objectives from planning data
-   - Present this context before asking morning questions
+   - Present this context before asking afternoon questions
+   
+4. **Task Advisory (Human-in-the-Loop)**:
+   - Instead of auto-creating tasks, provide intelligent task suggestions
+   - Use `/task-advisor afternoon` approach to recommend specific tasks
+   - Show exact TaskWarrior commands for suggested tasks
+   - Let user manually create tasks they find valuable
 
-4. Check if `/journal/daily/YYYY-MM-DD.md` exists (using today's actual Sydney date):
+5. Check if `/journal/daily/YYYY-MM-DD.md` exists (using today's actual Sydney date):
    - If exists: Read current content to see if morning session already completed
    - If morning session exists: Acknowledge and offer to update
    - If not exists: Create new file structure
 
-5. Greet them warmly with context-aware questions:
+6. Greet them warmly with context-aware questions:
 
 🌤️ Afternoon Check-in for [Today's Date] - [Current Time]
 
@@ -42,7 +48,21 @@ Good afternoon! Let's assess your mid-day energy and intentions:
 8. **What's one thing you commit to completing?** (from tasks or time blocks)
 9. **Anything else to note?**
 
-6. Save/append to `/journal/daily/YYYY-MM-DD.md` (using today's actual Sydney date) with structure:
+7. **Task Recommendations**: After gathering context, provide afternoon-specific task suggestions:
+   ```
+   🎯 AFTERNOON TASK RECOMMENDATIONS
+   
+   📊 Based on your energy and schedule:
+   • [Specific task] - [Reasoning]
+     → task add "description" project:X priority:H due:today
+   
+   ⚡ Energy-appropriate for afternoon:
+   • [Medium cognitive load tasks]
+   • [Project advancement opportunities] 
+   • [Administrative tasks]
+   ```
+
+8. Save/append to `/journal/daily/YYYY-MM-DD.md` (using today's actual Sydney date) with structure:
    ```yaml
    ---
    date: YYYY-MM-DD
@@ -77,7 +97,7 @@ Good afternoon! Let's assess your mid-day energy and intentions:
    **Commitment:** [response]
    ```
 
-7. **Victory Detection (Silent Background Process)**:
+9. **Victory Detection (Silent Background Process)**:
    Scan intentions and commitments for victory patterns:
    - Technical victories: "will figure out", "will build", "will solve", "will learn"
    - Personal victories: boundary setting intentions, self-care plans
