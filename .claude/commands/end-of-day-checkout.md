@@ -108,9 +108,9 @@ Good evening! Let's reflect on your entire day:
    - Weekly trend if enough data
    - Celebration of wins (however small)
 
-8. Create a visual summary and append to same file as `## 📊 Daily Analysis`
+10. Create a visual summary and append to same file as `## 📊 Daily Analysis`
 
-9. **Victory Detection (Silent Background Process)**:
+11. **Victory Detection (Silent Background Process)**:
    After saving the end-of-day journal, scan ALL accomplishments (afternoon + evening + end-of-day) for victory patterns:
    - Technical victories: "figured out", "built", "solved", "learned"
    - Personal victories: financial decisions, boundary setting, help-seeking
